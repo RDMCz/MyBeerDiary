@@ -33,4 +33,15 @@ class EventBeer {
     required this.price,
     required this.isDraft,
   });
+
+  Map<String, Object?> toMap() {
+    return {
+      _ebColEventId: eventId,
+      _ebColTimestamp: timestamp,
+      _ebColBeerId: beerId,
+      _ebColLitres: litres,
+      _ebColPrice: price,
+      _ebColIsDraft: isDraft ? 1 : 0,
+    };
+  }
 }

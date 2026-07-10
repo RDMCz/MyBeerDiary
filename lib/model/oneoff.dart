@@ -26,4 +26,13 @@ class Oneoff {
     required this.litres,
     required this.isDraft,
   });
+
+  Map<String, Object?> toMap() {
+    return {
+      _oneoffColTimestamp: timestamp,
+      _oneoffColBeerId: beerId,
+      _oneoffColLitres: litres,
+      _oneoffColIsDraft: isDraft,
+    };
+  }
 }

@@ -34,4 +34,15 @@ class Beer {
     required this.abv,
     required this.color,
   });
+
+  Map<String, Object?> toMap() {
+    return {
+      _beerColId: id,
+      _beerColBreweryName: breweryName,
+      _beerColDescription: description,
+      _beerColEPM: epm,
+      _beerColABV: abv,
+      _beerColColor: color,
+    };
+  }
 }

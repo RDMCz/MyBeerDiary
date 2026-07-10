@@ -34,4 +34,15 @@ class Event {
     required this.totalBeers,
     required this.totalCost,
   });
+
+  Map<String, Object?> toMap() {
+    return {
+      _eventColId: id,
+      _eventColTagName: tagName,
+      _eventColName: name,
+      _eventColTimestamp: timestamp,
+      _eventColTotalBeers: totalBeers,
+      _eventColTotalCost: totalCost,
+    };
+  }
 }

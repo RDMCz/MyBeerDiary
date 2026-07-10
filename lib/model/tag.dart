@@ -16,4 +16,8 @@ class Tag {
   final String? pictureId;
 
   Tag({required this.name, this.pictureId});
+
+  Map<String, Object?> toMap() {
+    return {_tagColName: name, _tagColPictureId: pictureId};
+  }
 }
