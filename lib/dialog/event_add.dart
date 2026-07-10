@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/dialog/dialog_common.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
 
@@ -8,21 +9,16 @@ class EventAddDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: .all(32),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-      ),
+      insetPadding: DialogCommon.insetPadding,
+      shape: DialogCommon.shape,
       child: Padding(
-        padding: .symmetric(horizontal: 20, vertical: 10),
+        padding: DialogCommon.contentPadding,
         child: Column(
           mainAxisSize: .min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // = Header =
-            Text(
-              "Nová událost",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-            ),
+            Text("Nová událost", style: DialogCommon.headerStyle),
             SizedBox(height: 16),
 
             // = Form body =
@@ -32,7 +28,7 @@ class EventAddDialog extends StatelessWidget {
                 labelText: "Název události",
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 12),
 
             // = Buttons =
             Row(
@@ -43,9 +39,9 @@ class EventAddDialog extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: const Text("Zrušit"),
+                  child: Text("Zrušit"),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
 
                 // = Button :: Confirm =
                 TextButton(
@@ -60,7 +56,7 @@ class EventAddDialog extends StatelessWidget {
                     );
                     Navigator.of(context).pop(true);
                   },
-                  child: const Text("OK"),
+                  child: Text("OK"),
                 ),
               ],
             ),

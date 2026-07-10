@@ -74,3 +74,18 @@ Future<List<Event>> eventList() async {
   final maps = await db.query(_eventTable, orderBy: orderBy);
   return [for (final m in maps) Event.fromMap(m)];
 }
+
+Future<void> eventUpdate(Event event) async {
+  final db = await AppDatabase.instance.database;
+  await db.update(
+    _eventTable,
+    event.toMap(),
+    where: "$_eventColId = ?",
+    whereArgs: [event.id],
+  );
+}
+
+Future<void> eventDelete(int id) async {
+  final db = await AppDatabase.instance.database;
+  await db.delete(_eventTable, where: "$_eventColId = ?", whereArgs: [id]);
+}

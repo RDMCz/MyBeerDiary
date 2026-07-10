@@ -46,7 +46,9 @@ class _HomescreenState extends State<Homescreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text("Můj pivní deníček")),
-      body: isEventPageSelected ? EventList(events: _events) : Text("Index 1"),
+      body: isEventPageSelected
+          ? EventList(events: _events, refreshEvents: _refreshEvents)
+          : Text("Index 1"),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -69,7 +71,7 @@ class _HomescreenState extends State<Homescreen> {
               context: context,
               builder: (_) => EventAddDialog(),
             );
-            if (result) {
+            if (result ?? false) {
               _refreshEvents();
             }
           } else {
