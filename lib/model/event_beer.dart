@@ -53,4 +53,8 @@ class EventBeer {
     price: m[_ebColPrice] as int,
     isDraft: (m[_ebColIsDraft] as int) == 1,
   );
+
+  @override
+  String toString() =>
+      "eventId=$eventId, timestamp=$timestamp, beerId=$beerId, litres=$litres, price=$price, isDraft=$isDraft";
 }

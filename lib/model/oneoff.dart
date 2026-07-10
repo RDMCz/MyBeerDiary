@@ -42,4 +42,8 @@ class Oneoff {
     litres: m[_oneoffColLitres] as double,
     isDraft: (m[_oneoffColIsDraft] as int) == 1,
   );
+
+  @override
+  String toString() =>
+      "timestamp=$timestamp, beerId=$beerId, litres=$litres, isDraft=$isDraft";
 }

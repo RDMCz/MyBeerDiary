@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/logic/time.dart";
+import "package:my_beer_diary/model/event.dart";
 
 class EventAddDialog extends StatelessWidget {
   const EventAddDialog({super.key});
@@ -6,7 +8,7 @@ class EventAddDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: .all(80),
+      insetPadding: .all(32),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12.0)),
       ),
@@ -36,6 +38,7 @@ class EventAddDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                // = Button :: Cancel =
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -43,7 +46,22 @@ class EventAddDialog extends StatelessWidget {
                   child: const Text("Zrušit"),
                 ),
                 const SizedBox(width: 8),
-                TextButton(onPressed: () {}, child: const Text("OK")),
+
+                // = Button :: Confirm =
+                TextButton(
+                  onPressed: () {
+                    eventAdd(
+                      Event(
+                        name: "ABC",
+                        timestamp: secondsSinceEpoch(),
+                        totalBeers: 0,
+                        totalCost: 0,
+                      ),
+                    );
+                    Navigator.pop(context);
+                  },
+                  child: const Text("OK"),
+                ),
               ],
             ),
           ],

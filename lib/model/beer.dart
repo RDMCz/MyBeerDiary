@@ -54,4 +54,8 @@ class Beer {
     abv: m[_beerColABV] as double,
     color: m[_beerColColor] as String,
   );
+
+  @override
+  String toString() =>
+      "id=$id, breweryName=$breweryName, description=$description, epm=$epm, abv=$abv, color=$color";
 }

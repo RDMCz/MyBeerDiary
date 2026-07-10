@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/event_add.dart";
+import "package:my_beer_diary/widget/event_list.dart";
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -12,7 +13,7 @@ class _HomescreenState extends State<Homescreen> {
   int _bottomBarIndex = 0;
 
   static const List<Widget> _bottomBarPages = <Widget>[
-    Text("Index 0"),
+    EventList(),
     Text("Index 1"),
   ];
 

@@ -56,9 +56,21 @@ class Event {
     totalBeers: m[_eventColTotalBeers] as int,
     totalCost: m[_eventColTotalCost] as int,
   );
+
+  @override
+  String toString() =>
+      "id=$id, tagName=$tagName, name=$name, timestamp=$timestamp, totalBeers=$totalBeers, totalCost=$totalCost";
 }
 
 Future<void> eventAdd(Event event) async {
   final db = await AppDatabase.instance.database;
   await db.insert(_eventTable, event.toMap());
+}
+
+Future<List<Event>> eventList() async {
+  const orderBy = "$_eventColTimestamp DESC, $_eventColId DESC";
+
+  final db = await AppDatabase.instance.database;
+  final maps = await db.query(_eventTable, orderBy: orderBy);
+  return [for (final m in maps) Event.fromMap(m)];
 }

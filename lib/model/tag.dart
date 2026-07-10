@@ -25,4 +25,7 @@ class Tag {
     name: m[_tagColName] as String,
     pictureId: m[_tagColPictureId] as String?,
   );
+
+  @override
+  String toString() => "name=$name, pictureId=$pictureId";
 }
