@@ -41,7 +41,7 @@ class EventAddDialog extends StatelessWidget {
                 // = Button :: Cancel =
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.of(context).pop(false);
                   },
                   child: const Text("Zrušit"),
                 ),
@@ -58,7 +58,7 @@ class EventAddDialog extends StatelessWidget {
                         totalCost: 0,
                       ),
                     );
-                    Navigator.pop(context);
+                    Navigator.of(context).pop(true);
                   },
                   child: const Text("OK"),
                 ),
