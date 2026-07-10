@@ -45,4 +45,13 @@ class Beer {
       _beerColColor: color,
     };
   }
+
+  static Beer fromMap(Map<String, Object?> m) => Beer(
+    id: m[_beerColId] as int?,
+    breweryName: m[_beerColBreweryName] as String,
+    description: m[_beerColDescription] as String,
+    epm: m[_beerColEPM] as double,
+    abv: m[_beerColABV] as double,
+    color: m[_beerColColor] as String,
+  );
 }

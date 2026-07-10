@@ -35,4 +35,11 @@ class Oneoff {
       _oneoffColIsDraft: isDraft,
     };
   }
+
+  static Oneoff fromMap(Map<String, Object?> m) => Oneoff(
+    timestamp: m[_oneoffColTimestamp] as int,
+    beerId: m[_oneoffColBeerId] as int,
+    litres: m[_oneoffColLitres] as double,
+    isDraft: (m[_oneoffColIsDraft] as int) == 1,
+  );
 }

@@ -1,5 +1,7 @@
 // An event where a user drinks more than one beer
 
+import "package:my_beer_diary/db.dart";
+
 const String _eventTable = "Events";
 const String _eventColId = "_id";
 const String _eventColTagName = "fkTagName";
@@ -45,4 +47,18 @@ class Event {
       _eventColTotalCost: totalCost,
     };
   }
+
+  static Event fromMap(Map<String, Object?> m) => Event(
+    id: m[_eventColId] as int?,
+    tagName: m[_eventColTagName] as String?,
+    name: m[_eventColName] as String,
+    timestamp: m[_eventColTimestamp] as int,
+    totalBeers: m[_eventColTotalBeers] as int,
+    totalCost: m[_eventColTotalCost] as int,
+  );
+}
+
+Future<void> eventAdd(Event event) async {
+  final db = await AppDatabase.instance.database;
+  await db.insert(_eventTable, event.toMap());
 }

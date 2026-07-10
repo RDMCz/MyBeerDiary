@@ -20,4 +20,9 @@ class Tag {
   Map<String, Object?> toMap() {
     return {_tagColName: name, _tagColPictureId: pictureId};
   }
+
+  static Tag fromMap(Map<String, Object?> m) => Tag(
+    name: m[_tagColName] as String,
+    pictureId: m[_tagColPictureId] as String?,
+  );
 }

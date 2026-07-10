@@ -44,4 +44,13 @@ class EventBeer {
       _ebColIsDraft: isDraft ? 1 : 0,
     };
   }
+
+  static EventBeer fromMap(Map<String, Object?> m) => EventBeer(
+    eventId: m[_ebColEventId] as int,
+    timestamp: m[_ebColTimestamp] as int,
+    beerId: m[_ebColBeerId] as int,
+    litres: m[_ebColLitres] as double,
+    price: m[_ebColPrice] as int,
+    isDraft: (m[_ebColIsDraft] as int) == 1,
+  );
 }

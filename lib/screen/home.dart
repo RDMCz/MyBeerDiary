@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
+import "package:my_beer_diary/dialog/event_add.dart";
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -11,8 +12,8 @@ class _HomescreenState extends State<Homescreen> {
   int _bottomBarIndex = 0;
 
   static const List<Widget> _bottomBarPages = <Widget>[
-    Text('Index 0'),
-    Text('Index 1'),
+    Text("Index 0"),
+    Text("Index 1"),
   ];
 
   void _onBottomBarTap(int index) {
@@ -28,7 +29,10 @@ class _HomescreenState extends State<Homescreen> {
       body: Center(child: _bottomBarPages.elementAt(_bottomBarIndex)),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.celebration), label: "Akce"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.celebration),
+            label: "Události",
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_drink),
             label: "Jednorázové",
@@ -39,7 +43,9 @@ class _HomescreenState extends State<Homescreen> {
       ),
       drawer: Drawer(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(context: context, builder: (_) => EventAddDialog());
+        },
         shape: CircleBorder(),
         child: Icon(Icons.add),
       ),
