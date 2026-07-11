@@ -2,10 +2,29 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/dialog_common.dart";
 import "package:my_beer_diary/model/event.dart";
 
-class EventEditDialog extends StatelessWidget {
+class EventEditDialog extends StatefulWidget {
   final Event event;
 
   const EventEditDialog({super.key, required this.event});
+
+  @override
+  State<EventEditDialog> createState() => _EventEditDialogState();
+}
+
+class _EventEditDialogState extends State<EventEditDialog> {
+  late final TextEditingController textEditController;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditController = TextEditingController(text: widget.event.name);
+  }
+
+  @override
+  void dispose() {
+    textEditController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +39,7 @@ class EventEditDialog extends StatelessWidget {
           children: [
             // = Header =
             Text("Upravit událost", style: DialogCommon.headerStyle),
-            SizedBox(height: 16),
+            SizedBox(height: DialogCommon.headerMarginBottom),
 
             // = Form body =
             TextFormField(
@@ -28,8 +47,9 @@ class EventEditDialog extends StatelessWidget {
                 border: OutlineInputBorder(),
                 labelText: "Název události",
               ),
+              controller: textEditController,
             ),
-            SizedBox(height: 12),
+            SizedBox(height: DialogCommon.bodyMarginBottom),
 
             // = Buttons =
             Row(
@@ -37,12 +57,12 @@ class EventEditDialog extends StatelessWidget {
                 // = Button :: Delete =
                 TextButton(
                   onPressed: () async {
-                    if (event.id == null) {
+                    if (widget.event.id == null) {
                       return;
                     }
 
-                    final tag = event.tagName != null
-                        ? "#${event.tagName} "
+                    final tag = widget.event.tagName != null
+                        ? "#${widget.event.tagName} "
                         : "";
 
                     final result = await showDialog(
@@ -50,7 +70,7 @@ class EventEditDialog extends StatelessWidget {
                       builder: (BuildContext context) => AlertDialog(
                         title: Text("Smazat událost"),
                         content: Text(
-                          "Opravdu si přejete smazat „$tag${event.name}“?",
+                          "Opravdu si přejete smazat „$tag${widget.event.name}“?",
                         ),
                         actions: [
                           TextButton(
@@ -66,7 +86,7 @@ class EventEditDialog extends StatelessWidget {
                     );
 
                     if (result ?? false) {
-                      eventDelete(event.id!);
+                      eventDelete(widget.event.id!);
                       if (context.mounted) {
                         Navigator.of(context).pop(true);
                       }
@@ -83,12 +103,23 @@ class EventEditDialog extends StatelessWidget {
                   },
                   child: Text("Zrušit"),
                 ),
-                SizedBox(width: 8),
+                SizedBox(width: DialogCommon.buttonSpace),
 
                 // = Button :: Confirm =
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(true);
+                    if (widget.event.id == null) {
+                      return;
+                    }
+
+                    final newName = textEditController.text;
+                    if (newName != widget.event.name) {
+                      eventUpdate(widget.event.copyWith(name: () => newName));
+                      Navigator.of(context).pop(true);
+                    } else {
+                      // No changes
+                      Navigator.of(context).pop(false);
+                    }
                   },
                   child: Text("Potvrdit"),
                 ),

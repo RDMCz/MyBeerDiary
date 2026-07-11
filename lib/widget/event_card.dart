@@ -25,6 +25,7 @@ class EventCard extends StatelessWidget {
             builder: (_) => EventEditDialog(event: event),
           );
           if (result ?? false) {
+            // Event was either edited or deleted => refresh list
             refreshEvents();
           }
         },

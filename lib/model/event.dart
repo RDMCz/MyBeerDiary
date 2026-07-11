@@ -57,6 +57,22 @@ class Event {
     totalCost: m[_eventColTotalCost] as int,
   );
 
+  Event copyWith({
+    int? Function()? id,
+    String? Function()? tagName,
+    String Function()? name,
+    int Function()? timestamp,
+    int Function()? totalBeers,
+    int Function()? totalCost,
+  }) => Event(
+    id: id != null ? id() : this.id,
+    tagName: tagName != null ? tagName() : this.tagName,
+    name: name != null ? name() : this.name,
+    timestamp: timestamp != null ? timestamp() : this.timestamp,
+    totalBeers: totalBeers != null ? totalBeers() : this.totalBeers,
+    totalCost: totalCost != null ? totalCost() : this.totalCost,
+  );
+
   @override
   String toString() =>
       "id=$id, tagName=$tagName, name=$name, timestamp=$timestamp, totalBeers=$totalBeers, totalCost=$totalCost";
@@ -88,4 +104,5 @@ Future<void> eventUpdate(Event event) async {
 Future<void> eventDelete(int id) async {
   final db = await AppDatabase.instance.database;
   await db.delete(_eventTable, where: "$_eventColId = ?", whereArgs: [id]);
+  //TODO smaž piva
 }

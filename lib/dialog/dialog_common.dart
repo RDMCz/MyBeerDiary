@@ -1,19 +1,25 @@
 import "package:flutter/material.dart";
 
 class DialogCommon {
-  static const insetPadding = EdgeInsets.all(32);
+  static const insetPadding = EdgeInsets.all(32.0);
 
   static const shape = RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(12.0)),
   );
 
   static const contentPadding = EdgeInsetsGeometry.symmetric(
-    horizontal: 20,
-    vertical: 12,
+    horizontal: 20.0,
+    vertical: 14.0,
   );
 
   static const headerStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 18.0,
   );
+
+  //
+
+  static const headerMarginBottom = 16.0;
+  static const bodyMarginBottom = 12.0;
+  static const buttonSpace = 8.0;
 }
