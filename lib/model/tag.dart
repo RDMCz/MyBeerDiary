@@ -5,32 +5,48 @@ import "package:my_beer_diary/db.dart";
 import "package:sqflite_common_ffi/sqflite_ffi.dart";
 
 const String _tagTable = "Tags";
+const String _tagColId = "_id";
 const String _tagColName = "name";
 const String _tagColPictureId = "pictureId";
 
 const String tagTableCreate =
     "CREATE TABLE $_tagTable ("
-    "$_tagColName TEXT PRIMARY KEY," // Name of the tag
+    "$_tagColId INTEGER PRIMARY KEY AUTOINCREMENT," // Surrogate key
+    "$_tagColName TEXT NOT NULL UNIQUE," // Name of the tag
     "$_tagColPictureId TEXT" // User can assign a stock picture to a tag
     ")";
 
+const String tagTableDrop = "DROP TABLE IF EXISTS $_tagTable";
+
 class Tag {
+  final int? id;
   final String name;
   final String? pictureId;
 
-  Tag({required this.name, this.pictureId});
+  Tag({this.id, required this.name, this.pictureId});
 
   Map<String, Object?> toMap() {
-    return {_tagColName: name, _tagColPictureId: pictureId};
+    return {_tagColId: id, _tagColName: name, _tagColPictureId: pictureId};
   }
 
   static Tag fromMap(Map<String, Object?> m) => Tag(
+    id: m[_tagColId] as int?,
     name: m[_tagColName] as String,
     pictureId: m[_tagColPictureId] as String?,
   );
 
+  Tag copyWith({
+    int? Function()? id,
+    String Function()? name,
+    String? Function()? pictureId,
+  }) => Tag(
+    id: id != null ? id() : this.id,
+    name: name != null ? name() : this.name,
+    pictureId: pictureId != null ? pictureId() : this.pictureId,
+  );
+
   @override
-  String toString() => "name=$name, pictureId=$pictureId";
+  String toString() => "id=$id, name=$name, pictureId=$pictureId";
 }
 
 Future<void> tagAdd(Tag tag) async {
@@ -55,14 +71,13 @@ Future<void> tagUpdate(Tag tag) async {
   await db.update(
     _tagTable,
     tag.toMap(),
-    where: "$_tagColName = ?",
-    whereArgs: [tag.name],
+    where: "$_tagColId = ?",
+    whereArgs: [tag.id],
   );
-  //TODO změň u eventů
 }
 
-Future<void> tagDelete(String name) async {
+Future<void> tagDelete(int id) async {
   final db = await AppDatabase.instance.database;
-  await db.delete(_tagTable, where: "$_tagColName = ?", whereArgs: [name]);
+  await db.delete(_tagTable, where: "$_tagColId = ?", whereArgs: [id]);
   //TODO smaž z eventů
 }

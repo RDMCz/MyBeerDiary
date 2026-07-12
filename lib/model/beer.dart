@@ -18,6 +18,8 @@ const String beerTableCreate =
     "$_beerColColor TEXT NOT NULL"
     ")";
 
+const String beerTableDrop = "DROP TABLE IF EXISTS $_beerTable";
+
 class Beer {
   final int? id;
   final String breweryName;

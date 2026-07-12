@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/dialog/tag_add.dart";
 import "package:my_beer_diary/model/tag.dart";
 
 class TagCard extends StatelessWidget {
@@ -18,7 +19,18 @@ class TagCard extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           ),
           Spacer(),
-          IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+          IconButton(
+            onPressed: () async {
+              final result = await showDialog(
+                context: context,
+                builder: (_) => TagAddDialog(tag: tag),
+              );
+              if (result ?? false) {
+                refreshTags();
+              }
+            },
+            icon: Icon(Icons.edit),
+          ),
           IconButton(
             onPressed: () async {
               final result = await showDialog(
@@ -42,7 +54,7 @@ class TagCard extends StatelessWidget {
               );
 
               if (result ?? false) {
-                tagDelete(tag.name);
+                tagDelete(tag.id!);
                 refreshTags();
               }
             },

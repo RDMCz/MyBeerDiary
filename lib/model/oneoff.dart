@@ -14,6 +14,8 @@ const String oneoffTableCreate =
     "$_oneoffColIsDraft INTEGER NOT NULL"
     ")";
 
+const String oneoffTableDrop = "DROP TABLE IF EXISTS $_oneoffTable";
+
 class Oneoff {
   final int timestamp;
   final int beerId;

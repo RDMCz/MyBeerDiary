@@ -11,7 +11,7 @@ class AppDatabase {
   static final AppDatabase instance = AppDatabase._init();
 
   static final _databaseName = "MyBeerDiary.db";
-  static final _databaseVersion = 1;
+  static final _databaseVersion = 3;
   static Database? _database;
 
   Future<Database> get database async {
@@ -29,6 +29,7 @@ class AppDatabase {
       dbPath,
       version: _databaseVersion,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -38,5 +39,14 @@ class AppDatabase {
     await db.execute(beerTableCreate);
     await db.execute(ebTableCreate);
     await db.execute(oneoffTableCreate);
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    await db.execute(tagTableDrop);
+    await db.execute(eventTableDrop);
+    await db.execute(beerTableDrop);
+    await db.execute(ebTableDrop);
+    await db.execute(oneoffTableDrop);
+    await _onCreate(db, newVersion);
   }
 }

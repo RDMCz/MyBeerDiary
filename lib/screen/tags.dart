@@ -39,7 +39,7 @@ class _TagsScreenState extends State<TagsScreen> {
         onPressed: () async {
           final result = await showDialog(
             context: context,
-            builder: (_) => TagAddDialog(isEdit: false),
+            builder: (_) => TagAddDialog(),
           );
           if (result ?? false) {
             _refreshTags();

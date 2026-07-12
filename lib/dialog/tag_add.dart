@@ -3,20 +3,23 @@ import "package:my_beer_diary/dialog/dialog_common.dart";
 import "package:my_beer_diary/model/tag.dart";
 
 class TagAddDialog extends StatefulWidget {
-  final bool isEdit;
-  
-  const TagAddDialog({super.key, required this.isEdit});
+  final Tag? tag;
+
+  const TagAddDialog({super.key, this.tag});
 
   @override
   State<TagAddDialog> createState() => _TagAddDialogState();
 }
 
 class _TagAddDialogState extends State<TagAddDialog> {
-  final textEditController = TextEditingController();
+  late final TextEditingController textEditController;
 
   @override
   void initState() {
     super.initState();
+    textEditController = widget.tag != null
+        ? TextEditingController(text: widget.tag!.name)
+        : TextEditingController();
     textEditController.addListener(() => setState(() {}));
   }
 
@@ -27,7 +30,11 @@ class _TagAddDialogState extends State<TagAddDialog> {
   }
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
+    final isEdit = widget.tag != null;
+    final headerActionText = isEdit ? "Upravit" : "Nový";
+    final buttonActionText = isEdit ? "Potvrdit" : "OK";
+
     return Dialog(
       insetPadding: DialogCommon.insetPadding,
       shape: DialogCommon.shape,
@@ -38,7 +45,7 @@ class _TagAddDialogState extends State<TagAddDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // = Header =
-            Text("Nový tag", style: DialogCommon.headerStyle),
+            Text("$headerActionText tag", style: DialogCommon.headerStyle),
             SizedBox(height: DialogCommon.headerMarginBottom),
 
             // = Form body =
@@ -68,11 +75,24 @@ class _TagAddDialogState extends State<TagAddDialog> {
                 TextButton(
                   onPressed: textEditController.text.trim().isEmpty
                       ? null
-                      : () {
+                      : !isEdit
+                      ? () {
                           tagAdd(Tag(name: textEditController.text.trim()));
                           Navigator.of(context).pop(true);
+                        }
+                      : () {
+                          final newName = textEditController.text.trim();
+                          if (newName != widget.tag!.name) {
+                            tagUpdate(
+                              widget.tag!.copyWith(name: () => newName),
+                            );
+                            Navigator.of(context).pop(true);
+                          } else {
+                            // No changes
+                            Navigator.of(context).pop(false);
+                          }
                         },
-                  child: Text("OK"),
+                  child: Text(buttonActionText),
                 ),
               ],
             ),

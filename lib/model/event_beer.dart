@@ -17,6 +17,8 @@ const String ebTableCreate =
     "PRIMARY KEY ($_ebColEventId, $_ebColTimestamp)"
     ")";
 
+const String ebTableDrop = "DROP TABLE IF EXISTS $_ebTable";
+
 class EventBeer {
   final int eventId;
   final int timestamp;

@@ -4,7 +4,7 @@ import "package:my_beer_diary/db.dart";
 
 const String _eventTable = "Events";
 const String _eventColId = "_id";
-const String _eventColTagName = "fkTagName";
+const String _eventColTagId = "fkTagId";
 const String _eventColName = "name";
 const String _eventColTimestamp = "timestamp";
 const String _eventColTotalBeers = "totalBeers";
@@ -13,16 +13,18 @@ const String _eventColTotalCost = "totalCost";
 const String eventTableCreate =
     "CREATE TABLE $_eventTable ("
     "$_eventColId INTEGER PRIMARY KEY AUTOINCREMENT," // Surrogate key
-    "$_eventColTagName TEXT," // Tag can be null
+    "$_eventColTagId INTEGER," // Tag can be null
     "$_eventColName TEXT," // Name of the event, can also be null (maybe user provides tag with a pub name and there's no need for event name)
     "$_eventColTimestamp INTEGER NOT NULL," // Created at
     "$_eventColTotalBeers INTEGER NOT NULL," // Totals so we don't have to query these
     "$_eventColTotalCost INTEGER NOT NULL"
     ")";
 
+const String eventTableDrop = "DROP TABLE IF EXISTS $_eventTable";
+
 class Event {
   final int? id;
-  final String? tagName;
+  final int? tagId;
   final String name;
   final int timestamp;
   final int totalBeers;
@@ -30,7 +32,7 @@ class Event {
 
   Event({
     this.id,
-    this.tagName,
+    this.tagId,
     required this.name,
     required this.timestamp,
     required this.totalBeers,
@@ -40,7 +42,7 @@ class Event {
   Map<String, Object?> toMap() {
     return {
       _eventColId: id,
-      _eventColTagName: tagName,
+      _eventColTagId: tagId,
       _eventColName: name,
       _eventColTimestamp: timestamp,
       _eventColTotalBeers: totalBeers,
@@ -50,7 +52,7 @@ class Event {
 
   static Event fromMap(Map<String, Object?> m) => Event(
     id: m[_eventColId] as int?,
-    tagName: m[_eventColTagName] as String?,
+    tagId: m[_eventColTagId] as int?,
     name: m[_eventColName] as String,
     timestamp: m[_eventColTimestamp] as int,
     totalBeers: m[_eventColTotalBeers] as int,
@@ -59,14 +61,14 @@ class Event {
 
   Event copyWith({
     int? Function()? id,
-    String? Function()? tagName,
+    int? Function()? tagId,
     String Function()? name,
     int Function()? timestamp,
     int Function()? totalBeers,
     int Function()? totalCost,
   }) => Event(
     id: id != null ? id() : this.id,
-    tagName: tagName != null ? tagName() : this.tagName,
+    tagId: tagId != null ? tagId() : this.tagId,
     name: name != null ? name() : this.name,
     timestamp: timestamp != null ? timestamp() : this.timestamp,
     totalBeers: totalBeers != null ? totalBeers() : this.totalBeers,
@@ -75,7 +77,7 @@ class Event {
 
   @override
   String toString() =>
-      "id=$id, tagName=$tagName, name=$name, timestamp=$timestamp, totalBeers=$totalBeers, totalCost=$totalCost";
+      "id=$id, tagId=$tagId, name=$name, timestamp=$timestamp, totalBeers=$totalBeers, totalCost=$totalCost";
 }
 
 Future<void> eventAdd(Event event) async {

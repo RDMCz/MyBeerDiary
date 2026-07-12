@@ -61,8 +61,8 @@ class _EventEditDialogState extends State<EventEditDialog> {
                       return;
                     }
 
-                    final tag = widget.event.tagName != null
-                        ? "#${widget.event.tagName} "
+                    final tag = widget.event.tagId != null
+                        ? "#${widget.event.tagId} "
                         : "";
 
                     final result = await showDialog(
