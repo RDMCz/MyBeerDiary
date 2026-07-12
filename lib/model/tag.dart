@@ -1,6 +1,9 @@
 // Event can have one tag associated with it, eg. name of the pub (#Azyl) or activity (#čundr).
 // User can assign same tag to multiple events to categorize them.
 
+import "package:my_beer_diary/db.dart";
+import "package:sqflite_common_ffi/sqflite_ffi.dart";
+
 const String _tagTable = "Tags";
 const String _tagColName = "name";
 const String _tagColPictureId = "pictureId";
@@ -28,4 +31,38 @@ class Tag {
 
   @override
   String toString() => "name=$name, pictureId=$pictureId";
+}
+
+Future<void> tagAdd(Tag tag) async {
+  final db = await AppDatabase.instance.database;
+  await db.insert(
+    _tagTable,
+    tag.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.ignore,
+  );
+}
+
+Future<List<Tag>> tagList() async {
+  const orderBy = "$_tagColName ASC";
+
+  final db = await AppDatabase.instance.database;
+  final maps = await db.query(_tagTable, orderBy: orderBy);
+  return [for (final m in maps) Tag.fromMap(m)];
+}
+
+Future<void> tagUpdate(Tag tag) async {
+  final db = await AppDatabase.instance.database;
+  await db.update(
+    _tagTable,
+    tag.toMap(),
+    where: "$_tagColName = ?",
+    whereArgs: [tag.name],
+  );
+  //TODO změň u eventů
+}
+
+Future<void> tagDelete(String name) async {
+  final db = await AppDatabase.instance.database;
+  await db.delete(_tagTable, where: "$_tagColName = ?", whereArgs: [name]);
+  //TODO smaž z eventů
 }

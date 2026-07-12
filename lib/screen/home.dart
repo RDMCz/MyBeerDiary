@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/event_add.dart";
 import "package:my_beer_diary/model/event.dart";
+import "package:my_beer_diary/screen/settings.dart";
 import "package:my_beer_diary/widget/event_list.dart";
 
 class Homescreen extends StatefulWidget {
@@ -63,7 +64,22 @@ class _HomescreenState extends State<Homescreen> {
         currentIndex: _bottomBarIndex,
         onTap: _onBottomBarTap,
       ),
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Nastavení"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => SettingsScreen()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (isEventPageSelected) {
