@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:my_beer_diary/dialog/event_add.dart";
+import "package:my_beer_diary/dialog/event_add_edit.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/screen/settings.dart";
@@ -99,7 +99,7 @@ class _HomescreenState extends State<Homescreen> {
           if (isEventPageSelected) {
             final result = await showDialog(
               context: context,
-              builder: (_) => EventAddDialog(tags: _tags),
+              builder: (_) => EventAddEditDialog(tags: _tags),
             );
             if (result ?? false) {
               _refreshEvents();
