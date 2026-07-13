@@ -76,17 +76,23 @@ class _TagAddEditDialogState extends State<TagAddEditDialog> {
                   onPressed: textEditController.text.trim().isEmpty
                       ? null
                       : !isEdit
-                      ? () {
-                          tagAdd(Tag(name: textEditController.text.trim()));
-                          Navigator.of(context).pop(true);
+                      ? () async {
+                          await tagAdd(
+                            Tag(name: textEditController.text.trim()),
+                          );
+                          if (context.mounted) {
+                            Navigator.of(context).pop(true);
+                          }
                         }
-                      : () {
+                      : () async {
                           final newName = textEditController.text.trim();
                           if (newName != widget.tag!.name) {
-                            tagUpdate(
+                            await tagUpdate(
                               widget.tag!.copyWith(name: () => newName),
                             );
-                            Navigator.of(context).pop(true);
+                            if (context.mounted) {
+                              Navigator.of(context).pop(true);
+                            }
                           } else {
                             // No changes
                             Navigator.of(context).pop(false);

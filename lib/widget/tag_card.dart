@@ -54,7 +54,7 @@ class TagCard extends StatelessWidget {
               );
 
               if (result ?? false) {
-                tagDelete(tag.id!);
+                await tagDelete(tag.id!);
                 refreshTags();
               }
             },

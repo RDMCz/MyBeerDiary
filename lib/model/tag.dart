@@ -49,13 +49,32 @@ class Tag {
   String toString() => "id=$id, name=$name, pictureId=$pictureId";
 }
 
-Future<void> tagAdd(Tag tag) async {
+Future<int> tagAdd(Tag tag) async {
   final db = await AppDatabase.instance.database;
-  await db.insert(
+  final result = await db.insert(
     _tagTable,
     tag.toMap(),
     conflictAlgorithm: ConflictAlgorithm.ignore,
   );
+
+  if (result != 0) {
+    return result;
+  }
+
+  // Result==0 => tag with this name already exists (UNIQUE)
+  final existing = await db.query(
+    _tagTable,
+    columns: [_tagColId],
+    where: "$_tagColName = ?",
+    whereArgs: [tag.name],
+    limit: 1,
+  );
+
+  if (existing.isNotEmpty) {
+    return existing.first[_tagColId] as int;
+  }
+
+  return 0;
 }
 
 Future<List<Tag>> tagList() async {

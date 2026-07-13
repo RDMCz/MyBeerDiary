@@ -13,7 +13,7 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  // = Bottom app bar =
+  // = BottomNavigationBar =
   int _bottomBarIndex = 0;
 
   void _onBottomBarTap(int index) {
@@ -51,6 +51,7 @@ class _HomescreenState extends State<Homescreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text("Můj pivní deníček")),
+      // = Body with selected page =
       body: isEventPageSelected
           ? EventList(
               events: _events,
@@ -58,6 +59,7 @@ class _HomescreenState extends State<Homescreen> {
               refreshEvents: _refreshEvents,
             )
           : Text("Index 1"),
+      // = BottomNavigationBar =
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -72,22 +74,26 @@ class _HomescreenState extends State<Homescreen> {
         currentIndex: _bottomBarIndex,
         onTap: _onBottomBarTap,
       ),
+      // = Hamburger menu =
       drawer: Drawer(
         child: ListView(
           children: [
             ListTile(
               leading: Icon(Icons.settings),
               title: Text("Nastavení"),
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => SettingsScreen()),
                 );
+                // Refresh list after coming back from the settings (user may have changed some tags)
+                _refreshEvents();
               },
             ),
           ],
         ),
       ),
+      // = Plus button in the middle of BottomNavigationBar =
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (isEventPageSelected) {

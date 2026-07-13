@@ -3,8 +3,8 @@ import "package:my_beer_diary/dialog/dialog_common.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
-import "package:my_beer_diary/widget/tag_choice.dart";
-import "package:my_beer_diary/widget/text_divider.dart";
+
+enum EventTagScenario { noTag, useExisting, createNew }
 
 class EventAddDialog extends StatefulWidget {
   final Map<int, Tag> tags;
@@ -16,16 +16,43 @@ class EventAddDialog extends StatefulWidget {
 }
 
 class _EventAddDialogState extends State<EventAddDialog> {
-  final textEditController = TextEditingController();
+  final nameTextEditController = TextEditingController();
+  final tagTextEditController = TextEditingController();
+  Tag? selectedTag;
+
+  @override
+  void initState() {
+    super.initState();
+    nameTextEditController.addListener(() => setState(() {}));
+    tagTextEditController.addListener(() => setState(() {}));
+  }
 
   @override
   void dispose() {
-    textEditController.dispose();
+    nameTextEditController.dispose();
+    tagTextEditController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final tagItems = [
+      for (final tag in widget.tags.values)
+        DropdownMenuEntry(value: tag, label: tag.name),
+    ];
+
+    final nameTextTrim = nameTextEditController.text.trim();
+    final tagTextTrim = tagTextEditController.text.trim();
+
+    final isValid = nameTextTrim.isNotEmpty || tagTextTrim.isNotEmpty;
+
+    final EventTagScenario tagScenario = tagTextTrim.isEmpty
+        ? .noTag // No tag will be assigned to this event because textfield is empty
+        : selectedTag != null && tagTextTrim == selectedTag!.name
+        ? .useExisting // User selected tag from list and haven't edited it, so existing tag will be used
+        : .createNew; // User typed into empty textfield or edited name of selected tag, so new tag will be created
+    // "Edge" case: user selects tag and then rewrites textfield to another valid tag name
+
     return Dialog(
       insetPadding: DialogCommon.insetPadding,
       shape: DialogCommon.shape,
@@ -45,11 +72,31 @@ class _EventAddDialogState extends State<EventAddDialog> {
                 border: OutlineInputBorder(),
                 labelText: "Název události",
               ),
-              controller: textEditController,
+              controller: nameTextEditController,
             ),
+            SizedBox(height: DialogCommon.bodyMarginBottom),
 
-            TextDivider(text: "Tag události"),
-            TagChoice(tags: widget.tags),
+            DropdownMenu(
+              dropdownMenuEntries: tagItems,
+              expandedInsets: EdgeInsets.zero,
+              enableFilter: true,
+              controller: tagTextEditController,
+              label: Text("Tag události"),
+              onSelected: (Tag? tag) {
+                setState(() {
+                  selectedTag = tag;
+                });
+              },
+            ),
+            SizedBox(height: DialogCommon.bodyMarginBottom / 2),
+
+            Text(switch (tagScenario) {
+              EventTagScenario.noTag => "Události nebude přidělen žádný tag.",
+              EventTagScenario.useExisting =>
+                "Události bude přidělen existující tag „#${selectedTag!.name}“.",
+              EventTagScenario.createNew =>
+                "Pro událost bude vytvořen nový tag „#$tagTextTrim“.",
+            }),
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
             // = Buttons =
@@ -67,17 +114,21 @@ class _EventAddDialogState extends State<EventAddDialog> {
 
                 // = Button :: Confirm =
                 TextButton(
-                  onPressed: () {
-                    eventAdd(
-                      Event(
-                        name: textEditController.text,
-                        timestamp: secondsSinceEpoch(),
-                        totalBeers: 0,
-                        totalCost: 0,
-                      ),
-                    );
-                    Navigator.of(context).pop(true);
-                  },
+                  onPressed: !isValid
+                      ? null
+                      : () async {
+                          await eventAdd(
+                            Event(
+                              name: nameTextEditController.text.trim(),
+                              timestamp: secondsSinceEpoch(),
+                              totalBeers: 0,
+                              totalCost: 0,
+                            ),
+                          );
+                          if (context.mounted) {
+                            Navigator.of(context).pop(true);
+                          }
+                        },
                   child: Text("OK"),
                 ),
               ],

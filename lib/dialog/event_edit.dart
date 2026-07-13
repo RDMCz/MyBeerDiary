@@ -86,7 +86,7 @@ class _EventEditDialogState extends State<EventEditDialog> {
                     );
 
                     if (result ?? false) {
-                      eventDelete(widget.event.id!);
+                      await eventDelete(widget.event.id!);
                       if (context.mounted) {
                         Navigator.of(context).pop(true);
                       }
@@ -107,15 +107,19 @@ class _EventEditDialogState extends State<EventEditDialog> {
 
                 // = Button :: Confirm =
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (widget.event.id == null) {
                       return;
                     }
 
                     final newName = textEditController.text;
                     if (newName != widget.event.name) {
-                      eventUpdate(widget.event.copyWith(name: () => newName));
-                      Navigator.of(context).pop(true);
+                      await eventUpdate(
+                        widget.event.copyWith(name: () => newName),
+                      );
+                      if (context.mounted) {
+                        Navigator.of(context).pop(true);
+                      }
                     } else {
                       // No changes
                       Navigator.of(context).pop(false);

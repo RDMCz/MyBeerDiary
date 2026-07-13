@@ -68,15 +68,22 @@ class _TagChoiceState extends State<TagChoice> {
           TagChoiceOption.none => Text("..."),
           TagChoiceOption.existing => DropdownMenu(
             dropdownMenuEntries: tagItems,
+            expandedInsets: EdgeInsets.zero,
+            //selectOnly: true,
+            enableFilter: true,
+            controller: textEditController,
           ),
           TagChoiceOption.create => TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Název tagu",
             ),
-            controller: textEditController,
+            //controller: textEditController,
           ),
         },
+        TextButton(onPressed: () {
+          debugPrint("> ${textEditController.text}");
+        }, child: Text("HUH")),
       ],
     );
   }
