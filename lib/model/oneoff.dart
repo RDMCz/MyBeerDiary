@@ -1,20 +1,20 @@
 // "One-off beer" is when user drinks a one beer, which is not part of any particular event
 
-const String _oneoffTable = "Oneoffs";
-const String _oneoffColTimestamp = "timestamp";
-const String _oneoffColBeerId = "fkBeerId";
-const String _oneoffColLitres = "litres";
-const String _oneoffColIsDraft = "isDraft";
+const String oneoffTable = "Oneoffs";
+const String oneoffColTimestamp = "timestamp";
+const String oneoffColBeerId = "fkBeerId";
+const String oneoffColLitres = "litres";
+const String oneoffColIsDraft = "isDraft";
 
 const String oneoffTableCreate =
-    "CREATE TABLE $_oneoffTable ("
-    "$_oneoffColTimestamp INTEGER PRIMARY KEY,"
-    "$_oneoffColBeerId INTEGER NOT NULL,"
-    "$_oneoffColLitres REAL NOT NULL,"
-    "$_oneoffColIsDraft INTEGER NOT NULL"
+    "CREATE TABLE $oneoffTable ("
+    "$oneoffColTimestamp INTEGER PRIMARY KEY,"
+    "$oneoffColBeerId INTEGER NOT NULL,"
+    "$oneoffColLitres REAL NOT NULL,"
+    "$oneoffColIsDraft INTEGER NOT NULL"
     ")";
 
-const String oneoffTableDrop = "DROP TABLE IF EXISTS $_oneoffTable";
+const String oneoffTableDrop = "DROP TABLE IF EXISTS $oneoffTable";
 
 class Oneoff {
   final int timestamp;
@@ -31,18 +31,18 @@ class Oneoff {
 
   Map<String, Object?> toMap() {
     return {
-      _oneoffColTimestamp: timestamp,
-      _oneoffColBeerId: beerId,
-      _oneoffColLitres: litres,
-      _oneoffColIsDraft: isDraft,
+      oneoffColTimestamp: timestamp,
+      oneoffColBeerId: beerId,
+      oneoffColLitres: litres,
+      oneoffColIsDraft: isDraft,
     };
   }
 
   static Oneoff fromMap(Map<String, Object?> m) => Oneoff(
-    timestamp: m[_oneoffColTimestamp] as int,
-    beerId: m[_oneoffColBeerId] as int,
-    litres: m[_oneoffColLitres] as double,
-    isDraft: (m[_oneoffColIsDraft] as int) == 1,
+    timestamp: m[oneoffColTimestamp] as int,
+    beerId: m[oneoffColBeerId] as int,
+    litres: m[oneoffColLitres] as double,
+    isDraft: (m[oneoffColIsDraft] as int) == 1,
   );
 
   @override

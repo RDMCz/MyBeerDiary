@@ -2,21 +2,22 @@
 // User can assign same tag to multiple events to categorize them.
 
 import "package:my_beer_diary/db.dart";
+import "package:my_beer_diary/model/event.dart";
 import "package:sqflite_common_ffi/sqflite_ffi.dart";
 
-const String _tagTable = "Tags";
-const String _tagColId = "_id";
-const String _tagColName = "name";
-const String _tagColPictureId = "pictureId";
+const String tagTable = "Tags";
+const String tagColId = "_id";
+const String tagColName = "name";
+const String tagColPictureId = "pictureId";
 
 const String tagTableCreate =
-    "CREATE TABLE $_tagTable ("
-    "$_tagColId INTEGER PRIMARY KEY AUTOINCREMENT," // Surrogate key
-    "$_tagColName TEXT NOT NULL UNIQUE," // Name of the tag
-    "$_tagColPictureId TEXT" // User can assign a stock picture to a tag
+    "CREATE TABLE $tagTable ("
+    "$tagColId INTEGER PRIMARY KEY AUTOINCREMENT," // Surrogate key
+    "$tagColName TEXT NOT NULL UNIQUE," // Name of the tag
+    "$tagColPictureId TEXT" // User can assign a stock picture to a tag
     ")";
 
-const String tagTableDrop = "DROP TABLE IF EXISTS $_tagTable";
+const String tagTableDrop = "DROP TABLE IF EXISTS $tagTable";
 
 class Tag {
   final int? id;
@@ -26,13 +27,13 @@ class Tag {
   Tag({this.id, required this.name, this.pictureId});
 
   Map<String, Object?> toMap() {
-    return {_tagColId: id, _tagColName: name, _tagColPictureId: pictureId};
+    return {tagColId: id, tagColName: name, tagColPictureId: pictureId};
   }
 
   static Tag fromMap(Map<String, Object?> m) => Tag(
-    id: m[_tagColId] as int?,
-    name: m[_tagColName] as String,
-    pictureId: m[_tagColPictureId] as String?,
+    id: m[tagColId] as int?,
+    name: m[tagColName] as String,
+    pictureId: m[tagColPictureId] as String?,
   );
 
   Tag copyWith({
@@ -52,7 +53,7 @@ class Tag {
 Future<int> tagAdd(Tag tag) async {
   final db = await AppDatabase.instance.database;
   final result = await db.insert(
-    _tagTable,
+    tagTable,
     tag.toMap(),
     conflictAlgorithm: ConflictAlgorithm.ignore,
   );
@@ -63,39 +64,39 @@ Future<int> tagAdd(Tag tag) async {
 
   // Result==0 => tag with this name already exists (UNIQUE)
   final existing = await db.query(
-    _tagTable,
-    columns: [_tagColId],
-    where: "$_tagColName = ?",
+    tagTable,
+    columns: [tagColId],
+    where: "$tagColName = ?",
     whereArgs: [tag.name],
     limit: 1,
   );
 
   if (existing.isNotEmpty) {
-    return existing.first[_tagColId] as int;
+    return existing.first[tagColId] as int;
   }
 
   return 0;
 }
 
 Future<List<Tag>> tagList() async {
-  const orderBy = "$_tagColName ASC";
+  const orderBy = "$tagColName ASC";
   final db = await AppDatabase.instance.database;
-  final maps = await db.query(_tagTable, orderBy: orderBy);
+  final maps = await db.query(tagTable, orderBy: orderBy);
   return [for (final m in maps) Tag.fromMap(m)];
 }
 
 Future<Map<int, Tag>> tagMap() async {
   final db = await AppDatabase.instance.database;
-  final maps = await db.query(_tagTable);
-  return {for (final m in maps) m[_tagColId] as int: Tag.fromMap(m)};
+  final maps = await db.query(tagTable);
+  return {for (final m in maps) m[tagColId] as int: Tag.fromMap(m)};
 }
 
 Future<void> tagUpdate(Tag tag) async {
   final db = await AppDatabase.instance.database;
   await db.update(
-    _tagTable,
+    tagTable,
     tag.toMap(),
-    where: "$_tagColId = ?",
+    where: "$tagColId = ?",
     whereArgs: [tag.id],
     // conflictAlgorithm is needed because UNIQUE name constraint
     conflictAlgorithm: ConflictAlgorithm.ignore,
@@ -104,6 +105,13 @@ Future<void> tagUpdate(Tag tag) async {
 
 Future<void> tagDelete(int id) async {
   final db = await AppDatabase.instance.database;
-  await db.delete(_tagTable, where: "$_tagColId = ?", whereArgs: [id]);
-  //TODO smaž z eventů
+  await db.delete(tagTable, where: "$tagColId = ?", whereArgs: [id]);
+
+  // Set fkTagId to NULL in Events table
+  await db.update(
+    eventTable,
+    {eventColTagId: null},
+    where: "$eventColTagId = ?",
+    whereArgs: [id],
+  );
 }

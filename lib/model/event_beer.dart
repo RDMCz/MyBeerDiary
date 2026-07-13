@@ -1,23 +1,23 @@
-const String _ebTable = "EventBeers";
-const String _ebColEventId = "fkEventId";
-const String _ebColTimestamp = "timestamp";
-const String _ebColBeerId = "fkBeerId";
-const String _ebColLitres = "litres";
-const String _ebColPrice = "price";
-const String _ebColIsDraft = "isDraft";
+const String ebTable = "EventBeers";
+const String ebColEventId = "fkEventId";
+const String ebColTimestamp = "timestamp";
+const String ebColBeerId = "fkBeerId";
+const String ebColLitres = "litres";
+const String ebColPrice = "price";
+const String ebColIsDraft = "isDraft";
 
 const String ebTableCreate =
-    "CREATE TABLE $_ebTable ("
-    "$_ebColEventId INTEGER NOT NULL,"
-    "$_ebColTimestamp INTEGER NOT NULL,"
-    "$_ebColBeerId INTEGER NOT NULL,"
-    "$_ebColLitres REAL NOT NULL,"
-    "$_ebColPrice INTEGER NOT NULL,"
-    "$_ebColIsDraft INTEGER NOT NULL,"
-    "PRIMARY KEY ($_ebColEventId, $_ebColTimestamp)"
+    "CREATE TABLE $ebTable ("
+    "$ebColEventId INTEGER NOT NULL,"
+    "$ebColTimestamp INTEGER NOT NULL,"
+    "$ebColBeerId INTEGER NOT NULL,"
+    "$ebColLitres REAL NOT NULL,"
+    "$ebColPrice INTEGER NOT NULL,"
+    "$ebColIsDraft INTEGER NOT NULL,"
+    "PRIMARY KEY ($ebColEventId, $ebColTimestamp)"
     ")";
 
-const String ebTableDrop = "DROP TABLE IF EXISTS $_ebTable";
+const String ebTableDrop = "DROP TABLE IF EXISTS $ebTable";
 
 class EventBeer {
   final int eventId;
@@ -38,22 +38,22 @@ class EventBeer {
 
   Map<String, Object?> toMap() {
     return {
-      _ebColEventId: eventId,
-      _ebColTimestamp: timestamp,
-      _ebColBeerId: beerId,
-      _ebColLitres: litres,
-      _ebColPrice: price,
-      _ebColIsDraft: isDraft ? 1 : 0,
+      ebColEventId: eventId,
+      ebColTimestamp: timestamp,
+      ebColBeerId: beerId,
+      ebColLitres: litres,
+      ebColPrice: price,
+      ebColIsDraft: isDraft ? 1 : 0,
     };
   }
 
   static EventBeer fromMap(Map<String, Object?> m) => EventBeer(
-    eventId: m[_ebColEventId] as int,
-    timestamp: m[_ebColTimestamp] as int,
-    beerId: m[_ebColBeerId] as int,
-    litres: m[_ebColLitres] as double,
-    price: m[_ebColPrice] as int,
-    isDraft: (m[_ebColIsDraft] as int) == 1,
+    eventId: m[ebColEventId] as int,
+    timestamp: m[ebColTimestamp] as int,
+    beerId: m[ebColBeerId] as int,
+    litres: m[ebColLitres] as double,
+    price: m[ebColPrice] as int,
+    isDraft: (m[ebColIsDraft] as int) == 1,
   );
 
   @override

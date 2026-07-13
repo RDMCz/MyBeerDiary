@@ -1,24 +1,24 @@
 // Beers can be reused in multiple events and in the one-off page
 
-const String _beerTable = "Beers";
-const String _beerColId = "_id";
-const String _beerColBreweryName = "breweryName";
-const String _beerColDescription = "description";
-const String _beerColEPM = "epm";
-const String _beerColABV = "abv";
-const String _beerColColor = "color";
+const String beerTable = "Beers";
+const String beerColId = "_id";
+const String beerColBreweryName = "breweryName";
+const String beerColDescription = "description";
+const String beerColEPM = "epm";
+const String beerColABV = "abv";
+const String beerColColor = "color";
 
 const String beerTableCreate =
-    "CREATE TABLE $_beerTable ("
-    "$_beerColId INTEGER PRIMARY KEY AUTOINCREMENT," // Surrogate key
-    "$_beerColBreweryName TEXT NOT NULL,"
-    "$_beerColDescription TEXT NOT NULL,"
-    "$_beerColEPM REAL NOT NULL,"
-    "$_beerColABV REAL NOT NULL,"
-    "$_beerColColor TEXT NOT NULL"
+    "CREATE TABLE $beerTable ("
+    "$beerColId INTEGER PRIMARY KEY AUTOINCREMENT," // Surrogate key
+    "$beerColBreweryName TEXT NOT NULL,"
+    "$beerColDescription TEXT NOT NULL,"
+    "$beerColEPM REAL NOT NULL,"
+    "$beerColABV REAL NOT NULL,"
+    "$beerColColor TEXT NOT NULL"
     ")";
 
-const String beerTableDrop = "DROP TABLE IF EXISTS $_beerTable";
+const String beerTableDrop = "DROP TABLE IF EXISTS $beerTable";
 
 class Beer {
   final int? id;
@@ -39,22 +39,22 @@ class Beer {
 
   Map<String, Object?> toMap() {
     return {
-      _beerColId: id,
-      _beerColBreweryName: breweryName,
-      _beerColDescription: description,
-      _beerColEPM: epm,
-      _beerColABV: abv,
-      _beerColColor: color,
+      beerColId: id,
+      beerColBreweryName: breweryName,
+      beerColDescription: description,
+      beerColEPM: epm,
+      beerColABV: abv,
+      beerColColor: color,
     };
   }
 
   static Beer fromMap(Map<String, Object?> m) => Beer(
-    id: m[_beerColId] as int?,
-    breweryName: m[_beerColBreweryName] as String,
-    description: m[_beerColDescription] as String,
-    epm: m[_beerColEPM] as double,
-    abv: m[_beerColABV] as double,
-    color: m[_beerColColor] as String,
+    id: m[beerColId] as int?,
+    breweryName: m[beerColBreweryName] as String,
+    description: m[beerColDescription] as String,
+    epm: m[beerColEPM] as double,
+    abv: m[beerColABV] as double,
+    color: m[beerColColor] as String,
   );
 
   @override

@@ -51,7 +51,7 @@ class _EventAddDialogState extends State<EventAddDialog> {
         : selectedTag != null && tagTextTrim == selectedTag!.name
         ? .useExisting // User selected tag from list and haven't edited it, so existing tag will be used
         : .createNew; // User typed into empty textfield or edited name of selected tag, so new tag will be created
-    // "Edge" case: user selects tag and then rewrites textfield to another valid tag name
+    // "Edge" case: user selects tag and then rewrites textfield to another valid tag name, this is handled in [tagAdd] method
 
     return Dialog(
       insetPadding: DialogCommon.insetPadding,
@@ -117,9 +117,18 @@ class _EventAddDialogState extends State<EventAddDialog> {
                   onPressed: !isValid
                       ? null
                       : () async {
+                          final int? tagId = switch (tagScenario) {
+                            EventTagScenario.noTag => null,
+                            EventTagScenario.useExisting => selectedTag!.id,
+                            EventTagScenario.createNew => await tagAdd(
+                              Tag(name: tagTextTrim),
+                            ),
+                          };
+
                           await eventAdd(
                             Event(
-                              name: nameTextEditController.text.trim(),
+                              name: nameTextTrim,
+                              tagId: tagId,
                               timestamp: secondsSinceEpoch(),
                               totalBeers: 0,
                               totalCost: 0,
