@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:my_beer_diary/dialog/tag_add.dart";
+import "package:my_beer_diary/dialog/tag_add_edit.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/tag_card.dart";
 
@@ -39,7 +39,7 @@ class _TagsScreenState extends State<TagsScreen> {
         onPressed: () async {
           final result = await showDialog(
             context: context,
-            builder: (_) => TagAddDialog(),
+            builder: (_) => TagAddEditDialog(),
           );
           if (result ?? false) {
             _refreshTags();

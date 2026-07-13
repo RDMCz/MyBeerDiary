@@ -60,10 +60,15 @@ Future<void> tagAdd(Tag tag) async {
 
 Future<List<Tag>> tagList() async {
   const orderBy = "$_tagColName ASC";
-
   final db = await AppDatabase.instance.database;
   final maps = await db.query(_tagTable, orderBy: orderBy);
   return [for (final m in maps) Tag.fromMap(m)];
+}
+
+Future<Map<int, Tag>> tagMap() async {
+  final db = await AppDatabase.instance.database;
+  final maps = await db.query(_tagTable);
+  return {for (final m in maps) m[_tagColId] as int: Tag.fromMap(m)};
 }
 
 Future<void> tagUpdate(Tag tag) async {
@@ -73,6 +78,8 @@ Future<void> tagUpdate(Tag tag) async {
     tag.toMap(),
     where: "$_tagColId = ?",
     whereArgs: [tag.id],
+    // conflictAlgorithm is needed because UNIQUE name constraint
+    conflictAlgorithm: ConflictAlgorithm.ignore,
   );
 }
 

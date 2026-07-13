@@ -2,9 +2,14 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/dialog_common.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
+import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/widget/tag_choice.dart";
+import "package:my_beer_diary/widget/text_divider.dart";
 
 class EventAddDialog extends StatefulWidget {
-  const EventAddDialog({super.key});
+  final Map<int, Tag> tags;
+
+  const EventAddDialog({super.key, required this.tags});
 
   @override
   State<EventAddDialog> createState() => _EventAddDialogState();
@@ -42,6 +47,9 @@ class _EventAddDialogState extends State<EventAddDialog> {
               ),
               controller: textEditController,
             ),
+
+            TextDivider(text: "Tag události"),
+            TagChoice(tags: widget.tags),
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
             // = Buttons =

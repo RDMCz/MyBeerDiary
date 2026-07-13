@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/event_add.dart";
 import "package:my_beer_diary/model/event.dart";
+import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/screen/settings.dart";
 import "package:my_beer_diary/widget/event_list.dart";
 
@@ -23,11 +24,14 @@ class _HomescreenState extends State<Homescreen> {
 
   // = Events list =
   List<Event> _events = [];
+  Map<int, Tag> _tags = {}; // Needed to get tag names and pictures for events
 
   Future<void> _refreshEvents() async {
     final events = await eventList();
+    final tags = await tagMap();
     setState(() {
       _events = events;
+      _tags = tags;
     });
   }
 
@@ -48,7 +52,11 @@ class _HomescreenState extends State<Homescreen> {
     return Scaffold(
       appBar: AppBar(title: Text("Můj pivní deníček")),
       body: isEventPageSelected
-          ? EventList(events: _events, refreshEvents: _refreshEvents)
+          ? EventList(
+              events: _events,
+              tags: _tags,
+              refreshEvents: _refreshEvents,
+            )
           : Text("Index 1"),
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -85,7 +93,7 @@ class _HomescreenState extends State<Homescreen> {
           if (isEventPageSelected) {
             final result = await showDialog(
               context: context,
-              builder: (_) => EventAddDialog(),
+              builder: (_) => EventAddDialog(tags: _tags),
             );
             if (result ?? false) {
               _refreshEvents();

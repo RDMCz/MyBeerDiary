@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:my_beer_diary/dialog/tag_add.dart";
+import "package:my_beer_diary/dialog/tag_add_edit.dart";
 import "package:my_beer_diary/model/tag.dart";
 
 class TagCard extends StatelessWidget {
@@ -23,7 +23,7 @@ class TagCard extends StatelessWidget {
             onPressed: () async {
               final result = await showDialog(
                 context: context,
-                builder: (_) => TagAddDialog(tag: tag),
+                builder: (_) => TagAddEditDialog(tag: tag),
               );
               if (result ?? false) {
                 refreshTags();

@@ -2,16 +2,16 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/dialog_common.dart";
 import "package:my_beer_diary/model/tag.dart";
 
-class TagAddDialog extends StatefulWidget {
+class TagAddEditDialog extends StatefulWidget {
   final Tag? tag;
 
-  const TagAddDialog({super.key, this.tag});
+  const TagAddEditDialog({super.key, this.tag});
 
   @override
-  State<TagAddDialog> createState() => _TagAddDialogState();
+  State<TagAddEditDialog> createState() => _TagAddEditDialogState();
 }
 
-class _TagAddDialogState extends State<TagAddDialog> {
+class _TagAddEditDialogState extends State<TagAddEditDialog> {
   late final TextEditingController textEditController;
 
   @override
