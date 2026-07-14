@@ -4,3 +4,4 @@ A new Flutter project.
 
 * [ ] Barvičky
 * [ ] Mezery mezi kartama
+* [ ] Tag color

@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/screen/beers.dart";
 import "package:my_beer_diary/screen/tags.dart";
+import "package:my_beer_diary/widget/svg_icon.dart";
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -21,8 +23,14 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.question_mark),
+            leading: SvgIcon(icon: SvgIcons.beer),
             title: Text("Správa piv"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => BeersScreen()),
+              );
+            },
           ),
         ],
       ),
