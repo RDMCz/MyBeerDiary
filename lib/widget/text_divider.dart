@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:my_beer_diary/dialog/dialog_common.dart";
+import "package:my_beer_diary/common.dart";
 
 class TextDivider extends StatelessWidget {
   final String text;

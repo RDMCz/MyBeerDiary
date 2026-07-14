@@ -4,6 +4,7 @@ import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/screen/event.dart";
+import "package:my_beer_diary/widget/tag_chip.dart";
 
 class EventCard extends StatelessWidget {
   final Event event;
@@ -29,29 +30,24 @@ class EventCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           child: Column(
             children: [
-              Row(
-                children: [
-                  if (tag != null) ...[
-                    Chip(
-                      avatar: Icon(Icons.tag),
-                      label: Text(tag.name),
-                      backgroundColor: Theme.of(
-                        context,
-                      ).colorScheme.inversePrimary,
-                      labelPadding: EdgeInsets.all(0),
-                      labelStyle: TextStyle(color: Colors.black, fontSize: 16),
-                      // Make chip smaller:
-                      visualDensity: VisualDensity.compact,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              SizedBox(
+                // Makes Wrap start from left side of the Card
+                width: double.infinity,
+                child: Wrap(
+                  spacing: 8.0,
+                  children: [
+                    if (tag != null) TagChip(tagName: tag.name),
+                    Text(
+                      event.name,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    SizedBox(width: 8),
                   ],
-                  Text(
-                    event.name,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
+                ),
               ),
+              SizedBox(height: 2),
               Row(
                 children: [
                   Text(

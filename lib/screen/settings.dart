@@ -20,6 +20,10 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
+          ListTile(
+            leading: Icon(Icons.question_mark),
+            title: Text("Správa piv"),
+          ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/tag_add_edit.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/tag_card.dart";
@@ -31,8 +32,13 @@ class _TagsScreenState extends State<TagsScreen> {
     return Scaffold(
       appBar: AppBar(title: Text("Správa tagů")),
       body: ListView(
+        padding: CardListCommon.listPadding,
         children: [
-          for (final tag in _tags) TagCard(tag: tag, refreshTags: _refreshTags),
+          for (final tag in _tags)
+            Padding(
+              padding: CardListCommon.itemPadding,
+              child: TagCard(tag: tag, refreshTags: _refreshTags),
+            ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

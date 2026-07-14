@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/event_card.dart";
@@ -18,11 +19,11 @@ class EventList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 12),
+      padding: CardListCommon.listPadding,
       children: [
         for (final event in events)
           Padding(
-            padding: EdgeInsets.only(bottom: 6),
+            padding: CardListCommon.itemPadding,
             child: EventCard(
               event: event,
               tags: tags,
