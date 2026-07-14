@@ -1,5 +1,8 @@
 // "One-off beer" is when user drinks a one beer, which is not part of any particular event
 
+import "package:my_beer_diary/db.dart";
+import "package:sqflite/sqlite_api.dart";
+
 const String oneoffTable = "Oneoffs";
 const String oneoffColTimestamp = "timestamp";
 const String oneoffColBeerId = "fkBeerId";
@@ -48,4 +51,38 @@ class Oneoff {
   @override
   String toString() =>
       "timestamp=$timestamp, beerId=$beerId, litres=$litres, isDraft=$isDraft";
+}
+
+Future<void> oneoffAdd(Oneoff oneoff) async {
+  final db = await AppDatabase.instance.database;
+  await db.insert(
+    oneoffTable,
+    oneoff.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.ignore,
+  );
+}
+
+Future<List<Oneoff>> oneoffList() async {
+  final db = await AppDatabase.instance.database;
+  final maps = await db.query(oneoffTable);
+  return [for (final m in maps) Oneoff.fromMap(m)];
+}
+
+Future<void> oneoffUpdate(Oneoff oneoff) async {
+  final db = await AppDatabase.instance.database;
+  await db.update(
+    oneoffTable,
+    oneoff.toMap(),
+    where: "$oneoffColTimestamp = ?",
+    whereArgs: [oneoff.timestamp],
+  );
+}
+
+Future<void> oneoffDelete(int timestamp) async {
+  final db = await AppDatabase.instance.database;
+  await db.delete(
+    oneoffTable,
+    where: "$oneoffColTimestamp = ?",
+    whereArgs: [timestamp],
+  );
 }

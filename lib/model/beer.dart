@@ -1,5 +1,7 @@
 // Beers can be reused in multiple events and in the one-off page
 
+import "package:my_beer_diary/db.dart";
+
 const String beerTable = "Beers";
 const String beerColId = "_id";
 const String beerColBreweryName = "breweryName";
@@ -60,4 +62,30 @@ class Beer {
   @override
   String toString() =>
       "id=$id, breweryName=$breweryName, description=$description, epm=$epm, abv=$abv, color=$color";
+}
+
+Future<void> beerAdd(Beer beer) async {
+  final db = await AppDatabase.instance.database;
+  await db.insert(beerTable, beer.toMap());
+}
+
+Future<List<Beer>> beerList() async {
+  final db = await AppDatabase.instance.database;
+  final maps = await db.query(beerTable);
+  return [for (final m in maps) Beer.fromMap(m)];
+}
+
+Future<void> beerUpdate(Beer beer) async {
+  final db = await AppDatabase.instance.database;
+  await db.update(
+    beerTable,
+    beer.toMap(),
+    where: "$beerColId = ?",
+    whereArgs: [beer.id],
+  );
+}
+
+Future<void> beerDelete(int id) async {
+  final db = await AppDatabase.instance.database;
+  await db.delete(beerTable, where: "$beerColId = ?", whereArgs: [id]);
 }

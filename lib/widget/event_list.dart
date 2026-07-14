@@ -18,10 +18,17 @@ class EventList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      padding: EdgeInsets.symmetric(horizontal: 12),
       children: [
-        Text("We have ${events.length} events:"),
         for (final event in events)
-          EventCard(event: event, tags: tags, refreshEvents: refreshEvents),
+          Padding(
+            padding: EdgeInsets.only(bottom: 6),
+            child: EventCard(
+              event: event,
+              tags: tags,
+              refreshEvents: refreshEvents,
+            ),
+          ),
       ],
     );
   }

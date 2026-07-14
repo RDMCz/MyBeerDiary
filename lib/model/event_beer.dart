@@ -1,3 +1,8 @@
+// Act of ordering a beer at a particular event
+
+import "package:my_beer_diary/db.dart";
+import "package:sqflite/sqlite_api.dart";
+
 const String ebTable = "EventBeers";
 const String ebColEventId = "fkEventId";
 const String ebColTimestamp = "timestamp";
@@ -59,4 +64,38 @@ class EventBeer {
   @override
   String toString() =>
       "eventId=$eventId, timestamp=$timestamp, beerId=$beerId, litres=$litres, price=$price, isDraft=$isDraft";
+}
+
+Future<void> ebAdd(EventBeer eb) async {
+  final db = await AppDatabase.instance.database;
+  await db.insert(
+    ebTable,
+    eb.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.ignore,
+  );
+}
+
+Future<List<EventBeer>> ebList() async {
+  final db = await AppDatabase.instance.database;
+  final maps = await db.query(ebTable);
+  return [for (final m in maps) EventBeer.fromMap(m)];
+}
+
+Future<void> ebUpdate(EventBeer eb) async {
+  final db = await AppDatabase.instance.database;
+  await db.update(
+    ebTable,
+    eb.toMap(),
+    where: "$ebColEventId = ? AND $ebColTimestamp = ?",
+    whereArgs: [eb.eventId, eb.timestamp],
+  );
+}
+
+Future<void> ebDelete(int eventId, int timestamp) async {
+  final db = await AppDatabase.instance.database;
+  await db.delete(
+    ebTable,
+    where: "$ebColEventId = ? AND $ebColTimestamp = ?",
+    whereArgs: [eventId, timestamp],
+  );
 }

@@ -3,7 +3,7 @@
 
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/model/event.dart";
-import "package:sqflite_common_ffi/sqflite_ffi.dart";
+import "package:sqflite/sqlite_api.dart";
 
 const String tagTable = "Tags";
 const String tagColId = "_id";

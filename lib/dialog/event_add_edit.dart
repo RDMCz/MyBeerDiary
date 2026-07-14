@@ -109,6 +109,7 @@ class _EventAddEditDialogState extends State<EventAddEditDialog> {
               dropdownMenuEntries: tagItems,
               expandedInsets: EdgeInsets.zero,
               enableFilter: true,
+              requestFocusOnTap: true,
               controller: tagTextEditController,
               label: Text("Tag události"),
               onSelected: (Tag? tag) {
