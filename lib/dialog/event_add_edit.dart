@@ -62,7 +62,7 @@ class _EventAddEditDialogState extends State<EventAddEditDialog> {
   @override
   Widget build(BuildContext context) {
     final isEdit = widget.event != null;
-    final headerActionText = isEdit ? "Upravit" : "Nový";
+    final headerActionText = isEdit ? "Upravit" : "Nová";
     final buttonActionText = isEdit ? "Potvrdit" : "OK";
 
     final tagItems = [

@@ -14,7 +14,7 @@ class DialogCommon {
 
   static const headerStyle = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 18.0,
+    fontSize: 20.0,
   );
 
   //
@@ -25,6 +25,6 @@ class DialogCommon {
 }
 
 class CardListCommon {
-  static const listPadding = EdgeInsets.symmetric(horizontal: 12);
-  static const itemPadding = EdgeInsets.only(bottom: 6);
+  static const listPadding = EdgeInsets.symmetric(horizontal: 12.0);
+  static const itemPadding = EdgeInsets.only(bottom: 6.0);
 }

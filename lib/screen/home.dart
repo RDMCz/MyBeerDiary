@@ -4,6 +4,7 @@ import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/screen/settings.dart";
 import "package:my_beer_diary/widget/event_list.dart";
+import "package:my_beer_diary/widget/svg_icon.dart";
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -47,6 +48,9 @@ class _HomescreenState extends State<Homescreen> {
   // = GUI =
   @override
   Widget build(BuildContext context) {
+    final bottomBarColorSelected = Theme.of(context).colorScheme.primary;
+    final bottomBarColorUnselected = Theme.of(context).colorScheme.secondary;
+
     final isEventPageSelected = _bottomBarIndex == 0;
 
     return Scaffold(
@@ -63,11 +67,21 @@ class _HomescreenState extends State<Homescreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.celebration),
+            icon: SvgIcon(
+              icon: SvgIcons.event,
+              color: isEventPageSelected
+                  ? bottomBarColorSelected
+                  : bottomBarColorUnselected,
+            ),
             label: "Události",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_drink),
+            icon: SvgIcon(
+              icon: SvgIcons.oneoff,
+              color: !isEventPageSelected
+                  ? bottomBarColorSelected
+                  : bottomBarColorUnselected,
+            ),
             label: "Jednorázové",
           ),
         ],

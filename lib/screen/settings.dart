@@ -23,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: SvgIcon(icon: SvgIcons.beer),
+            leading: SvgIcon(icon: SvgIcons.beer, size: 22),
             title: Text("Správa piv"),
             onTap: () {
               Navigator.push(
