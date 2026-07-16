@@ -32,7 +32,7 @@ class EventBeer {
   final int price;
   final bool isDraft;
 
-  EventBeer({
+  const EventBeer({
     required this.eventId,
     required this.timestamp,
     required this.beerId,

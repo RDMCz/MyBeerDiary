@@ -25,7 +25,7 @@ class Oneoff {
   final double litres;
   final bool isDraft;
 
-  Oneoff({
+  const Oneoff({
     required this.timestamp,
     required this.beerId,
     required this.litres,

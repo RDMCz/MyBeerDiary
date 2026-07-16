@@ -30,7 +30,7 @@ class Event {
   final int totalBeers;
   final int totalCost;
 
-  Event({
+  const Event({
     this.id,
     this.tagId,
     required this.name,

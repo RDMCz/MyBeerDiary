@@ -24,7 +24,7 @@ class Tag {
   final String name;
   final String? pictureId;
 
-  Tag({this.id, required this.name, this.pictureId});
+  const Tag({this.id, required this.name, this.pictureId});
 
   Map<String, Object?> toMap() {
     return {tagColId: id, tagColName: name, tagColPictureId: pictureId};

@@ -30,7 +30,7 @@ class Beer {
   final double abv;
   final String color;
 
-  Beer({
+  const Beer({
     this.id,
     required this.breweryName,
     required this.description,
@@ -62,6 +62,15 @@ class Beer {
   @override
   String toString() =>
       "id=$id, breweryName=$breweryName, description=$description, epm=$epm, abv=$abv, color=$color";
+
+  static const Beer defaultBeer = Beer(
+    id: 0,
+    breweryName: "Neznámý pivovar",
+    description: "",
+    epm: 11.0,
+    abv: 4.4,
+    color: "",
+  );
 }
 
 Future<void> beerAdd(Beer beer) async {
