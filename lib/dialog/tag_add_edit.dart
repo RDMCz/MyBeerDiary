@@ -12,14 +12,16 @@ class TagAddEditDialog extends StatefulWidget {
 }
 
 class _TagAddEditDialogState extends State<TagAddEditDialog> {
-  late final TextEditingController textEditController;
+  final textEditController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    textEditController = widget.tag != null
-        ? TextEditingController(text: widget.tag!.name)
-        : TextEditingController();
+
+    if (widget.tag != null) {
+      textEditController.text = widget.tag!.name;
+    }
+
     textEditController.addListener(() => setState(() {}));
   }
 

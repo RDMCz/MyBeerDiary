@@ -43,10 +43,13 @@ class _BeersScreenState extends State<BeersScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await showDialog(
+          final result = await showDialog(
             context: context,
             builder: (_) => BeerAddEditDialog(),
           );
+          if (result ?? false) {
+            _refreshBeers();
+          }
         },
         tooltip: "Přidat nové pivo",
         child: Icon(Icons.add),

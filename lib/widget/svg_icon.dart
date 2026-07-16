@@ -44,7 +44,7 @@ class SuffixSvgIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(9.5),
       child: SvgIcon(icon: icon, color: color),
     );
   }

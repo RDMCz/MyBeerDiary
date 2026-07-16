@@ -71,6 +71,19 @@ class Beer {
     abv: 4.4,
     color: "",
   );
+
+  static Beer normalize(Beer b) {
+    return Beer(
+      id: b.id,
+      breweryName: b.breweryName.isNotEmpty
+          ? b.breweryName
+          : defaultBeer.breweryName,
+      description: b.description,
+      epm: b.epm > 0.0 ? b.epm : defaultBeer.epm,
+      abv: b.abv > 0.0 ? b.abv : defaultBeer.abv,
+      color: b.color,
+    );
+  }
 }
 
 Future<void> beerAdd(Beer beer) async {
@@ -97,4 +110,5 @@ Future<void> beerUpdate(Beer beer) async {
 Future<void> beerDelete(int id) async {
   final db = await AppDatabase.instance.database;
   await db.delete(beerTable, where: "$beerColId = ?", whereArgs: [id]);
+  //TODO
 }

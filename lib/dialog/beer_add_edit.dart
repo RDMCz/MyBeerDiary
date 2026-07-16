@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
 import "package:my_beer_diary/logic/decimal_input_formatter.dart";
+import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/brewery_input.dart";
 import "package:my_beer_diary/widget/checkbox.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
@@ -14,7 +15,7 @@ class BeerAddEditDialog extends StatefulWidget {
 }
 
 class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
-  String breweryName = "";
+  String breweryNameStr = "";
   final beerDescTEC = TextEditingController();
   final epmTEC = TextEditingController();
   final abvTEC = TextEditingController();
@@ -45,16 +46,16 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
       abvTEC.text = epmToAbvTextField(epmTEC.text);
     }
 
-    final breweryNameTextTrim = breweryName.trim();
+    final breweryNameTextTrim = breweryNameStr.trim();
     final beerDescTextTrim = beerDescTEC.text.trim();
     final isValid =
         breweryNameTextTrim.isNotEmpty || beerDescTextTrim.isNotEmpty;
 
     return Dialog(
-      insetPadding: EdgeInsets.all(8),
+      insetPadding: EdgeInsets.all(16.0),
       shape: DialogCommon.shape,
       child: Padding(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: 10.0, vertical: 7.0),
+        padding: EdgeInsetsGeometry.symmetric(horizontal: 16.0, vertical: 12.0),
         child: Column(
           mainAxisSize: .min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +72,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
             BreweryInput(
               onTextChanged: (value) {
                 setState(() {
-                  breweryName = value;
+                  breweryNameStr = value;
                 });
               },
             ),
@@ -160,7 +161,24 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
 
                 // = Button :: Confirm =
                 TextButton(
-                  onPressed: !isValid ? null : () {},
+                  onPressed: !isValid
+                      ? null
+                      : () async {
+                          await beerAdd(
+                            Beer.normalize(
+                              Beer(
+                                breweryName: breweryNameStr,
+                                description: beerDescTextTrim,
+                                epm: double.tryParse(epmTEC.text) ?? 0,
+                                abv: double.tryParse(abvTEC.text) ?? 0,
+                                color: "f5ddb1",
+                              ),
+                            ),
+                          );
+                          if (context.mounted) {
+                            Navigator.of(context).pop(true);
+                          }
+                        },
                   child: Text("OK"),
                 ),
               ],

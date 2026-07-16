@@ -16,8 +16,8 @@ class _BreweryInputState extends State<BreweryInput> {
   Widget build(BuildContext context) {
     return Autocomplete(
       optionsBuilder: (TextEditingValue value) {
-        // Ignore when input empty
-        if (value.text.isEmpty) {
+        // Ignore when input empty or 1 character long
+        if (value.text.length < 2) {
           return Iterable<String>.empty();
         }
         // Return list of brewery names that contain input, case insensitive
