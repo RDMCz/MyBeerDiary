@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/event_beer.dart";
 import "package:my_beer_diary/model/tag.dart";
@@ -17,7 +18,16 @@ class _EventScreenState extends State<EventScreen> {
   List<EventBeer> _beers = [];
 
   Future<void> _refreshBeers() async {
-    //final beers = await ebList
+    final beers = await ebList(); //TODO only this event beers
+    setState(() {
+      _beers = beers;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshBeers();
   }
 
   @override
@@ -30,7 +40,9 @@ class _EventScreenState extends State<EventScreen> {
       appBar: AppBar(title: Text(title)),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 12),
-        children: [],
+        children: [
+          for (final _ in _beers) Padding(padding: CardListCommon.listPadding),
+        ],
       ),
     );
   }

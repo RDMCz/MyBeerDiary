@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
+import "package:my_beer_diary/logic/color.dart";
 
 enum SvgIcons {
   beer("beer"),
@@ -46,6 +47,47 @@ class SuffixSvgIcon extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(9.5),
       child: SvgIcon(icon: icon, color: color),
+    );
+  }
+}
+
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+class AppColorMapper extends ColorMapper {
+  final String color;
+
+  const AppColorMapper({required this.color});
+
+  @override
+  Color substitute(
+    String? id,
+    String elementName,
+    String attributeName,
+    Color color,
+  ) {
+    if (color == const Color(0xffffda71)) {
+      return hexStringToColor(this.color);
+    }
+    return color;
+  }
+}
+
+class SvgCardIcon extends StatelessWidget {
+  final String filename;
+  final String color;
+
+  const SvgCardIcon({super.key, required this.filename, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.35,
+      child: SvgPicture.asset(
+        "asset/icon/$filename.svg",
+        width: 100,
+        height: 100,
+        colorMapper: AppColorMapper(color: color),
+      ),
     );
   }
 }

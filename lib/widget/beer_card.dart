@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/model/beer.dart";
+import "package:my_beer_diary/widget/svg_icon.dart";
 
 class BeerCard extends StatelessWidget {
   final Beer beer;
@@ -32,8 +33,11 @@ class BeerCard extends StatelessWidget {
                   "${beer.epm}° @ ${beer.abv} %",
                   style: TextStyle(fontSize: 16),
                 ),
+                Text(beer.color),
               ],
             ),
+            Spacer(),
+            SvgCardIcon(filename: "_card_beer_large", color: beer.color),
             IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
             IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
           ],
