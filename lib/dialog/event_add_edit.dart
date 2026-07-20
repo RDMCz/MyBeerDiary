@@ -88,7 +88,7 @@ class _EventAddEditDialogState extends State<EventAddEditDialog> {
       child: Padding(
         padding: DialogCommon.contentPadding,
         child: Column(
-          mainAxisSize: .min,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // = Header =
@@ -140,8 +140,8 @@ class _EventAddEditDialogState extends State<EventAddEditDialog> {
                         return;
                       }
 
-                      final tag = widget.event!.tagId != null
-                          ? "#${widget.event!.tagId} "
+                      final tagNameWithSpace = initialTagName.isNotEmpty
+                          ? "#$initialTagName "
                           : "";
 
                       final result = await showDialog(
@@ -149,7 +149,7 @@ class _EventAddEditDialogState extends State<EventAddEditDialog> {
                         builder: (BuildContext context) => AlertDialog(
                           title: Text("Smazat událost"),
                           content: Text(
-                            "Opravdu si přejete smazat „$tag${widget.event!.name}“?",
+                            "Opravdu si přejete smazat událost „$tagNameWithSpace${widget.event!.name}“?",
                           ),
                           actions: [
                             TextButton(

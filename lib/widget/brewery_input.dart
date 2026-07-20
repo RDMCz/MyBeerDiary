@@ -4,8 +4,13 @@ import "package:my_beer_diary/widget/svg_icon.dart";
 
 class BreweryInput extends StatefulWidget {
   final ValueChanged<String> onTextChanged;
+  final String? initialValue;
 
-  const BreweryInput({super.key, required this.onTextChanged});
+  const BreweryInput({
+    super.key,
+    required this.onTextChanged,
+    this.initialValue,
+  });
 
   @override
   State<BreweryInput> createState() => _BreweryInputState();
@@ -15,6 +20,7 @@ class _BreweryInputState extends State<BreweryInput> {
   @override
   Widget build(BuildContext context) {
     return Autocomplete(
+      initialValue: TextEditingValue(text: widget.initialValue ?? ""),
       optionsBuilder: (TextEditingValue value) {
         // Ignore when input empty or 1 character long
         if (value.text.length < 2) {

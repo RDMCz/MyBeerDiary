@@ -59,6 +59,22 @@ class Beer {
     color: m[beerColColor] as String,
   );
 
+  Beer copyWith({
+    int? Function()? id,
+    String Function()? breweryName,
+    String Function()? description,
+    double Function()? epm,
+    double Function()? abv,
+    String Function()? color,
+  }) => Beer(
+    id: id != null ? id() : this.id,
+    breweryName: breweryName != null ? breweryName() : this.breweryName,
+    description: description != null ? description() : this.description,
+    epm: epm != null ? epm() : this.epm,
+    abv: abv != null ? abv() : this.abv,
+    color: color != null ? color() : this.color,
+  );
+
   @override
   String toString() =>
       "id=$id, breweryName=$breweryName, description=$description, epm=$epm, abv=$abv, color=$color";

@@ -25,13 +25,17 @@ double epmToAbv(double originalGravityPlato) {
       (finalGravitySG1 / 0.794);
 }
 
-// For use in TextFields
-String epmToAbvTextField(String epmStr) {
-  final epm = double.tryParse(epmStr) ?? 0.0;
+// For use in [BeerAddEditDialog]
+double textFieldToDouble(String s) => double.tryParse(s) ?? 0.0;
+
+String doubleToTextField(double d) => d.toStringAsFixed(2);
+
+String epmToAbvDialog(String epmStr) {
+  final epm = textFieldToDouble(epmStr);
 
   final abv = max(epmToAbv(epm), 0.0);
 
-  return abv.toStringAsFixed(2);
+  return doubleToTextField(abv);
 }
 
 // .:  :.

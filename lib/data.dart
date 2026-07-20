@@ -1,3 +1,5 @@
+import "dart:ui";
+
 const List<String> breweryNames = [
   "Agent",
   "Albert Michler",
@@ -194,3 +196,15 @@ const List<String> breweryNames = [
   "Židovice",
   "Žlebské Chvalovice",
 ];
+
+const List<Color> beerColors = [
+  Color(0xfff3eb8f), // [0]
+  Color(0xfffab123), // [1]
+  Color(0xffca6100), // [2]
+  Color(0xff8d4c32), // [3]
+  Color(0xff180c0b), // [4]
+  Color(0xffba0109), // [5]
+  Color(0xff5bba01), // [6]
+];
+
+const defaultBeerColor = Color(0xfffab123);

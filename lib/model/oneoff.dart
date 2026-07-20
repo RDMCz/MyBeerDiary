@@ -48,6 +48,20 @@ class Oneoff {
     isDraft: (m[oneoffColIsDraft] as int) == 1,
   );
 
+  Oneoff copyWith({
+    int Function()? timestamp,
+    int Function()? beerId,
+    double Function()? litres,
+    //int Function()? price,
+    bool Function()? isDraft,
+  }) => Oneoff(
+    timestamp: timestamp != null ? timestamp() : this.timestamp,
+    beerId: beerId != null ? beerId() : this.beerId,
+    litres: litres != null ? litres() : this.litres,
+    //price: price != null ? price() : this.price,
+    isDraft: isDraft != null ? isDraft() : this.isDraft,
+  );
+
   @override
   String toString() =>
       "timestamp=$timestamp, beerId=$beerId, litres=$litres, isDraft=$isDraft";

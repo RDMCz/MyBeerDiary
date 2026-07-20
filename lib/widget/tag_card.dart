@@ -16,8 +16,10 @@ class TagCard extends StatelessWidget {
         padding: EdgeInsets.all(6),
         child: Row(
           children: [
+            // = Tag name =
             TagChip(tagName: tag.name),
             Spacer(),
+            // = Edit button =
             IconButton(
               onPressed: () async {
                 final result = await showDialog(
@@ -30,6 +32,7 @@ class TagCard extends StatelessWidget {
               },
               icon: Icon(Icons.edit),
             ),
+            // = Delete button =
             IconButton(
               onPressed: () async {
                 final result = await showDialog(

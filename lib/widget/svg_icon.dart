@@ -3,12 +3,13 @@ import "package:flutter_svg/svg.dart";
 import "package:my_beer_diary/logic/color.dart";
 
 enum SvgIcons {
+  abv("abv"),
   beer("beer"),
-  event("event"),
-  oneoff("oneoff"),
   brewery("brewery"),
   epm("epm"),
-  abv("abv");
+  event("event"),
+  leadsto("leadsto"),
+  oneoff("oneoff");
 
   final String filename;
 
@@ -81,7 +82,7 @@ class SvgCardIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: 0.35,
+      opacity: 0.375,
       child: SvgPicture.asset(
         "asset/icon/$filename.svg",
         width: 100,

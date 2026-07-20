@@ -61,6 +61,22 @@ class EventBeer {
     isDraft: (m[ebColIsDraft] as int) == 1,
   );
 
+  EventBeer copyWith({
+    int Function()? eventId,
+    int Function()? timestamp,
+    int Function()? beerId,
+    double Function()? litres,
+    int Function()? price,
+    bool Function()? isDraft,
+  }) => EventBeer(
+    eventId: eventId != null ? eventId() : this.eventId,
+    timestamp: timestamp != null ? timestamp() : this.timestamp,
+    beerId: beerId != null ? beerId() : this.beerId,
+    litres: litres != null ? litres() : this.litres,
+    price: price != null ? price() : this.price,
+    isDraft: isDraft != null ? isDraft() : this.isDraft,
+  );
+
   @override
   String toString() =>
       "eventId=$eventId, timestamp=$timestamp, beerId=$beerId, litres=$litres, price=$price, isDraft=$isDraft";

@@ -24,7 +24,7 @@ class EventCard extends StatelessWidget {
     final tag = tags.containsKey(tagId) ? tags[tagId] : null;
 
     return Card(
-      clipBehavior: .hardEdge,
+      clipBehavior: Clip.hardEdge,
       child: InkWell(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),

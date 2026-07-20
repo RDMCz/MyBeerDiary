@@ -37,7 +37,7 @@ class _BeersScreenState extends State<BeersScreen> {
           for (final beer in _beers)
             Padding(
               padding: CardListCommon.itemPadding,
-              child: BeerCard(beer: beer),
+              child: BeerCard(beer: beer, refreshBeers: _refreshBeers),
             ),
         ],
       ),
