@@ -1,4 +1,5 @@
 import "dart:ui";
+import "package:my_beer_diary/model/beer.dart";
 
 const List<String> breweryNames = [
   "Agent",
@@ -197,14 +198,80 @@ const List<String> breweryNames = [
   "Žlebské Chvalovice",
 ];
 
+const beerColorStraw = Color(0xfff3eb8f);
+const beerColorGold = Color(0xfffec95a);
+const beerColorAmber = Color(0xffd67100);
+const beerColorBrown = Color(0xff8d4c32);
+const beerColorDark = Color(0xff1e0204);
+const beerColorRed = Color(0xffba0109);
+const beerColorGreen = Color(0xff5bba01);
+
 const List<Color> beerColors = [
-  Color(0xfff3eb8f), // [0]
-  Color(0xfffab123), // [1]
-  Color(0xffca6100), // [2]
-  Color(0xff8d4c32), // [3]
-  Color(0xff180c0b), // [4]
-  Color(0xffba0109), // [5]
-  Color(0xff5bba01), // [6]
+  beerColorStraw,
+  beerColorGold,
+  beerColorAmber,
+  beerColorBrown,
+  beerColorDark,
+  beerColorRed,
+  beerColorGreen,
 ];
 
-const defaultBeerColor = Color(0xfffab123);
+const _beerColorStrawStr = "f3eb8f";
+const _beerColorGoldStr = "fec95a";
+const _beerColorAmberStr = "d67100";
+const _beerColorBrownStr = "8d4c32";
+const _beerColorDarkStr = "1e0204";
+const _beerColorRedStr = "ba0109";
+const _beerColorGreenStr = "5bba01";
+
+const List<Beer> defaultBeers = [
+  Beer(
+    breweryName: "Beran",
+    description: "Lehký ALE",
+    epm: 10.0,
+    abv: 4.5,
+    color: _beerColorAmberStr,
+  ),
+  Beer(
+    breweryName: "Beran",
+    description: "Jedenáctka",
+    epm: 11.0,
+    abv: 4.5,
+    color: _beerColorGoldStr,
+  ),
+  Beer(
+    breweryName: "Beran",
+    description: "Polotmavá dvanáctka",
+    epm: 12.0,
+    abv: 5.0,
+    color: _beerColorBrownStr,
+  ),
+  Beer(
+    breweryName: "Bernard",
+    description: "Desítka",
+    epm: 10.0,
+    abv: 3.8,
+    color: _beerColorGoldStr,
+  ),
+  Beer(
+    breweryName: "Bernard",
+    description: "Jedenáctka",
+    epm: 11.0,
+    abv: 4.5,
+    color: _beerColorGoldStr,
+  ),
+  Beer(
+    breweryName: "Bernard",
+    description: "Kvasnicová jedenáctka",
+    epm: 11.0,
+    abv: 4.6,
+    color: _beerColorGoldStr,
+  ),
+  Beer(
+    breweryName: "Beran",
+    description: "Dvanáctka",
+    epm: 12.0,
+    abv: 4.9,
+    color: _beerColorGoldStr,
+  ),
+];

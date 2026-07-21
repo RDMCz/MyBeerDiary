@@ -82,7 +82,7 @@ class SvgCardIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: 0.375,
+      opacity: 0.3775,
       child: SvgPicture.asset(
         "asset/icon/$filename.svg",
         width: 100,
