@@ -17,7 +17,7 @@ class TagCard extends StatelessWidget {
         child: Row(
           children: [
             // = Tag name =
-            TagChip(tagName: tag.name),
+            TagChip(tag: tag),
             Spacer(),
             // = Edit button =
             IconButton(

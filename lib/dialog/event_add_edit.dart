@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/logic/color.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
@@ -56,7 +57,7 @@ class _EventAddEditDialogState extends State<EventAddEditDialog> {
       EventTagScenario.noTag => null,
       EventTagScenario.useExisting => selectedTag!.id,
       EventTagScenario.createNew => await tagAdd(
-        Tag(name: tagTextTrim, color: "f5ddb1"),
+        Tag(name: tagTextTrim, color: colorToHexString(randomTagColor())),
       ),
     };
   }

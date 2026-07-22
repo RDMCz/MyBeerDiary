@@ -37,7 +37,7 @@ class EventCard extends StatelessWidget {
                   spacing: 8.0,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    if (tag != null) TagChip(tagName: tag.name),
+                    if (tag != null) TagChip(tag: tag),
                     Text(
                       event.name,
                       style: TextStyle(

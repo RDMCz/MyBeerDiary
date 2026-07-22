@@ -21,7 +21,7 @@ class BeerCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  Wrap(
                     children: [
                       Text(
                         "${beer.breweryName} ",

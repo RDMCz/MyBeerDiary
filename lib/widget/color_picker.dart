@@ -14,11 +14,6 @@ class ColorPickerBeer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final darkColor = Theme.of(context).colorScheme.inverseSurface;
-
-    const iconSize = 40.0;
-    const iconBorderWidth = 1.309;
-    const iconBorderRadius = 10.0;
     const iconSpacing = 6.0;
 
     return BlockPicker(
@@ -37,23 +32,45 @@ class ColorPickerBeer extends StatelessWidget {
       itemBuilder: (color, isCurrentColor, changeColor) {
         return GestureDetector(
           onTap: changeColor,
-          child: Container(
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(iconBorderRadius),
-              border: Border.all(color: darkColor, width: iconBorderWidth),
-            ),
-            width: iconSize,
-            height: iconSize,
-            child: !isCurrentColor
-                ? null
-                : Icon(
-                    Icons.done,
-                    color: useWhiteForeground(color) ? Colors.white : darkColor,
-                  ),
-          ),
+          child: ColorContainer(color: color, isCurrentColor: isCurrentColor),
         );
       },
+    );
+  }
+}
+
+class ColorContainer extends StatelessWidget {
+  final Color color;
+  final bool isCurrentColor;
+
+  const ColorContainer({
+    super.key,
+    required this.color,
+    required this.isCurrentColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final darkColor = Theme.of(context).colorScheme.inverseSurface;
+
+    const iconSize = 40.0;
+    const iconBorderWidth = 1.309;
+    const iconBorderRadius = 10.0;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(iconBorderRadius),
+        border: Border.all(color: darkColor, width: iconBorderWidth),
+      ),
+      width: iconSize,
+      height: iconSize,
+      child: !isCurrentColor
+          ? null
+          : Icon(
+              Icons.done,
+              color: useWhiteForeground(color) ? Colors.white : darkColor,
+            ),
     );
   }
 }

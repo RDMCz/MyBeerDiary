@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/logic/color.dart";
 import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/widget/color_picker.dart";
 
 class TagAddEditDialog extends StatefulWidget {
   final Tag? tag;
@@ -14,12 +16,23 @@ class TagAddEditDialog extends StatefulWidget {
 class _TagAddEditDialogState extends State<TagAddEditDialog> {
   final textEditController = TextEditingController();
 
+  double hueSliderValue = 0.0;
+  Color tagColor = hueToTagColor(0.0);
+
+  void updateColorAndSlider(double value) {
+    setState(() {
+      hueSliderValue = value;
+      tagColor = hueToTagColor(hueSliderValue);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
 
     if (widget.tag != null) {
       textEditController.text = widget.tag!.name;
+      updateColorAndSlider(colorHue(hexStringToColor(widget.tag!.color)));
     }
 
     textEditController.addListener(() => setState(() {}));
@@ -60,6 +73,21 @@ class _TagAddEditDialogState extends State<TagAddEditDialog> {
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
+            // = Color slider =
+            Row(
+              children: [
+                ColorContainer(color: tagColor, isCurrentColor: false),
+                Expanded(
+                  child: Slider(
+                    value: hueSliderValue,
+                    onChanged: (double value) => updateColorAndSlider(value),
+                    min: 0.0,
+                    max: 360.0,
+                  ),
+                ),
+              ],
+            ),
+
             // = Buttons =
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -82,7 +110,7 @@ class _TagAddEditDialogState extends State<TagAddEditDialog> {
                           await tagAdd(
                             Tag(
                               name: textEditController.text.trim(),
-                              color: "f5ddb1",
+                              color: colorToHexString(tagColor),
                             ),
                           );
                           if (context.mounted) {
@@ -91,9 +119,15 @@ class _TagAddEditDialogState extends State<TagAddEditDialog> {
                         }
                       : () async {
                           final newName = textEditController.text.trim();
-                          if (newName != widget.tag!.name) {
+                          final newColor = colorToHexString(tagColor);
+
+                          if (newName != widget.tag!.name ||
+                              newColor != widget.tag!.color) {
                             await tagUpdate(
-                              widget.tag!.copyWith(name: () => newName),
+                              widget.tag!.copyWith(
+                                name: () => newName,
+                                color: () => newColor,
+                              ),
                             );
                             if (context.mounted) {
                               Navigator.of(context).pop(true);

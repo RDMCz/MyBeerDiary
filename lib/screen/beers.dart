@@ -39,6 +39,8 @@ class _BeersScreenState extends State<BeersScreen> {
               padding: CardListCommon.itemPadding,
               child: BeerCard(beer: beer, refreshBeers: _refreshBeers),
             ),
+
+          SizedBox(height: CardListCommon.extraBottomSpace),
         ],
       ),
       floatingActionButton: FloatingActionButton(

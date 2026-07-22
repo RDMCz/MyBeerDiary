@@ -39,6 +39,8 @@ class _TagsScreenState extends State<TagsScreen> {
               padding: CardListCommon.itemPadding,
               child: TagCard(tag: tag, refreshTags: _refreshTags),
             ),
+
+          SizedBox(height: CardListCommon.extraBottomSpace),
         ],
       ),
       floatingActionButton: FloatingActionButton(
