@@ -87,6 +87,7 @@ class _TagAddEditDialogState extends State<TagAddEditDialog> {
                 ),
               ],
             ),
+            SizedBox(height: DialogCommon.bodyMarginBottom),
 
             // = Buttons =
             Row(

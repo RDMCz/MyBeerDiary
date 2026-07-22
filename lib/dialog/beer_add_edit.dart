@@ -158,7 +158,9 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
               },
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
+
             // - color
+            /*
             ColorPickerBeer(
               pickerColor: beerColor,
               onColorChanged: (Color color) {
@@ -166,7 +168,17 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
                   beerColor = color;
                 });
               },
+            ),*/
+            ColorPicker(
+              colors: beerColors,
+              initialColor: beerColor,
+              onColorChanged: (Color color) {
+                setState(() {
+                  beerColor = color;
+                });
+              },
             ),
+
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
             // = Buttons =

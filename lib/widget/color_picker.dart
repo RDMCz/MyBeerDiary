@@ -1,40 +1,54 @@
 import "package:flutter/material.dart";
-import "package:flutter_colorpicker/flutter_colorpicker.dart";
-import "package:my_beer_diary/data.dart";
 
-class ColorPickerBeer extends StatelessWidget {
-  final Color pickerColor;
+class ColorPicker extends StatefulWidget {
+  final List<Color> colors;
+  final Color initialColor;
   final ValueChanged<Color> onColorChanged;
 
-  const ColorPickerBeer({
+  const ColorPicker({
     super.key,
-    required this.pickerColor,
+    required this.colors,
+    required this.initialColor,
     required this.onColorChanged,
   });
+
+  @override
+  State<ColorPicker> createState() => _ColorPickerState();
+}
+
+class _ColorPickerState extends State<ColorPicker> {
+  Color? _currentColor;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentColor = widget.initialColor;
+  }
+
+  void _changeColor(Color color) {
+    setState(() => _currentColor = color);
+    widget.onColorChanged(color);
+  }
 
   @override
   Widget build(BuildContext context) {
     const iconSpacing = 6.0;
 
-    return BlockPicker(
-      pickerColor: pickerColor,
-      onColorChanged: onColorChanged,
-      availableColors: beerColors,
-      layoutBuilder: (context, colors, child) {
-        return Center(
-          child: Wrap(
-            spacing: iconSpacing,
-            runSpacing: iconSpacing,
-            children: [for (final color in colors) child(color)],
-          ),
-        );
-      },
-      itemBuilder: (color, isCurrentColor, changeColor) {
-        return GestureDetector(
-          onTap: changeColor,
-          child: ColorContainer(color: color, isCurrentColor: isCurrentColor),
-        );
-      },
+    return Center(
+      child: Wrap(
+        spacing: iconSpacing,
+        runSpacing: iconSpacing,
+        children: [
+          for (final color in widget.colors)
+            GestureDetector(
+              onTap: () => _changeColor(color),
+              child: ColorContainer(
+                color: color,
+                isCurrentColor: color == _currentColor,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -56,6 +70,7 @@ class ColorContainer extends StatelessWidget {
     const iconSize = 40.0;
     const iconBorderWidth = 1.309;
     const iconBorderRadius = 10.0;
+    const shadowOffset = 0.75;
 
     return Container(
       decoration: BoxDecoration(
@@ -69,7 +84,14 @@ class ColorContainer extends StatelessWidget {
           ? null
           : Icon(
               Icons.done,
-              color: useWhiteForeground(color) ? Colors.white : darkColor,
+              color: darkColor,
+              size: 24,
+              shadows: [
+                Shadow(color: Colors.white, offset: Offset(shadowOffset, 0)),
+                Shadow(color: Colors.white, offset: Offset(-shadowOffset, 0)),
+                Shadow(color: Colors.white, offset: Offset(0, shadowOffset)),
+                Shadow(color: Colors.white, offset: Offset(0, -shadowOffset)),
+              ],
             ),
     );
   }
