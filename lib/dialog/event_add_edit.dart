@@ -55,7 +55,9 @@ class _EventAddEditDialogState extends State<EventAddEditDialog> {
     return switch (tagScenario) {
       EventTagScenario.noTag => null,
       EventTagScenario.useExisting => selectedTag!.id,
-      EventTagScenario.createNew => await tagAdd(Tag(name: tagTextTrim)),
+      EventTagScenario.createNew => await tagAdd(
+        Tag(name: tagTextTrim, color: "f5ddb1"),
+      ),
     };
   }
 

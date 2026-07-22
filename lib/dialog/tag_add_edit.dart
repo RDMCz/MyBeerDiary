@@ -80,7 +80,10 @@ class _TagAddEditDialogState extends State<TagAddEditDialog> {
                       : !isEdit
                       ? () async {
                           await tagAdd(
-                            Tag(name: textEditController.text.trim()),
+                            Tag(
+                              name: textEditController.text.trim(),
+                              color: "f5ddb1",
+                            ),
                           );
                           if (context.mounted) {
                             Navigator.of(context).pop(true);

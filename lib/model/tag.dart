@@ -8,13 +8,13 @@ import "package:sqflite/sqlite_api.dart";
 const String tagTable = "Tags";
 const String tagColId = "_id";
 const String tagColName = "name";
-const String tagColPictureId = "pictureId";
+const String tagColColor = "color";
 
 const String tagTableCreate =
     "CREATE TABLE $tagTable ("
     "$tagColId INTEGER PRIMARY KEY AUTOINCREMENT," // Surrogate key
     "$tagColName TEXT NOT NULL UNIQUE," // Name of the tag
-    "$tagColPictureId TEXT" // User can assign a stock picture to a tag
+    "$tagColColor TEXT NOT NULL" // Background color of the chip
     ")";
 
 const String tagTableDrop = "DROP TABLE IF EXISTS $tagTable";
@@ -22,32 +22,32 @@ const String tagTableDrop = "DROP TABLE IF EXISTS $tagTable";
 class Tag {
   final int? id;
   final String name;
-  final String? pictureId;
+  final String color;
 
-  const Tag({this.id, required this.name, this.pictureId});
+  const Tag({this.id, required this.name, required this.color});
 
   Map<String, Object?> toMap() {
-    return {tagColId: id, tagColName: name, tagColPictureId: pictureId};
+    return {tagColId: id, tagColName: name, tagColColor: color};
   }
 
   static Tag fromMap(Map<String, Object?> m) => Tag(
     id: m[tagColId] as int?,
     name: m[tagColName] as String,
-    pictureId: m[tagColPictureId] as String?,
+    color: m[tagColColor] as String,
   );
 
   Tag copyWith({
     int? Function()? id,
     String Function()? name,
-    String? Function()? pictureId,
+    String Function()? color,
   }) => Tag(
     id: id != null ? id() : this.id,
     name: name != null ? name() : this.name,
-    pictureId: pictureId != null ? pictureId() : this.pictureId,
+    color: color != null ? color() : this.color,
   );
 
   @override
-  String toString() => "id=$id, name=$name, pictureId=$pictureId";
+  String toString() => "id=$id, name=$name, color=$color";
 }
 
 Future<int> tagAdd(Tag tag) async {

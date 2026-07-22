@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
-import "package:my_beer_diary/model/event_beer.dart";
 import "package:my_beer_diary/model/tag.dart";
 
 class EventScreen extends StatefulWidget {
@@ -15,10 +15,10 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
-  List<EventBeer> _beers = [];
+  List<BeerConsumption> _beers = [];
 
   Future<void> _refreshBeers() async {
-    final beers = await ebList(); //TODO only this event beers
+    final beers = await beerConsumptionList(); //TODO only this event beers
     setState(() {
       _beers = beers;
     });
