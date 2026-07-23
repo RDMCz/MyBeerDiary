@@ -126,9 +126,9 @@ class _EventAddEditDialogState extends State<EventAddEditDialog> {
             Text(switch (tagScenario) {
               EventTagScenario.noTag => "Události nebude přidělen žádný tag.",
               EventTagScenario.useExisting =>
-                "Události bude přidělen existující tag „#${selectedTag!.name}“.",
+                "Události bude přidělen existující tag „${selectedTag!.name}“.",
               EventTagScenario.createNew =>
-                "Pro událost bude vytvořen nový tag „#$tagTextTrim“.",
+                "Pro událost bude vytvořen nový tag „$tagTextTrim“.",
             }),
             SizedBox(height: DialogCommon.bodyMarginBottom),
 

@@ -437,6 +437,13 @@ const List<Beer> defaultBeers = [
     color: _beerColorGoldStr,
   ),
   Beer(
+    breweryName: "Proud",
+    description: "",
+    epm: 11.3,
+    abv: 3.9,
+    color: _beerColorStrawStr,
+  ),
+  Beer(
     breweryName: "Svijany",
     description: "Máz",
     epm: 11.0,

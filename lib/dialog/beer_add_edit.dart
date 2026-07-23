@@ -160,15 +160,6 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
             // - color
-            /*
-            ColorPickerBeer(
-              pickerColor: beerColor,
-              onColorChanged: (Color color) {
-                setState(() {
-                  beerColor = color;
-                });
-              },
-            ),*/
             ColorPicker(
               colors: beerColors,
               initialColor: beerColor,

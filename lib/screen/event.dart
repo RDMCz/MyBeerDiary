@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/dialog/beer_consumption_add.dart";
+import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
@@ -15,12 +17,16 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
-  List<BeerConsumption> _beers = [];
+  List<Beer> _beers = [];
+  List<BeerConsumption> _beerConsumptions = [];
 
   Future<void> _refreshBeers() async {
-    final beers = await beerConsumptionList(); //TODO only this event beers
+    final beers = await beerList();
+    final beerConsumptions =
+        await beerConsumptionList(); //TODO only this event beers
     setState(() {
       _beers = beers;
+      _beerConsumptions = beerConsumptions;
     });
   }
 
@@ -41,9 +47,27 @@ class _EventScreenState extends State<EventScreen> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 12),
         children: [
-          for (final _ in _beers) Padding(padding: CardListCommon.listPadding),
+          for (final _ in _beerConsumptions)
+            Padding(padding: CardListCommon.listPadding),
         ],
       ),
+      bottomNavigationBar: BottomAppBar(color: Colors.amber),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await showDialog(
+            context: context,
+            builder: (_) => BeerConsumptionAddDialog(beers: _beers),
+          );
+          if (result ?? false) {
+            //
+          }
+        },
+        child: Icon(Icons.add),
+      ),
+      // (https://github.com/flutter/flutter/issues/140733)
+      // This FAB placement crashes while debugging on desktop and in browser, but not in emulator:
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
     );
   }
 }
