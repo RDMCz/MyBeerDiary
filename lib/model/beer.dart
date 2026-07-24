@@ -108,8 +108,11 @@ Future<void> beerAdd(Beer beer) async {
 }
 
 Future<List<Beer>> beerList() async {
+  const orderBy =
+      "$beerColBreweryName ASC, $beerColEPM ASC, $beerColDescription ASC";
+
   final db = await AppDatabase.instance.database;
-  final maps = await db.query(beerTable);
+  final maps = await db.query(beerTable, orderBy: orderBy);
   return [for (final m in maps) Beer.fromMap(m)];
 }
 

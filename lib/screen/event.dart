@@ -6,6 +6,8 @@ import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 
+const isTempDebug = true;
+
 class EventScreen extends StatefulWidget {
   final Event event;
   final Tag? tag;
@@ -42,32 +44,57 @@ class _EventScreenState extends State<EventScreen> {
         ? widget.event.name
         : "${widget.tag!.name} ${widget.event.name}";
 
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        children: [
-          for (final _ in _beerConsumptions)
-            Padding(padding: CardListCommon.listPadding),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(color: Colors.amber),
+    return isTempDebug
+        ? Scaffold(
+            appBar: AppBar(title: Text(title)),
+            body: ListView(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              children: [
+                for (final _ in _beerConsumptions)
+                  Padding(padding: CardListCommon.listPadding),
+                TextButton(
+                  onPressed: () async {
+                    final result = await showDialog(
+                      context: context,
+                      builder: (_) => BeerConsumptionAddDialog(beers: _beers),
+                    );
+                    if (result ?? false) {
+                      //
+                    }
+                  },
+                  child: Text("Add"),
+                ),
+              ],
+            ),
+          )
+        // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        : Scaffold(
+            appBar: AppBar(title: Text(title)),
+            body: ListView(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              children: [
+                for (final _ in _beerConsumptions)
+                  Padding(padding: CardListCommon.listPadding),
+              ],
+            ),
+            bottomNavigationBar: BottomAppBar(color: Colors.amber),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = await showDialog(
-            context: context,
-            builder: (_) => BeerConsumptionAddDialog(beers: _beers),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () async {
+                final result = await showDialog(
+                  context: context,
+                  builder: (_) => BeerConsumptionAddDialog(beers: _beers),
+                );
+                if (result ?? false) {
+                  //
+                }
+              },
+              child: Icon(Icons.add),
+            ),
+            // (https://github.com/flutter/flutter/issues/140733)
+            // This FAB placement crashes while debugging on desktop and in browser, but not in emulator:
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.endContained,
           );
-          if (result ?? false) {
-            //
-          }
-        },
-        child: Icon(Icons.add),
-      ),
-      // (https://github.com/flutter/flutter/issues/140733)
-      // This FAB placement crashes while debugging on desktop and in browser, but not in emulator:
-      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
-    );
   }
 }

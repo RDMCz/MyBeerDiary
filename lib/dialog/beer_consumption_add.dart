@@ -1,6 +1,9 @@
+import "dart:ui";
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer.dart";
+import "package:my_beer_diary/widget/beer_card_mini.dart";
 import "package:my_beer_diary/widget/brewery_input.dart";
 
 class BeerConsumptionAddDialog extends StatefulWidget {
@@ -14,6 +17,8 @@ class BeerConsumptionAddDialog extends StatefulWidget {
 }
 
 class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
+  String breweryNameStr = "";
+
   @override
   Widget build(BuildContext context) {
     return Dialog.fullscreen(
@@ -41,20 +46,32 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
             BreweryInput(
               onTextChanged: (value) {
                 setState(() {
-                  //breweryNameStr = value;
+                  breweryNameStr = value;
                 });
               },
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
-            /*
-            ...[
-              for (final beer in widget.beers.where(
-                (e) => e.breweryName == "Braník",
-              ))
-                Text("$beer"),
-            ],
-            */
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20),
+              height: 120,
+              child: ScrollConfiguration(
+                behavior: MaterialScrollBehavior().copyWith(
+                  dragDevices: {...PointerDeviceKind.values},
+                ),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    for (final beer in widget.beers.where(
+                      (e) => e.breweryName.toLowerCase().contains(
+                        breweryNameStr.toLowerCase(),
+                      ),
+                    ))
+                      BeerCardMini(beer: beer),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
