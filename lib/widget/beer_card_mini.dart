@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
@@ -11,7 +12,7 @@ class BeerCardMini extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(6),
+        padding: CardCommon.miniPadding,
         child: Row(
           children: [
             Column(
@@ -21,6 +22,7 @@ class BeerCardMini extends StatelessWidget {
                   "${beer.breweryName} ",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
+
                 Text(beer.description, style: TextStyle(fontSize: 17)),
 
                 Text(
@@ -29,8 +31,15 @@ class BeerCardMini extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(width: 8),
-            SvgCardIcon(icon: SvgCardIcons.beerLarge, color: beer.color),
+            SizedBox(width: 12),
+
+            Stack(
+              alignment: AlignmentGeometry.bottomRight,
+              children: [
+                SvgCardIcon(icon: SvgCardIcons.beerLarge, color: beer.color),
+                Checkbox(value: true, onChanged: (_) {}),
+              ],
+            ),
           ],
         ),
       ),

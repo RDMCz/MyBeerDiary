@@ -3,12 +3,9 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
 import "package:my_beer_diary/logic/color.dart";
-import "package:my_beer_diary/logic/decimal_input_formatter.dart";
 import "package:my_beer_diary/model/beer.dart";
+import "package:my_beer_diary/widget/beer_form.dart";
 import "package:my_beer_diary/widget/brewery_input.dart";
-import "package:my_beer_diary/widget/checkbox.dart";
-import "package:my_beer_diary/widget/color_picker.dart";
-import "package:my_beer_diary/widget/svg_icon.dart";
 
 class BeerAddEditDialog extends StatefulWidget {
   final Beer? beer;
@@ -24,7 +21,6 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
   final beerDescTEC = TextEditingController();
   final epmTEC = TextEditingController();
   final abvTEC = TextEditingController();
-  bool isAbvGuess = false;
   Color beerColor = beerColorGold;
 
   @override
@@ -56,14 +52,6 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
     final headerActionText = isEdit ? "Upravit" : "Nové";
     final buttonActionText = isEdit ? "Potvrdit" : "OK";
 
-    final iconColorEnabled = Theme.of(context).colorScheme.inverseSurface;
-    final iconColorDisabled = Theme.of(context).colorScheme.secondary;
-
-    // Get ABV from EPM if checkbox checked
-    if (isAbvGuess) {
-      abvTEC.text = epmToAbvDialog(epmTEC.text);
-    }
-
     final breweryNameTextTrim = breweryNameStr.trim();
     final beerDescTextTrim = beerDescTEC.text.trim();
     final isValid =
@@ -86,7 +74,6 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
             SizedBox(height: DialogCommon.headerMarginBottom),
 
             // = Form body =
-            // - breweryName
             BreweryInput(
               initialValue: breweryNameStr,
               onTextChanged: (value) {
@@ -96,73 +83,10 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
               },
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
-            // - description
-            TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Název/styl/popis piva",
-                suffixIcon: SuffixSvgIcon(icon: SvgIcons.beer),
-              ),
-              controller: beerDescTEC,
-            ),
-            SizedBox(height: DialogCommon.bodyMarginBottom),
-            Row(
-              children: [
-                // - epm
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Stupňovitost",
-                      suffixIcon: SuffixSvgIcon(icon: SvgIcons.epm),
-                    ),
-                    controller: epmTEC,
-                    inputFormatters: [DecimalInputFormatter()],
-                  ),
-                ),
-                // ⇝
-                SvgIcon(
-                  icon: SvgIcons.leadsto,
-                  color: isAbvGuess ? iconColorEnabled : iconColorDisabled,
-                  size: 36,
-                ),
-                // - abv
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Alkohol",
-                      suffixIcon: SuffixSvgIcon(
-                        icon: SvgIcons.abv,
-                        color: !isAbvGuess
-                            ? iconColorEnabled
-                            : iconColorDisabled,
-                      ),
-                    ),
-                    controller: abvTEC,
-                    enabled: !isAbvGuess,
-                    inputFormatters: [DecimalInputFormatter()],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: DialogCommon.bodyMarginBottom),
-
-            LabeledCheckbox(
-              label: "Odhadnout procenta alkoholu ze stupňovistosti",
-              padding: EdgeInsets.all(0),
-              value: isAbvGuess,
-              onChanged: (bool newValue) {
-                setState(() {
-                  isAbvGuess = newValue;
-                });
-              },
-            ),
-            SizedBox(height: DialogCommon.bodyMarginBottom),
-
-            // - color
-            ColorPicker(
-              colors: beerColors,
+            BeerForm(
+              beerDescTEC: beerDescTEC,
+              epmTEC: epmTEC,
+              abvTEC: abvTEC,
               initialColor: beerColor,
               onColorChanged: (Color color) {
                 setState(() {

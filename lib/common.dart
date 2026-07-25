@@ -24,6 +24,10 @@ class DialogCommon {
   static const buttonSpace = 8.0;
 }
 
+class CardCommon {
+  static const miniPadding = EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+}
+
 class CardListCommon {
   static const listPadding = EdgeInsets.symmetric(horizontal: 12.0);
   static const itemPadding = EdgeInsets.only(bottom: 6.0);

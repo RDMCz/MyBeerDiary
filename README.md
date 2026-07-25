@@ -4,6 +4,7 @@ A new Flutter project.
 
 * [ ] Barvičky
 * [ ] Mezery mezi kartama
+* [ ] CardCommon
 * [x] Tag color, beer color
 * [ ] <https://www.fluttericon.com/>?
 * [ ] __3rd party licence__
@@ -20,3 +21,4 @@ A new Flutter project.
   * oneoff :: CC0
   * <https://www.svgrepo.com/svg/493176/beer>, <https://www.svgrepo.com/svg/493174/can-of-beer>
   * beer_size :: CCA <https://www.svgrepo.com/svg/412236/measure>
+  * coins :: MIT <https://www.svgrepo.com/svg/509863/coins>
