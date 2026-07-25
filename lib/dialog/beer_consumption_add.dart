@@ -6,6 +6,8 @@ import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/beer_card_mini.dart";
 import "package:my_beer_diary/widget/brewery_input.dart";
 
+enum BeerSize { small, large, custom }
+
 class BeerConsumptionAddDialog extends StatefulWidget {
   final List<Beer> beers;
 
@@ -18,6 +20,7 @@ class BeerConsumptionAddDialog extends StatefulWidget {
 
 class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
   String breweryNameStr = "";
+  BeerSize beerSizeSelected = BeerSize.large;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
         padding: DialogCommon.contentPadding,
         child: Column(
           children: [
+            // = Header =
             Row(
               children: [
                 Text(
@@ -43,6 +47,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
             ),
             SizedBox(height: DialogCommon.headerMarginBottom),
 
+            // = Brewery name input =
             BreweryInput(
               onTextChanged: (value) {
                 setState(() {
@@ -52,9 +57,9 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              height: 120,
+            // = Beer suggestions horizontal scroll =
+            SizedBox(
+              height: 95,
               child: ScrollConfiguration(
                 behavior: MaterialScrollBehavior().copyWith(
                   dragDevices: {...PointerDeviceKind.values},
@@ -71,6 +76,38 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                   ],
                 ),
               ),
+            ),
+            SizedBox(height: DialogCommon.bodyMarginBottom),
+
+            // =  =
+            SegmentedButton(
+              segments: [
+                ButtonSegment(
+                  value: BeerSize.small,
+                  label: Text("Malé"),
+                  icon: Icon(Icons.cancel_outlined),
+                ),
+                ButtonSegment(
+                  value: BeerSize.large,
+                  label: Text("Velké"),
+                  icon: Icon(Icons.tag),
+                ),
+                ButtonSegment(
+                  value: BeerSize.custom,
+                  label: Text("Čtyřka"),
+                  icon: Icon(Icons.add),
+                ),
+              ],
+              selected: {beerSizeSelected},
+              onSelectionChanged: (final newSelection) {
+                setState(() {
+                  beerSizeSelected = newSelection.first;
+                });
+              },
+              expandedInsets: EdgeInsets.zero,
+              emptySelectionAllowed: false,
+              multiSelectionEnabled: false,
+              showSelectedIcon: false,
             ),
           ],
         ),
