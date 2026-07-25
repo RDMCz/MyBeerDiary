@@ -7,6 +7,7 @@ environment:
   sdk: ^3.12.2
 
 dependencies:
+  escape_parent_padding: ^1.0.4
   flutter:
     sdk: flutter
   flutter_svg: ^2.3.0

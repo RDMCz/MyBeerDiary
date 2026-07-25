@@ -84,7 +84,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
             ),
             SizedBox(height: DialogCommon.headerMarginBottom),
-            //Text("${widget.beer}"),
+
             // = Form body =
             // - breweryName
             BreweryInput(
@@ -147,6 +147,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
               ],
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
+
             LabeledCheckbox(
               label: "Odhadnout procenta alkoholu ze stupňovistosti",
               padding: EdgeInsets.all(0),
@@ -169,7 +170,6 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
                 });
               },
             ),
-
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
             // = Buttons =

@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.8+3"
+  escape_parent_padding:
+    dependency: "direct main"
+    description:
+      name: escape_parent_padding
+      sha256: "7bfaddaef62bb94778d1c5ed2bc810c0e3328e8fec653cccc1434e7d8122509b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   fake_async:
     dependency: transitive
     description:

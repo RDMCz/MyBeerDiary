@@ -44,7 +44,14 @@ class BeerCard extends StatelessWidget {
             Row(
               children: [
                 // = Beer Icon =
-                SvgCardIcon(filename: "_card_beer_large", color: beer.color),
+                SizedBox(
+                  height: 80,
+                  child: SvgCardIcon(
+                    icon: SvgCardIcons.beerLarge,
+                    color: beer.color,
+                  ),
+                ),
+                SizedBox(width: 6),
                 // = Edit Button =
                 IconButton(
                   onPressed: () async {

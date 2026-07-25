@@ -9,7 +9,10 @@ enum SvgIcons {
   epm("epm"),
   event("event"),
   leadsto("leadsto"),
-  oneoff("oneoff");
+  oneoff("oneoff"),
+  beerSizeSmall("beer_size_small"),
+  beerSizeLarge("beer_size_large"),
+  beerSizeCustom("beer_size_custom");
 
   final String filename;
 
@@ -54,6 +57,16 @@ class SuffixSvgIcon extends StatelessWidget {
 
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+enum SvgCardIcons {
+  beerSmall("_card_beer_small"),
+  beerLarge("_card_beer_large"),
+  beerCan("_card_beer_can");
+
+  final String filename;
+
+  const SvgCardIcons(this.filename);
+}
+
 class AppColorMapper extends ColorMapper {
   final String color;
 
@@ -74,19 +87,17 @@ class AppColorMapper extends ColorMapper {
 }
 
 class SvgCardIcon extends StatelessWidget {
-  final String filename;
+  final SvgCardIcons icon;
   final String color;
 
-  const SvgCardIcon({super.key, required this.filename, required this.color});
+  const SvgCardIcon({super.key, required this.icon, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
       opacity: 0.3775,
       child: SvgPicture.asset(
-        "asset/icon/$filename.svg",
-        width: 100,
-        height: 100,
+        "asset/icon/${icon.filename}.svg",
         colorMapper: AppColorMapper(color: color),
       ),
     );

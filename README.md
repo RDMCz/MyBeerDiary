@@ -19,3 +19,4 @@ A new Flutter project.
   * event :: CCA (edit) <https://www.svgrepo.com/svg/533396/calendar-lines-pen>
   * oneoff :: CC0
   * <https://www.svgrepo.com/svg/493176/beer>, <https://www.svgrepo.com/svg/493174/can-of-beer>
+  * beer_size :: CCA <https://www.svgrepo.com/svg/412236/measure>
