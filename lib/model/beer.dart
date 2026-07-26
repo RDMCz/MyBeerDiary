@@ -1,6 +1,7 @@
 // Beers can be reused in multiple events and in the one-off page
 
 import "package:my_beer_diary/db.dart";
+import "package:my_beer_diary/logic/alcohol.dart";
 
 const String beerTable = "Beers";
 const String beerColId = "_id";
@@ -79,30 +80,19 @@ class Beer {
   String toString() =>
       "id=$id, breweryName=$breweryName, description=$description, epm=$epm, abv=$abv, color=$color";
 
-  static const Beer defaultBeer = Beer(
-    id: 0,
-    breweryName: "Neznámý pivovar",
-    description: "",
-    epm: 11.0,
-    abv: 4.4,
-    color: "",
-  );
+  // If user does not fill these fields, default values will be used
+  static const _defaultBreweryName = "Neznámý pivovar";
+  static const _defaultEpm = 11.0;
+  static const _defaultAbv = 4.4;
 
-  /// Returns copy of inputted Beer [b] with members [breweryName], [epm], [abv] set to default values, if they are empty/negative in [b]
-  static Beer normalize(Beer b) {
-    return Beer(
-      id: b.id,
+  static String breweryNameOrDefault(String s) =>
+      s.isNotEmpty ? s : _defaultBreweryName;
 
-      breweryName: b.breweryName.isNotEmpty
-          ? b.breweryName
-          : defaultBeer.breweryName,
+  static double epmOrDefault(String s) =>
+      s.isNotEmpty ? textFieldToDouble(s) : _defaultEpm;
 
-      description: b.description,
-      epm: b.epm >= 0.0 ? b.epm : defaultBeer.epm,
-      abv: b.abv >= 0.0 ? b.abv : defaultBeer.abv,
-      color: b.color,
-    );
-  }
+  static double abvOrDefault(String s) =>
+      s.isNotEmpty ? textFieldToDouble(s) : _defaultAbv;
 }
 
 Future<void> beerAdd(Beer beer) async {

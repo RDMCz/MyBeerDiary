@@ -10,6 +10,7 @@ A new Flutter project.
 * [ ] __3rd party licence__
 * [ ] Use ListView.builder Instead of ListView ?
 * [ ] Number input fields by měly mít číselnou klávesnici
+* [ ] Default when adding new beer: guess ABV checked?
 * Selectable beer suggestion cards TODO:
   * [ ] Change brewery name input
   * [ ] Change color

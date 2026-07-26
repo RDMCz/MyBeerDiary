@@ -117,14 +117,14 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
                       // .: Adding new beer :.
                       ? () async {
                           await beerAdd(
-                            Beer.normalize(
-                              Beer(
-                                breweryName: breweryNameTextTrim,
-                                description: beerDescTextTrim,
-                                epm: textFieldToDouble(epmTEC.text),
-                                abv: textFieldToDouble(abvTEC.text),
-                                color: colorToHexString(beerColor),
+                            Beer(
+                              breweryName: Beer.breweryNameOrDefault(
+                                breweryNameTextTrim,
                               ),
+                              description: beerDescTextTrim,
+                              epm: Beer.epmOrDefault(epmTEC.text),
+                              abv: Beer.abvOrDefault(abvTEC.text),
+                              color: colorToHexString(beerColor),
                             ),
                           );
                           if (context.mounted) {
@@ -133,16 +133,19 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
                         }
                       // .: Editing existing beer :.
                       : () async {
+                          final breweryName = Beer.breweryNameOrDefault(
+                            breweryNameTextTrim,
+                          );
                           final isBreweryNameChange =
-                              widget.beer!.breweryName != breweryNameTextTrim;
+                              widget.beer!.breweryName != breweryName;
 
                           final isBeerDescChange =
                               widget.beer!.description != beerDescTextTrim;
 
-                          final epm = textFieldToDouble(epmTEC.text);
+                          final epm = Beer.epmOrDefault(epmTEC.text);
                           final isEpmChange = widget.beer!.epm != epm;
 
-                          final abv = textFieldToDouble(abvTEC.text);
+                          final abv = Beer.abvOrDefault(abvTEC.text);
                           final isAbvChange = widget.beer!.abv != abv;
 
                           final color = colorToHexString(beerColor);
@@ -159,7 +162,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
                             // Write changes to DB
                             await beerUpdate(
                               widget.beer!.copyWith(
-                                breweryName: () => breweryNameTextTrim,
+                                breweryName: () => breweryName,
                                 description: () => beerDescTextTrim,
                                 epm: () => epm,
                                 abv: () => abv,
