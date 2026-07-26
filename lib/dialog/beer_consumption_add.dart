@@ -1,14 +1,20 @@
 import "dart:ui";
 import "package:escape_parent_padding/escapable_padding.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
+import "package:my_beer_diary/logic/alcohol.dart";
+import "package:my_beer_diary/logic/beer_size.dart";
+import "package:my_beer_diary/logic/color.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/beer_card_mini.dart";
 import "package:my_beer_diary/widget/beer_form.dart";
 import "package:my_beer_diary/widget/brewery_input.dart";
 import "package:my_beer_diary/widget/checkbox.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
+
+const _initialCustomBeerSizeValue = 0.4;
 
 enum BeerSize { small, large, custom }
 
@@ -34,10 +40,12 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
   final abvTEC = TextEditingController();
   final priceTEC = TextEditingController();
   Color beerColor = beerColorGold;
-  BeerSize beerSizeSelected = BeerSize.large;
-  double litresValue = 0.4;
 
-  int? selectedBeerIdx;
+  BeerSize beerSizeSelected = BeerSize.large;
+  double customBeerSizeValue = _initialCustomBeerSizeValue;
+  String customBeerSizeName = doubleToBeerSizeStr(_initialCustomBeerSizeValue);
+
+  Beer? selectedBeer;
 
   @override
   void dispose() {
@@ -75,6 +83,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
 
             // = Brewery name input =
             BreweryInput(
+              initialValue: breweryNameStr,
               onTextChanged: (value) {
                 setState(() {
                   breweryNameStr = value;
@@ -96,34 +105,76 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                   children: [
                     // - New beer card -
                     Card(
-                      child: Padding(
-                        padding: CardCommon.miniPadding,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Nové pivo ",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                      clipBehavior: Clip.hardEdge,
+                      child: InkWell(
+                        child: Padding(
+                          padding: CardCommon.miniPadding,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Nové pivo ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Text(
+                                    breweryNameStr.isNotEmpty
+                                        ? "Přidat nové pivo\nod pivovaru „$breweryNameStr“"
+                                        : "Přidat nové pivo\nod neznámého pivovaru",
+                                  ),
+                                ],
                               ),
-                            ),
-                            Text(
-                              "Přidat nové pivo\nod pivovaru „$breweryNameStr“",
-                            ),
-                          ],
+                              IgnorePointer(
+                                child: Checkbox(
+                                  value: selectedBeer == null,
+                                  // Checkbox checking is handled on InkWell tapping, hence the empty function here
+                                  onChanged: (_) {},
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+                        onTap: () {
+                          setState(() {
+                            selectedBeer = null;
+                            //breweryNameStr = ""; // Not desired
+                            beerDescTEC.text = "";
+                            epmTEC.text = "";
+                            abvTEC.text = "";
+                            beerColor = beerColorGold;
+                          });
+                        },
                       ),
                     ),
 
-                    // - Beer suggestions -
+                    // - Beer suggestion cards -
                     if (breweryNameStr.length >= 2)
                       for (final beer in widget.beers.where(
                         (e) => e.breweryName.toLowerCase().contains(
                           breweryNameStr.toLowerCase(),
                         ),
                       ))
-                        BeerCardMini(beer: beer),
+                        BeerCardMini(
+                          beer: beer,
+                          isSelected:
+                              selectedBeer != null &&
+                              selectedBeer!.id == beer.id,
+                          onTap: () {
+                            setState(() {
+                              selectedBeer = beer;
+                              breweryNameStr = beer.breweryName;
+                              beerDescTEC.text = beer.description;
+                              epmTEC.text = doubleToTextField(beer.epm);
+                              abvTEC.text = doubleToTextField(beer.abv);
+                              beerColor = hexStringToColor(beer.color);
+                            });
+                          },
+                        ),
                   ],
                 ),
               ),
@@ -169,7 +220,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                         ),
                         ButtonSegment(
                           value: BeerSize.custom,
-                          label: Text("Čtyřka"),
+                          label: Text(customBeerSizeName),
                           icon: SvgIcon(icon: SvgIcons.beerSizeCustom),
                         ),
                       ],
@@ -185,15 +236,20 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                       showSelectedIcon: false,
                     ),
                     Slider(
-                      value: litresValue,
-                      onChanged: (double value) {
-                        setState(() {
-                          litresValue = value;
-                        });
-                      },
+                      value: customBeerSizeValue,
+                      onChanged: beerSizeSelected != BeerSize.custom
+                          ? null
+                          : (double value) {
+                              setState(() {
+                                customBeerSizeValue = value;
+                                customBeerSizeName = doubleToBeerSizeStr(
+                                  customBeerSizeValue,
+                                );
+                              });
+                            },
                       min: 0.1,
                       max: 1.0,
-                      divisions: 10,
+                      divisions: 9,
                     ),
 
                     // = Price =
@@ -204,6 +260,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                         suffixIcon: SuffixSvgIcon(icon: SvgIcons.money),
                       ),
                       controller: priceTEC,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     ),
                   ],
                 ),
@@ -223,7 +280,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                   ),
                 ),
                 Spacer(),
-                // = Button =
+                // = Button to add beer consumption =
                 FloatingActionButton.extended(
                   label: Text("Přidat"),
                   icon: Icon(Icons.add),

@@ -88,15 +88,18 @@ class Beer {
     color: "",
   );
 
+  /// Returns copy of inputted Beer [b] with members [breweryName], [epm], [abv] set to default values, if they are empty/negative in [b]
   static Beer normalize(Beer b) {
     return Beer(
       id: b.id,
+
       breweryName: b.breweryName.isNotEmpty
           ? b.breweryName
           : defaultBeer.breweryName,
+
       description: b.description,
-      epm: b.epm > 0.0 ? b.epm : defaultBeer.epm,
-      abv: b.abv > 0.0 ? b.abv : defaultBeer.abv,
+      epm: b.epm >= 0.0 ? b.epm : defaultBeer.epm,
+      abv: b.abv >= 0.0 ? b.abv : defaultBeer.abv,
       color: b.color,
     );
   }

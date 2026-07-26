@@ -9,6 +9,13 @@ A new Flutter project.
 * [ ] <https://www.fluttericon.com/>?
 * [ ] __3rd party licence__
 * [ ] Use ListView.builder Instead of ListView ?
+* [ ] Number input fields by měly mít číselnou klávesnici
+* Selectable beer suggestion cards TODO:
+  * [ ] Change brewery name input
+  * [ ] Change color
+  * [ ] Uncheck guess ABV checkbox before filling fields
+  * [ ] Set selectedBeer to null on brewery name field edit
+  * [ ] Disable beer form when beer suggestion selected
 
 ---
 
