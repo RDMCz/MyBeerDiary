@@ -3,24 +3,28 @@ import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
 class BreweryInput extends StatefulWidget {
-  final ValueChanged<String> onTextChanged;
-  final String? initialValue;
+  final TextEditingController textEditController;
 
-  const BreweryInput({
-    super.key,
-    required this.onTextChanged,
-    this.initialValue,
-  });
+  const BreweryInput({super.key, required this.textEditController});
 
   @override
   State<BreweryInput> createState() => _BreweryInputState();
 }
 
 class _BreweryInputState extends State<BreweryInput> {
+  final FocusNode focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Autocomplete(
-      initialValue: TextEditingValue(text: widget.initialValue ?? ""),
+      textEditingController: widget.textEditController,
+      focusNode: focusNode,
       optionsBuilder: (TextEditingValue value) {
         // Ignore when input empty or 1 character long
         if (value.text.length < 2) {
@@ -32,20 +36,16 @@ class _BreweryInputState extends State<BreweryInput> {
         });
       },
       fieldViewBuilder:
-          (context, textEditingController, focusNode, onFieldSubmitted) {
-            textEditingController.addListener(() {
-              widget.onTextChanged(textEditingController.text);
-            });
-            return TextFormField(
-              controller: textEditingController,
-              focusNode: focusNode,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Název pivovaru",
-                suffixIcon: SuffixSvgIcon(icon: SvgIcons.brewery),
+          (context, textEditingController, focusNode, onFieldSubmitted) =>
+              TextFormField(
+                controller: textEditingController,
+                focusNode: focusNode,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Název pivovaru",
+                  suffixIcon: SuffixSvgIcon(icon: SvgIcons.brewery),
+                ),
               ),
-            );
-          },
     );
   }
 }

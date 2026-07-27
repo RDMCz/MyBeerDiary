@@ -17,7 +17,7 @@ class BeerAddEditDialog extends StatefulWidget {
 }
 
 class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
-  String breweryNameStr = "";
+  final breweryTEC = TextEditingController();
   final beerDescTEC = TextEditingController();
   final epmTEC = TextEditingController();
   final abvTEC = TextEditingController();
@@ -26,11 +26,12 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
   @override
   void initState() {
     super.initState();
+    breweryTEC.addListener(() => setState(() {}));
     beerDescTEC.addListener(() => setState(() {}));
     epmTEC.addListener(() => setState(() {}));
 
     if (widget.beer != null) {
-      breweryNameStr = widget.beer!.breweryName;
+      breweryTEC.text = widget.beer!.breweryName;
       beerDescTEC.text = widget.beer!.description;
       epmTEC.text = doubleToTextField(widget.beer!.epm);
       abvTEC.text = doubleToTextField(widget.beer!.abv);
@@ -40,6 +41,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
 
   @override
   void dispose() {
+    breweryTEC.dispose();
     beerDescTEC.dispose();
     epmTEC.dispose();
     abvTEC.dispose();
@@ -52,7 +54,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
     final headerActionText = isEdit ? "Upravit" : "Nové";
     final buttonActionText = isEdit ? "Potvrdit" : "OK";
 
-    final breweryNameTextTrim = breweryNameStr.trim();
+    final breweryNameTextTrim = breweryTEC.text.trim();
     final beerDescTextTrim = beerDescTEC.text.trim();
     final isValid =
         breweryNameTextTrim.isNotEmpty || beerDescTextTrim.isNotEmpty;
@@ -74,14 +76,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
             SizedBox(height: DialogCommon.headerMarginBottom),
 
             // = Form body =
-            BreweryInput(
-              initialValue: breweryNameStr,
-              onTextChanged: (value) {
-                setState(() {
-                  breweryNameStr = value;
-                });
-              },
-            ),
+            BreweryInput(textEditController: breweryTEC),
             SizedBox(height: DialogCommon.bodyMarginBottom),
             BeerForm(
               beerDescTEC: beerDescTEC,

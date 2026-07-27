@@ -34,7 +34,6 @@ class CardCommon {
 }
 
 class CardListCommon {
-  //static const listPadding = EdgeInsets.symmetric(horizontal: 12.0);
   static const _listPaddingHorizontal = 12.0;
   static const listPadding = EdgeInsets.only(
     // Space after all cards so user can scroll little further and see the whole card (otherwise FAB would cover it)
@@ -44,7 +43,4 @@ class CardListCommon {
   );
 
   static const itemPadding = EdgeInsets.only(bottom: 6.0);
-
-  // Used in SizedBox after all cards so user can scroll little further and see the whole card (otherwise FAB would cover it)
-  static const extraBottomSpace = 72.0;
 }

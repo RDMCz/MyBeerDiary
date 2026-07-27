@@ -30,12 +30,13 @@ class BeerConsumptionAddDialog extends StatefulWidget {
 }
 
 class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
+  // Outline card serves as a "group box"
   static const _outlineCardPadding = EdgeInsets.symmetric(
     horizontal: 11,
     vertical: 13,
   );
 
-  String breweryNameStr = "";
+  final breweryTEC = TextEditingController();
   final beerDescTEC = TextEditingController();
   final epmTEC = TextEditingController();
   final abvTEC = TextEditingController();
@@ -49,7 +50,18 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
   Beer? selectedBeer;
 
   @override
+  void initState() {
+    super.initState();
+    breweryTEC.addListener(() => setState(() {}));
+    /*
+    beerDescTEC.addListener(() => setState(() {}));
+    epmTEC.addListener(() => setState(() {}));
+    */
+  }
+
+  @override
   void dispose() {
+    breweryTEC.dispose();
     beerDescTEC.dispose();
     epmTEC.dispose();
     abvTEC.dispose();
@@ -87,14 +99,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
               SizedBox(height: DialogCommon.headerMarginBottom),
 
               // = Brewery name input =
-              BreweryInput(
-                initialValue: breweryNameStr,
-                onTextChanged: (value) {
-                  setState(() {
-                    breweryNameStr = value;
-                  });
-                },
-              ),
+              BreweryInput(textEditController: breweryTEC),
               SizedBox(height: DialogCommon.bodyMarginBottom),
 
               // = Beer suggestions horizontal scroll =
@@ -110,12 +115,12 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                     children: [
                       // - New beer card -
                       BeerCardMiniNew(
-                        breweryNameStr: breweryNameStr,
+                        breweryNameStr: breweryTEC.text,
                         isSelected: selectedBeer == null,
                         onTap: () {
                           setState(() {
                             selectedBeer = null;
-                            //breweryNameStr = ""; // Not desired
+                            //breweryTEC.text = ""; // Not desired
                             beerDescTEC.text = "";
                             epmTEC.text = "";
                             abvTEC.text = "";
@@ -125,10 +130,10 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                       ),
 
                       // - Beer suggestion cards -
-                      if (breweryNameStr.length >= 2)
+                      if (breweryTEC.text.length >= 2)
                         for (final beer in widget.beers.where(
                           (e) => e.breweryName.toLowerCase().contains(
-                            breweryNameStr.toLowerCase(),
+                            breweryTEC.text.toLowerCase(),
                           ),
                         ))
                           BeerCardMini(
@@ -139,7 +144,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                             onTap: () {
                               setState(() {
                                 selectedBeer = beer;
-                                breweryNameStr = beer.breweryName;
+                                breweryTEC.text = beer.breweryName;
                                 beerDescTEC.text = beer.description;
                                 epmTEC.text = doubleToTextField(beer.epm);
                                 abvTEC.text = doubleToTextField(beer.abv);
