@@ -13,6 +13,7 @@ class BeerForm extends StatefulWidget {
   final TextEditingController abvTEC;
   final Color initialColor;
   final ValueChanged<Color> onColorChanged;
+  //final bool initialIsAbvGuess;
 
   const BeerForm({
     super.key,
@@ -21,6 +22,7 @@ class BeerForm extends StatefulWidget {
     required this.abvTEC,
     required this.initialColor,
     required this.onColorChanged,
+    //required this.initialIsAbvGuess,
   });
 
   @override
@@ -29,6 +31,14 @@ class BeerForm extends StatefulWidget {
 
 class _BeerFormState extends State<BeerForm> {
   bool isAbvGuess = false;
+
+  /*
+  @override
+  void initState() {
+    super.initState();
+    isAbvGuess = widget.initialIsAbvGuess;
+  }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +74,7 @@ class _BeerFormState extends State<BeerForm> {
                 ),
                 controller: widget.epmTEC,
                 inputFormatters: [DecimalInputFormatter()],
+                keyboardType: TextInputType.number,
               ),
             ),
             // ⇝
@@ -86,6 +97,7 @@ class _BeerFormState extends State<BeerForm> {
                 controller: widget.abvTEC,
                 enabled: !isAbvGuess,
                 inputFormatters: [DecimalInputFormatter()],
+                keyboardType: TextInputType.number,
               ),
             ),
           ],
@@ -109,7 +121,7 @@ class _BeerFormState extends State<BeerForm> {
           colors: beerColors,
           initialColor: widget.initialColor,
           onColorChanged: widget.onColorChanged,
-        ),        
+        ),
       ],
     );
   }

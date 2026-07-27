@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/beer_add_edit.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
@@ -13,7 +14,7 @@ class BeerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(6),
+        padding: CardCommon.normalPadding,
         child: Row(
           children: [
             // = Info column =

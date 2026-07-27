@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/tag_add_edit.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/tag_chip.dart";
@@ -13,7 +14,7 @@ class TagCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(6),
+        padding: CardCommon.normalPadding,
         child: Row(
           children: [
             // = Tag name =
@@ -54,7 +55,7 @@ class TagCard extends StatelessWidget {
                     ],
                   ),
                 );
-        
+
                 if (result ?? false) {
                   await tagDelete(tag.id!);
                   refreshTags();

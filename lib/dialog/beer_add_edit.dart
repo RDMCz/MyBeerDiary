@@ -93,6 +93,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
                   beerColor = color;
                 });
               },
+              //initialIsAbvGuess: !isEdit,
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
 

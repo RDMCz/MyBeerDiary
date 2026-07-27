@@ -1,16 +1,7 @@
-# my_beer_diary
-
-A new Flutter project.
+# Můj pivní deníček
 
 * [ ] Barvičky
-* [ ] Mezery mezi kartama
-* [ ] CardCommon
-* [x] Tag color, beer color
-* [ ] <https://www.fluttericon.com/>?
-* [ ] __3rd party licence__
-* [ ] Use ListView.builder Instead of ListView ?
-* [ ] Number input fields by měly mít číselnou klávesnici
-* [ ] Default when adding new beer: guess ABV checked?
+* [ ] Use ListView.builder instead of ListView ?
 * Selectable beer suggestion cards TODO:
   * [ ] Change brewery name input
   * [ ] Change color
@@ -20,6 +11,7 @@ A new Flutter project.
 
 ---
 
+* [ ] __3rd party licence__
 * Icon
   * abv :: OG
   * beer :: MIT <https://www.svgrepo.com/svg/455286/beer-foam-drink>

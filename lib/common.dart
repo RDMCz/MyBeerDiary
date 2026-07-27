@@ -25,7 +25,12 @@ class DialogCommon {
 }
 
 class CardCommon {
-  static const miniPadding = EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+  static const normalPadding = EdgeInsets.all(6.0);
+  
+  static const miniPadding = EdgeInsets.symmetric(
+    horizontal: 8.0,
+    vertical: 4.0,
+  );
 }
 
 class CardListCommon {
