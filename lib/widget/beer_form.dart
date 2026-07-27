@@ -31,14 +31,14 @@ class BeerForm extends StatefulWidget {
 
 class _BeerFormState extends State<BeerForm> {
   bool isAbvGuess = false;
+  Color beerColor = beerColorGold;
 
-  /*
   @override
   void initState() {
     super.initState();
-    isAbvGuess = widget.initialIsAbvGuess;
+    //isAbvGuess = widget.initialIsAbvGuess;
+    beerColor = widget.initialColor;
   }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -119,8 +119,13 @@ class _BeerFormState extends State<BeerForm> {
         // - color
         ColorPicker(
           colors: beerColors,
-          initialColor: widget.initialColor,
-          onColorChanged: widget.onColorChanged,
+          selectedColor: beerColor,
+          onColorChanged: (Color color) {
+            setState(() {
+              beerColor = color;
+              widget.onColorChanged(color);
+            });
+          },
         ),
       ],
     );

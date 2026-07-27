@@ -1,34 +1,16 @@
 import "package:flutter/material.dart";
 
-class ColorPicker extends StatefulWidget {
+class ColorPicker extends StatelessWidget {
   final List<Color> colors;
-  final Color initialColor;
+  final Color selectedColor;
   final ValueChanged<Color> onColorChanged;
 
   const ColorPicker({
     super.key,
     required this.colors,
-    required this.initialColor,
+    required this.selectedColor,
     required this.onColorChanged,
   });
-
-  @override
-  State<ColorPicker> createState() => _ColorPickerState();
-}
-
-class _ColorPickerState extends State<ColorPicker> {
-  Color? _currentColor;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentColor = widget.initialColor;
-  }
-
-  void _changeColor(Color color) {
-    setState(() => _currentColor = color);
-    widget.onColorChanged(color);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +21,12 @@ class _ColorPickerState extends State<ColorPicker> {
         spacing: iconSpacing,
         runSpacing: iconSpacing,
         children: [
-          for (final color in widget.colors)
+          for (final color in colors)
             GestureDetector(
-              onTap: () => _changeColor(color),
+              onTap: () => onColorChanged(color),
               child: ColorContainer(
                 color: color,
-                isCurrentColor: color == _currentColor,
+                isCurrentColor: color == selectedColor,
               ),
             ),
         ],
@@ -53,6 +35,7 @@ class _ColorPickerState extends State<ColorPicker> {
   }
 }
 
+/// Displays a specific color ([color]) as a box with an optional checkmark ([isCurrentColor])
 class ColorContainer extends StatelessWidget {
   final Color color;
   final bool isCurrentColor;
@@ -86,6 +69,7 @@ class ColorContainer extends StatelessWidget {
               Icons.done,
               color: darkColor,
               size: 24,
+              // White shadow around dark checkmark so it's visible on all backgrounds
               shadows: [
                 Shadow(color: Colors.white, offset: Offset(shadowOffset, 0)),
                 Shadow(color: Colors.white, offset: Offset(-shadowOffset, 0)),
