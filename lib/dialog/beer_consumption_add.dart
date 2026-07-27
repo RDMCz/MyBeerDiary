@@ -9,6 +9,7 @@ import "package:my_beer_diary/logic/beer_size.dart";
 import "package:my_beer_diary/logic/color.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/beer_card_mini.dart";
+import "package:my_beer_diary/widget/beer_card_mini_new.dart";
 import "package:my_beer_diary/widget/beer_form.dart";
 import "package:my_beer_diary/widget/brewery_input.dart";
 import "package:my_beer_diary/widget/checkbox.dart";
@@ -108,52 +109,19 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                     scrollDirection: Axis.horizontal,
                     children: [
                       // - New beer card -
-                      Card(
-                        clipBehavior: Clip.hardEdge,
-                        child: InkWell(
-                          child: Padding(
-                            padding: CardCommon.miniPadding,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Nové pivo ",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    Text(
-                                      breweryNameStr.isNotEmpty
-                                          ? "Přidat nové pivo\nod pivovaru „$breweryNameStr“"
-                                          : "Přidat nové pivo\nod neznámého pivovaru",
-                                    ),
-                                  ],
-                                ),
-                                IgnorePointer(
-                                  child: Checkbox(
-                                    value: selectedBeer == null,
-                                    // Checkbox checking is handled on InkWell tapping, hence the empty function here
-                                    onChanged: (_) {},
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              selectedBeer = null;
-                              //breweryNameStr = ""; // Not desired
-                              beerDescTEC.text = "";
-                              epmTEC.text = "";
-                              abvTEC.text = "";
-                              beerColor = beerColorGold;
-                            });
-                          },
-                        ),
+                      BeerCardMiniNew(
+                        breweryNameStr: breweryNameStr,
+                        isSelected: selectedBeer == null,
+                        onTap: () {
+                          setState(() {
+                            selectedBeer = null;
+                            //breweryNameStr = ""; // Not desired
+                            beerDescTEC.text = "";
+                            epmTEC.text = "";
+                            abvTEC.text = "";
+                            beerColor = beerColorGold;
+                          });
+                        },
                       ),
 
                       // - Beer suggestion cards -

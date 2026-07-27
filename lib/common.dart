@@ -26,7 +26,7 @@ class DialogCommon {
 
 class CardCommon {
   static const normalPadding = EdgeInsets.all(6.0);
-  
+
   static const miniPadding = EdgeInsets.symmetric(
     horizontal: 8.0,
     vertical: 4.0,
@@ -34,7 +34,15 @@ class CardCommon {
 }
 
 class CardListCommon {
-  static const listPadding = EdgeInsets.symmetric(horizontal: 12.0);
+  //static const listPadding = EdgeInsets.symmetric(horizontal: 12.0);
+  static const _listPaddingHorizontal = 12.0;
+  static const listPadding = EdgeInsets.only(
+    // Space after all cards so user can scroll little further and see the whole card (otherwise FAB would cover it)
+    bottom: 72.0,
+    left: _listPaddingHorizontal,
+    right: _listPaddingHorizontal,
+  );
+
   static const itemPadding = EdgeInsets.only(bottom: 6.0);
 
   // Used in SizedBox after all cards so user can scroll little further and see the whole card (otherwise FAB would cover it)

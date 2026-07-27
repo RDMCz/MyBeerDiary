@@ -31,17 +31,13 @@ class _TagsScreenState extends State<TagsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Správa tagů")),
-      body: ListView(
+      body: ListView.builder(
         padding: CardListCommon.listPadding,
-        children: [
-          for (final tag in _tags)
-            Padding(
-              padding: CardListCommon.itemPadding,
-              child: TagCard(tag: tag, refreshTags: _refreshTags),
-            ),
-
-          SizedBox(height: CardListCommon.extraBottomSpace),
-        ],
+        itemCount: _tags.length,
+        itemBuilder: (_, int idx) => Padding(
+          padding: CardListCommon.itemPadding,
+          child: TagCard(tag: _tags[idx], refreshTags: _refreshTags),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

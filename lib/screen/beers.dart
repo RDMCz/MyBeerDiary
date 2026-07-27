@@ -31,17 +31,13 @@ class _BeersScreenState extends State<BeersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Správa piv")),
-      body: ListView(
+      body: ListView.builder(
         padding: CardListCommon.listPadding,
-        children: [
-          for (final beer in _beers)
-            Padding(
-              padding: CardListCommon.itemPadding,
-              child: BeerCard(beer: beer, refreshBeers: _refreshBeers),
-            ),
-
-          SizedBox(height: CardListCommon.extraBottomSpace),
-        ],
+        itemCount: _beers.length,
+        itemBuilder: (_, int idx) => Padding(
+          padding: CardListCommon.itemPadding,
+          child: BeerCard(beer: _beers[idx], refreshBeers: _refreshBeers),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

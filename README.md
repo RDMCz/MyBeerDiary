@@ -1,7 +1,7 @@
 # Můj pivní deníček
 
 * [ ] Barvičky
-* [ ] Use ListView.builder instead of ListView ?
+* [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
 * Selectable beer suggestion cards TODO:
   * [ ] Change brewery name input
   * [ ] Change color
