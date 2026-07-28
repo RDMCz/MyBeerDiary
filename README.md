@@ -7,7 +7,7 @@
   * [x] Change brewery name input
   * [x] Change color
   * [x] Uncheck guess ABV checkbox before filling fields
-  * [ ] Set selectedBeer to null on brewery name field edit
+  * [x] Set selectedBeer to null on brewery name field edit
   * [ ] Disable beer form when beer suggestion selected
 
 ---

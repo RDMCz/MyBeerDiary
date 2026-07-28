@@ -15,8 +15,6 @@ import "package:my_beer_diary/widget/brewery_input.dart";
 import "package:my_beer_diary/widget/checkbox.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
-const _initialCustomBeerSizeValue = 0.4;
-
 enum BeerSize { small, large, custom }
 
 class BeerConsumptionAddDialog extends StatefulWidget {
@@ -37,6 +35,8 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
   );
 
   final breweryTEC = TextEditingController();
+  String breweryNameStrPrev = ""; // To check for text changes
+
   final beerDescTEC = TextEditingController();
   final epmTEC = TextEditingController();
   final abvTEC = TextEditingController();
@@ -44,20 +44,44 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
   Color beerColor = beerColorGold;
   bool isAbvGuess = false;
 
+  static const _initialCustomBeerSizeValue = 0.4;
   BeerSize beerSizeSelected = BeerSize.large;
   double customBeerSizeValue = _initialCustomBeerSizeValue;
   String customBeerSizeName = doubleToBeerSizeStr(_initialCustomBeerSizeValue);
 
   Beer? selectedBeer;
 
+  void clearBeerForm() {
+    setState(() {
+      selectedBeer = null;
+      beerDescTEC.text = "";
+      epmTEC.text = "";
+      abvTEC.text = "";
+      beerColor = beerColorGold;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    breweryTEC.addListener(() => setState(() {}));
-    /*
-    beerDescTEC.addListener(() => setState(() {}));
+    breweryTEC.addListener(() {
+      final breweryNameStr = breweryTEC.text;
+      // The listener gets also called on focus se we need to check if the text was actually changed
+      if (breweryNameStrPrev != breweryNameStr) {
+        breweryNameStrPrev = breweryNameStr;
+
+        // Update suggestions cards
+        setState(() {});
+
+        if (selectedBeer != null) {
+          // If user selects a beer and then starts editing breweryName field, selected card will probably disappear, so we unselect it
+          clearBeerForm();
+        }
+      }
+    });
+
+    // Update ABV if checkbox checked
     epmTEC.addListener(() => setState(() {}));
-    */
   }
 
   @override
@@ -72,6 +96,8 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final breweryNameTextTrim = breweryTEC.text.trim();
+
     return Dialog.fullscreen(
       child: SingleChildScrollView(
         child: Padding(
@@ -116,25 +142,16 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                     children: [
                       // - New beer card -
                       BeerCardMiniNew(
-                        breweryNameStr: breweryTEC.text,
+                        breweryNameStr: breweryNameTextTrim,
                         isSelected: selectedBeer == null,
-                        onTap: () {
-                          setState(() {
-                            selectedBeer = null;
-                            //breweryTEC.text = ""; // Not desired
-                            beerDescTEC.text = "";
-                            epmTEC.text = "";
-                            abvTEC.text = "";
-                            beerColor = beerColorGold;
-                          });
-                        },
+                        onTap: clearBeerForm,
                       ),
 
                       // - Beer suggestion cards -
-                      if (breweryTEC.text.length >= 2)
+                      if (breweryNameTextTrim.length >= 2)
                         for (final beer in widget.beers.where(
                           (e) => e.breweryName.toLowerCase().contains(
-                            breweryTEC.text.toLowerCase(),
+                            breweryNameTextTrim.toLowerCase(),
                           ),
                         ))
                           BeerCardMini(
@@ -145,12 +162,14 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                             onTap: () {
                               setState(() {
                                 isAbvGuess = false;
-                                selectedBeer = beer;
                                 breweryTEC.text = beer.breweryName;
                                 beerDescTEC.text = beer.description;
                                 epmTEC.text = doubleToTextField(beer.epm);
                                 abvTEC.text = doubleToTextField(beer.abv);
                                 beerColor = hexStringToColor(beer.color);
+
+                                // Beer must be set after changing brewery name field otherwise it would be set to null by listener
+                                selectedBeer = beer;
                               });
                             },
                           ),
