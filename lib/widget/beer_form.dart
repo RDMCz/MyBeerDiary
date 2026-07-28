@@ -13,7 +13,8 @@ class BeerForm extends StatefulWidget {
   final TextEditingController abvTEC;
   final Color beerColor;
   final ValueChanged<Color> onColorChanged;
-  //final bool initialIsAbvGuess;
+  final bool isAbvGuess;
+  final ValueChanged<bool> onIsAbvGuessChanged;
 
   const BeerForm({
     super.key,
@@ -22,7 +23,8 @@ class BeerForm extends StatefulWidget {
     required this.abvTEC,
     required this.beerColor,
     required this.onColorChanged,
-    //required this.initialIsAbvGuess,
+    required this.isAbvGuess,
+    required this.onIsAbvGuessChanged,
   });
 
   @override
@@ -30,18 +32,12 @@ class BeerForm extends StatefulWidget {
 }
 
 class _BeerFormState extends State<BeerForm> {
-  bool isAbvGuess = false;
-
-  @override
-  void initState() {
-    super.initState();
-    //isAbvGuess = widget.initialIsAbvGuess;
-  }
-
   @override
   Widget build(BuildContext context) {
     final iconColorEnabled = Theme.of(context).colorScheme.inverseSurface;
     final iconColorDisabled = Theme.of(context).colorScheme.secondary;
+
+    final isAbvGuess = widget.isAbvGuess;
 
     // Get ABV from EPM if checkbox checked
     if (isAbvGuess) {
@@ -106,11 +102,7 @@ class _BeerFormState extends State<BeerForm> {
           label: "Odhadnout procenta alkoholu ze stupňovistosti",
           padding: EdgeInsets.all(0),
           value: isAbvGuess,
-          onChanged: (bool newValue) {
-            setState(() {
-              isAbvGuess = newValue;
-            });
-          },
+          onChanged: widget.onIsAbvGuessChanged,
         ),
         SizedBox(height: DialogCommon.bodyMarginBottom),
 

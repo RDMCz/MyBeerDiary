@@ -42,6 +42,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
   final abvTEC = TextEditingController();
   final priceTEC = TextEditingController();
   Color beerColor = beerColorGold;
+  bool isAbvGuess = false;
 
   BeerSize beerSizeSelected = BeerSize.large;
   double customBeerSizeValue = _initialCustomBeerSizeValue;
@@ -143,6 +144,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                                 selectedBeer!.id == beer.id,
                             onTap: () {
                               setState(() {
+                                isAbvGuess = false;
                                 selectedBeer = beer;
                                 breweryTEC.text = beer.breweryName;
                                 beerDescTEC.text = beer.description;
@@ -172,7 +174,12 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                         beerColor = color;
                       });
                     },
-                    //initialIsAbvGuess: true,
+                    isAbvGuess: isAbvGuess,
+                    onIsAbvGuessChanged: (bool value) {
+                      setState(() {
+                        isAbvGuess = value;
+                      });
+                    },
                   ),
                 ),
               ),

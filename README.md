@@ -6,7 +6,7 @@
 * Selectable beer suggestion cards TODO:
   * [x] Change brewery name input
   * [x] Change color
-  * [ ] Uncheck guess ABV checkbox before filling fields
+  * [x] Uncheck guess ABV checkbox before filling fields
   * [ ] Set selectedBeer to null on brewery name field edit
   * [ ] Disable beer form when beer suggestion selected
 

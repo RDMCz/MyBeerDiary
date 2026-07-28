@@ -22,6 +22,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
   final epmTEC = TextEditingController();
   final abvTEC = TextEditingController();
   Color beerColor = beerColorGold;
+  bool isAbvGuess = false;
 
   @override
   void initState() {
@@ -88,7 +89,12 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
                   beerColor = color;
                 });
               },
-              //initialIsAbvGuess: !isEdit,
+              isAbvGuess: isAbvGuess,
+              onIsAbvGuessChanged: (bool value) {
+                setState(() {
+                  isAbvGuess = value;
+                });
+              },
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
 
