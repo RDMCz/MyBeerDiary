@@ -166,7 +166,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                     beerDescTEC: beerDescTEC,
                     epmTEC: epmTEC,
                     abvTEC: abvTEC,
-                    initialColor: beerColor,
+                    beerColor: beerColor,
                     onColorChanged: (Color color) {
                       setState(() {
                         beerColor = color;

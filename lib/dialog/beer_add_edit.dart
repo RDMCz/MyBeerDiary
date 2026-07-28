@@ -82,7 +82,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
               beerDescTEC: beerDescTEC,
               epmTEC: epmTEC,
               abvTEC: abvTEC,
-              initialColor: beerColor,
+              beerColor: beerColor,
               onColorChanged: (Color color) {
                 setState(() {
                   beerColor = color;

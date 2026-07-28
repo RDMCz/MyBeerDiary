@@ -11,7 +11,7 @@ class BeerForm extends StatefulWidget {
   final TextEditingController beerDescTEC;
   final TextEditingController epmTEC;
   final TextEditingController abvTEC;
-  final Color initialColor;
+  final Color beerColor;
   final ValueChanged<Color> onColorChanged;
   //final bool initialIsAbvGuess;
 
@@ -20,7 +20,7 @@ class BeerForm extends StatefulWidget {
     required this.beerDescTEC,
     required this.epmTEC,
     required this.abvTEC,
-    required this.initialColor,
+    required this.beerColor,
     required this.onColorChanged,
     //required this.initialIsAbvGuess,
   });
@@ -31,13 +31,11 @@ class BeerForm extends StatefulWidget {
 
 class _BeerFormState extends State<BeerForm> {
   bool isAbvGuess = false;
-  Color beerColor = beerColorGold;
 
   @override
   void initState() {
     super.initState();
     //isAbvGuess = widget.initialIsAbvGuess;
-    beerColor = widget.initialColor;
   }
 
   @override
@@ -119,13 +117,8 @@ class _BeerFormState extends State<BeerForm> {
         // - color
         ColorPicker(
           colors: beerColors,
-          selectedColor: beerColor,
-          onColorChanged: (Color color) {
-            setState(() {
-              beerColor = color;
-              widget.onColorChanged(color);
-            });
-          },
+          selectedColor: widget.beerColor,
+          onColorChanged: widget.onColorChanged,
         ),
       ],
     );
