@@ -3,12 +3,6 @@
 * [ ] Barvičky
 * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
 * [ ] Show brewery names from database in BreweryInput?
-* Selectable beer suggestion cards TODO:
-  * [x] Change brewery name input
-  * [x] Change color
-  * [x] Uncheck guess ABV checkbox before filling fields
-  * [x] Set selectedBeer to null on brewery name field edit
-  * [ ] Disable beer form when beer suggestion selected
 
 ---
 

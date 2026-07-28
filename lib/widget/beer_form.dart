@@ -8,6 +8,7 @@ import "package:my_beer_diary/widget/color_picker.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
 class BeerForm extends StatefulWidget {
+  final bool isEnabled;
   final TextEditingController beerDescTEC;
   final TextEditingController epmTEC;
   final TextEditingController abvTEC;
@@ -18,6 +19,7 @@ class BeerForm extends StatefulWidget {
 
   const BeerForm({
     super.key,
+    required this.isEnabled,
     required this.beerDescTEC,
     required this.epmTEC,
     required this.abvTEC,
@@ -54,6 +56,7 @@ class _BeerFormState extends State<BeerForm> {
             suffixIcon: SuffixSvgIcon(icon: SvgIcons.beer),
           ),
           controller: widget.beerDescTEC,
+          enabled: widget.isEnabled,
         ),
         SizedBox(height: DialogCommon.bodyMarginBottom),
         Row(
@@ -67,6 +70,7 @@ class _BeerFormState extends State<BeerForm> {
                   suffixIcon: SuffixSvgIcon(icon: SvgIcons.epm),
                 ),
                 controller: widget.epmTEC,
+                enabled: widget.isEnabled,
                 inputFormatters: [DecimalInputFormatter()],
                 keyboardType: TextInputType.number,
               ),
@@ -89,7 +93,7 @@ class _BeerFormState extends State<BeerForm> {
                   ),
                 ),
                 controller: widget.abvTEC,
-                enabled: !isAbvGuess,
+                enabled: widget.isEnabled && !isAbvGuess,
                 inputFormatters: [DecimalInputFormatter()],
                 keyboardType: TextInputType.number,
               ),
@@ -99,6 +103,7 @@ class _BeerFormState extends State<BeerForm> {
         SizedBox(height: DialogCommon.bodyMarginBottom),
 
         LabeledCheckbox(
+          isEnabled: widget.isEnabled,
           label: "Odhadnout procenta alkoholu ze stupňovistosti",
           padding: EdgeInsets.all(0),
           value: isAbvGuess,
@@ -108,6 +113,7 @@ class _BeerFormState extends State<BeerForm> {
 
         // - color
         ColorPicker(
+          isEnabled: widget.isEnabled,
           colors: beerColors,
           selectedColor: widget.beerColor,
           onColorChanged: widget.onColorChanged,

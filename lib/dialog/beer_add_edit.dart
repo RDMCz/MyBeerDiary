@@ -80,6 +80,7 @@ class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
             BreweryInput(textEditController: breweryTEC),
             SizedBox(height: DialogCommon.bodyMarginBottom),
             BeerForm(
+              isEnabled: true,
               beerDescTEC: beerDescTEC,
               epmTEC: epmTEC,
               abvTEC: abvTEC,

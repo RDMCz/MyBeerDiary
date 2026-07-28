@@ -1,12 +1,14 @@
 import "package:flutter/material.dart";
 
 class ColorPicker extends StatelessWidget {
+  final bool isEnabled;
   final List<Color> colors;
   final Color selectedColor;
   final ValueChanged<Color> onColorChanged;
 
   const ColorPicker({
     super.key,
+    required this.isEnabled,
     required this.colors,
     required this.selectedColor,
     required this.onColorChanged,
@@ -23,8 +25,9 @@ class ColorPicker extends StatelessWidget {
         children: [
           for (final color in colors)
             GestureDetector(
-              onTap: () => onColorChanged(color),
+              onTap: !isEnabled ? null : () => onColorChanged(color),
               child: ColorContainer(
+                isEnabled: isEnabled,
                 color: color,
                 isCurrentColor: color == selectedColor,
               ),
@@ -37,18 +40,22 @@ class ColorPicker extends StatelessWidget {
 
 /// Displays a specific color ([color]) as a box with an optional checkmark ([isCurrentColor])
 class ColorContainer extends StatelessWidget {
+  final bool isEnabled;
   final Color color;
   final bool isCurrentColor;
 
   const ColorContainer({
     super.key,
+    required this.isEnabled,
     required this.color,
     required this.isCurrentColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final darkColor = Theme.of(context).colorScheme.inverseSurface;
+    final darkColor = isEnabled
+        ? Theme.of(context).colorScheme.inverseSurface
+        : Theme.of(context).colorScheme.outlineVariant;
 
     const iconSize = 40.0;
     const iconBorderWidth = 1.309;

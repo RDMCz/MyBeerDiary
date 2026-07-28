@@ -76,7 +76,11 @@ class _TagAddEditDialogState extends State<TagAddEditDialog> {
             // = Color slider =
             Row(
               children: [
-                ColorContainer(color: tagColor, isCurrentColor: false),
+                ColorContainer(
+                  isEnabled: true,
+                  color: tagColor,
+                  isCurrentColor: false,
+                ),
                 Expanded(
                   child: Slider(
                     value: hueSliderValue,

@@ -49,6 +49,8 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
   double customBeerSizeValue = _initialCustomBeerSizeValue;
   String customBeerSizeName = doubleToBeerSizeStr(_initialCustomBeerSizeValue);
 
+  bool isDraft = true;
+
   Beer? selectedBeer;
 
   void clearBeerForm() {
@@ -184,6 +186,7 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                 child: Padding(
                   padding: _outlineCardPadding,
                   child: BeerForm(
+                    isEnabled: selectedBeer == null,
                     beerDescTEC: beerDescTEC,
                     epmTEC: epmTEC,
                     abvTEC: abvTEC,
@@ -280,10 +283,15 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                   // = Is draft checkbox =
                   Expanded(
                     child: LabeledCheckbox(
+                      isEnabled: true,
                       label: "Čepované",
-                      padding: .all(0),
-                      value: true,
-                      onChanged: (_) {},
+                      padding: EdgeInsets.all(0),
+                      value: isDraft,
+                      onChanged: (bool value) {
+                        setState(() {
+                          isDraft = value;
+                        });
+                      },
                     ),
                   ),
                   Spacer(),
