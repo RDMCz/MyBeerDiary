@@ -11,5 +11,5 @@ String secondsToDateString(int s) {
 
 String secondsToDateTimeString(int s) {
   final date = _secondsToDateTime(s);
-  return "${date.day}. ${date.month}. ${date.year} – ${date.hour}:${date.minute}";
+  return "${date.day}. ${date.month}. ${date.year} – ${date.hour}:${date.minute.toString().padLeft(2, "0")}";
 }

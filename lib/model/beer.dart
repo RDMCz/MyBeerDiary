@@ -1,5 +1,6 @@
 // Beers can be reused in multiple events and in the one-off page
 
+import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
 
@@ -80,19 +81,23 @@ class Beer {
   String toString() =>
       "id=$id, breweryName=$breweryName, description=$description, epm=$epm, abv=$abv, color=$color";
 
-  // If user does not fill these fields, default values will be used
-  static const _defaultBreweryName = "Neznámý pivovar";
-  static const _defaultEpm = 11.0;
-  static const _defaultAbv = 4.4;
+  // If user does not fill these fields or the beer was deleted, default values will be used
+  static const Beer defaultBeer = Beer(
+    breweryName: "Neznámý pivovar",
+    description: "",
+    epm: 11.0,
+    abv: 4.4,
+    color: beerColorGoldStr,
+  );
 
   static String breweryNameOrDefault(String s) =>
-      s.isNotEmpty ? s : _defaultBreweryName;
+      s.isNotEmpty ? s : defaultBeer.breweryName;
 
   static double epmOrDefault(String s) =>
-      s.isNotEmpty ? textFieldToDouble(s) : _defaultEpm;
+      s.isNotEmpty ? textFieldToDouble(s) : defaultBeer.epm;
 
   static double abvOrDefault(String s) =>
-      s.isNotEmpty ? textFieldToDouble(s) : _defaultAbv;
+      s.isNotEmpty ? textFieldToDouble(s) : defaultBeer.abv;
 }
 
 Future<int> beerAdd(Beer beer) async {
@@ -109,6 +114,12 @@ Future<List<Beer>> beerList() async {
   return [for (final m in maps) Beer.fromMap(m)];
 }
 
+Future<Map<int, Beer>> beerMap() async {
+  final db = await AppDatabase.instance.database;
+  final maps = await db.query(beerTable);
+  return {for (final m in maps) m[beerColId] as int: Beer.fromMap(m)};
+}
+
 Future<void> beerUpdate(Beer beer) async {
   final db = await AppDatabase.instance.database;
   await db.update(
@@ -122,5 +133,5 @@ Future<void> beerUpdate(Beer beer) async {
 Future<void> beerDelete(int id) async {
   final db = await AppDatabase.instance.database;
   await db.delete(beerTable, where: "$beerColId = ?", whereArgs: [id]);
-  //TODO
+  //TODO set beer FKs to NULL ?
 }

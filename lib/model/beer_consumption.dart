@@ -104,6 +104,12 @@ Future<List<BeerConsumption>> beerConsumptionList(int? eventId) async {
   return [for (final m in maps) BeerConsumption.fromMap(m)];
 }
 
+Future<List<BeerConsumption>> beerConsumptionListAll() async {
+  final db = await AppDatabase.instance.database;
+  final maps = await db.query(beerConsumptionTable);
+  return [for (final m in maps) BeerConsumption.fromMap(m)];
+}
+
 Future<void> beerConsumptionUpdate(BeerConsumption bc) async {
   final db = await AppDatabase.instance.database;
   await db.update(
@@ -120,5 +126,14 @@ Future<void> beerConsumptionDelete(int id) async {
     beerConsumptionTable,
     where: "$beerConsumptionColId = ?",
     whereArgs: [id],
+  );
+}
+
+Future<void> beerConsumptionOnEventDelete(int eventId) async {
+  final db = await AppDatabase.instance.database;
+  await db.delete(
+    beerConsumptionTable,
+    where: "$beerConsumptionColEventId = ?",
+    whereArgs: [eventId],
   );
 }

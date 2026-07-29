@@ -38,7 +38,6 @@ class BeerCard extends StatelessWidget {
                     "${beer.epm}° @ ${beer.abv} %",
                     style: TextStyle(fontSize: 16),
                   ),
-                  //Text("$beer"),
                 ],
               ),
             ),
@@ -46,7 +45,7 @@ class BeerCard extends StatelessWidget {
               children: [
                 // = Beer Icon =
                 SizedBox(
-                  height: 80,
+                  height: 70,
                   child: SvgCardIcon(
                     icon: SvgCardIcons.beerLarge,
                     color: beer.color,

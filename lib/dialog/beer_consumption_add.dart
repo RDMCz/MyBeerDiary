@@ -10,14 +10,13 @@ import "package:my_beer_diary/logic/color.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
+import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/widget/beer_card_mini.dart";
 import "package:my_beer_diary/widget/beer_card_mini_new.dart";
 import "package:my_beer_diary/widget/beer_form.dart";
 import "package:my_beer_diary/widget/brewery_input.dart";
 import "package:my_beer_diary/widget/checkbox.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
-
-enum BeerSize { small, large, custom }
 
 class BeerConsumptionAddDialog extends StatefulWidget {
   final int? eventId;
@@ -330,6 +329,9 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                         BeerSize.custom => customBeerSizeValue,
                       };
 
+                      // Resolve price
+                      final price = int.tryParse(priceTEC.text) ?? 0;
+
                       // Add beer consumption to DB
                       await beerConsumptionAdd(
                         BeerConsumption(
@@ -337,10 +339,19 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                           eventId: widget.eventId,
                           beerId: beerId,
                           litres: litres,
-                          price: int.tryParse(priceTEC.text) ?? 0,
+                          price: price,
                           isDraft: isDraft,
                         ),
                       );
+
+                      // Update event stats (total beers and total price)
+                      if (widget.eventId != null) {
+                        eventUpdateTotals(
+                          eventId: widget.eventId!,
+                          totalBeersIncrease: 1,
+                          totalCostIncrease: price,
+                        );
+                      }
 
                       // Close the dialog
                       if (context.mounted) {

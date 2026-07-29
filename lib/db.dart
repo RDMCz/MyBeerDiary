@@ -46,9 +46,6 @@ class AppDatabase {
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    await db.execute("DROP TABLE IF EXISTS EventBeers");
-    await db.execute("DROP TABLE IF EXISTS Oneoffs");
-
     await db.execute(tagTableDrop);
     await db.execute(eventTableDrop);
     await db.execute(beerTableDrop);

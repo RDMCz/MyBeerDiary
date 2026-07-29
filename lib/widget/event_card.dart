@@ -21,7 +21,7 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tagId = event.tagId;
-    final tag = tags.containsKey(tagId) ? tags[tagId] : null;
+    final Tag? tag = tags[tagId];
 
     return Card(
       clipBehavior: Clip.hardEdge,
@@ -65,11 +65,14 @@ class EventCard extends StatelessWidget {
             ],
           ),
         ),
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (_) => EventScreen(event: event, tag: tag),
+        onTap: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => EventScreen(event: event, tag: tag),
+            ),
           );
+          refreshEvents();
         },
         onLongPress: () async {
           final result = await showDialog(

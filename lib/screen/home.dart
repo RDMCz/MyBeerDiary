@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/event_add_edit.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/screen/settings.dart";
 import "package:my_beer_diary/widget/event_list.dart";
+import "package:my_beer_diary/widget/oneoff_list.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
 class Homescreen extends StatefulWidget {
@@ -36,14 +38,22 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
+  // = One-offs list =
+  List<BeerConsumption> _oneoffs = [];
+
+  Future<void> _refreshOneoffs() async {
+    final oneoffs = await beerConsumptionListAll(); //TODO temp
+    setState(() {
+      _oneoffs = oneoffs;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    // Initial [_bottomBarIndex] value is 0 => events tab is the default one
     _refreshEvents();
+    _refreshOneoffs();
   }
-
-  // = One-offs list =
 
   // = GUI =
   @override
@@ -62,7 +72,7 @@ class _HomescreenState extends State<Homescreen> {
               tags: _tags,
               refreshEvents: _refreshEvents,
             )
-          : Text("Index 1"),
+          : OneoffList(oneoffs: _oneoffs),
       // = BottomNavigationBar =
       bottomNavigationBar: BottomNavigationBar(
         items: [

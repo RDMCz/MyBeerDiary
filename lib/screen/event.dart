@@ -20,11 +20,11 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
-  List<Beer> _beers = [];
+  Map<int, Beer> _beers = {};
   List<BeerConsumption> _beerConsumptions = [];
 
   Future<void> _refreshBeers() async {
-    final beers = await beerList();
+    final beers = await beerMap();
     final beerConsumptions = await beerConsumptionList(widget.event.id);
 
     setState(() {
@@ -47,6 +47,7 @@ class _EventScreenState extends State<EventScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
+      // = Body with beerConsumption card list =
       body: ListView.builder(
         padding: EdgeInsets.symmetric(
           horizontal: CardListCommon.listPaddingHorizontal,
@@ -54,9 +55,13 @@ class _EventScreenState extends State<EventScreen> {
         itemCount: _beerConsumptions.length,
         itemBuilder: (_, int idx) => Padding(
           padding: CardListCommon.itemPadding,
-          child: BeerConsumptionCard(beerConsumption: _beerConsumptions[idx]),
+          child: BeerConsumptionCard(
+            beers: _beers,
+            beerConsumption: _beerConsumptions[idx],
+          ),
         ),
       ),
+      // = Bottom bar with stats and FAB =
       bottomNavigationBar: BottomAppBar(
         color: Color(0xfff4f1e7),
         height: 112,
@@ -82,7 +87,7 @@ class _EventScreenState extends State<EventScreen> {
                       context: context,
                       builder: (_) => BeerConsumptionAddDialog(
                         eventId: widget.event.id,
-                        beers: _beers,
+                        beers: _beers.values.toList(),
                       ),
                     );
                     if (result ?? false) {

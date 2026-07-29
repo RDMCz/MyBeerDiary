@@ -1,6 +1,7 @@
 // An event where a user drinks more than one beer
 
 import "package:my_beer_diary/db.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 
 const String eventTable = "Events";
 const String eventColId = "_id";
@@ -103,8 +104,38 @@ Future<void> eventUpdate(Event event) async {
   );
 }
 
+Future<void> eventUpdateTotals({
+  required int eventId,
+  required int totalBeersIncrease,
+  required int totalCostIncrease,
+}) async {
+  final db = await AppDatabase.instance.database;
+
+  final eventQuery = await db.query(
+    eventTable,
+    where: "$eventColId = ?",
+    whereArgs: [eventId],
+    limit: 1,
+  );
+
+  if (eventQuery.isEmpty) {
+    return;
+  }
+
+  final event = Event.fromMap(eventQuery.first);
+
+  await eventUpdate(
+    event.copyWith(
+      totalBeers: () => event.totalBeers + totalBeersIncrease,
+      totalCost: () => event.totalCost + totalCostIncrease,
+    ),
+  );
+}
+
 Future<void> eventDelete(int id) async {
   final db = await AppDatabase.instance.database;
+  // Delete the event
   await db.delete(eventTable, where: "$eventColId = ?", whereArgs: [id]);
-  //TODO smaž piva
+  // Delete event's beer consumptions
+  await beerConsumptionOnEventDelete(id);
 }
