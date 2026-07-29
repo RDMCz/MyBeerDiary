@@ -95,9 +95,9 @@ class Beer {
       s.isNotEmpty ? textFieldToDouble(s) : _defaultAbv;
 }
 
-Future<void> beerAdd(Beer beer) async {
+Future<int> beerAdd(Beer beer) async {
   final db = await AppDatabase.instance.database;
-  await db.insert(beerTable, beer.toMap());
+  return await db.insert(beerTable, beer.toMap());
 }
 
 Future<List<Beer>> beerList() async {

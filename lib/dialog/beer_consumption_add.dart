@@ -7,7 +7,9 @@ import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
 import "package:my_beer_diary/logic/beer_size.dart";
 import "package:my_beer_diary/logic/color.dart";
+import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/widget/beer_card_mini.dart";
 import "package:my_beer_diary/widget/beer_card_mini_new.dart";
 import "package:my_beer_diary/widget/beer_form.dart";
@@ -18,9 +20,14 @@ import "package:my_beer_diary/widget/svg_icon.dart";
 enum BeerSize { small, large, custom }
 
 class BeerConsumptionAddDialog extends StatefulWidget {
+  final int? eventId;
   final List<Beer> beers;
 
-  const BeerConsumptionAddDialog({super.key, required this.beers});
+  const BeerConsumptionAddDialog({
+    super.key,
+    required this.eventId,
+    required this.beers,
+  });
 
   @override
   State<BeerConsumptionAddDialog> createState() =>
@@ -299,7 +306,47 @@ class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
                   FloatingActionButton.extended(
                     label: Text("Přidat"),
                     icon: Icon(Icons.add),
-                    onPressed: () {},
+                    onPressed: () async {
+                      // Resolve Beer
+                      final beerId = selectedBeer != null
+                          ? selectedBeer!.id
+                          // selectedBeer == null => user wants to add new beer to DB
+                          : await beerAdd(
+                              Beer(
+                                breweryName: Beer.breweryNameOrDefault(
+                                  breweryNameTextTrim,
+                                ),
+                                description: beerDescTEC.text.trim(),
+                                epm: Beer.epmOrDefault(epmTEC.text),
+                                abv: Beer.abvOrDefault(abvTEC.text),
+                                color: colorToHexString(beerColor),
+                              ),
+                            );
+
+                      // Resolve litres
+                      final litres = switch (beerSizeSelected) {
+                        BeerSize.small => 0.3,
+                        BeerSize.large => 0.5,
+                        BeerSize.custom => customBeerSizeValue,
+                      };
+
+                      // Add beer consumption to DB
+                      await beerConsumptionAdd(
+                        BeerConsumption(
+                          timestamp: secondsSinceEpoch(),
+                          eventId: widget.eventId,
+                          beerId: beerId,
+                          litres: litres,
+                          price: int.tryParse(priceTEC.text) ?? 0,
+                          isDraft: isDraft,
+                        ),
+                      );
+
+                      // Close the dialog
+                      if (context.mounted) {
+                        Navigator.of(context).pop(true);
+                      }
+                    },
                   ),
                 ],
               ),

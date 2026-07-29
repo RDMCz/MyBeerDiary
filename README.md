@@ -1,6 +1,5 @@
 # Můj pivní deníček
 
-* [ ] Barvičky
 * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
 * [ ] Show brewery names from database in BreweryInput?
 

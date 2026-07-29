@@ -5,8 +5,9 @@ import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
-
-const isTempDebug = true;
+import "package:my_beer_diary/widget/beer_consumption_card.dart";
+import "package:my_beer_diary/widget/event_stat.dart";
+import "package:my_beer_diary/widget/svg_icon.dart";
 
 class EventScreen extends StatefulWidget {
   final Event event;
@@ -24,8 +25,8 @@ class _EventScreenState extends State<EventScreen> {
 
   Future<void> _refreshBeers() async {
     final beers = await beerList();
-    final beerConsumptions =
-        await beerConsumptionList(); //TODO only this event beers
+    final beerConsumptions = await beerConsumptionList(widget.event.id);
+
     setState(() {
       _beers = beers;
       _beerConsumptions = beerConsumptions;
@@ -44,57 +45,57 @@ class _EventScreenState extends State<EventScreen> {
         ? widget.event.name
         : "${widget.tag!.name} ${widget.event.name}";
 
-    return isTempDebug
-        ? Scaffold(
-            appBar: AppBar(title: Text(title)),
-            body: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 12),
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: ListView.builder(
+        padding: EdgeInsets.symmetric(
+          horizontal: CardListCommon.listPaddingHorizontal,
+        ),
+        itemCount: _beerConsumptions.length,
+        itemBuilder: (_, int idx) => Padding(
+          padding: CardListCommon.itemPadding,
+          child: BeerConsumptionCard(beerConsumption: _beerConsumptions[idx]),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Color(0xfff4f1e7),
+        height: 112,
+        child: Row(
+          children: [
+            Column(
+              spacing: 4,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (final _ in _beerConsumptions)
-                  Padding(padding: CardListCommon.listPadding),
-                TextButton(
+                EventStat(icon: SvgIcons.beer, text: "? piv"),
+                EventStat(icon: SvgIcons.money, text: "? Kč"),
+                EventStat(icon: SvgIcons.permille, text: "? promile"),
+              ],
+            ),
+            Spacer(),
+            SizedBox(
+              width: 72,
+              height: 72,
+              child: FittedBox(
+                child: FloatingActionButton(
                   onPressed: () async {
                     final result = await showDialog(
                       context: context,
-                      builder: (_) => BeerConsumptionAddDialog(beers: _beers),
+                      builder: (_) => BeerConsumptionAddDialog(
+                        eventId: widget.event.id,
+                        beers: _beers,
+                      ),
                     );
                     if (result ?? false) {
-                      //
+                      _refreshBeers();
                     }
                   },
-                  child: Text("Add"),
+                  child: Icon(Icons.add),
                 ),
-              ],
+              ),
             ),
-          )
-        // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        : Scaffold(
-            appBar: AppBar(title: Text(title)),
-            body: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              children: [
-                for (final _ in _beerConsumptions)
-                  Padding(padding: CardListCommon.listPadding),
-              ],
-            ),
-            bottomNavigationBar: BottomAppBar(color: Colors.amber),
-
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                final result = await showDialog(
-                  context: context,
-                  builder: (_) => BeerConsumptionAddDialog(beers: _beers),
-                );
-                if (result ?? false) {
-                  //
-                }
-              },
-              child: Icon(Icons.add),
-            ),
-            // (https://github.com/flutter/flutter/issues/140733)
-            // This FAB placement crashes while debugging on desktop and in browser, but not in emulator:
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.endContained,
-          );
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -27,6 +27,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Homescreen());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Můj pivní deníček",
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xfff5ddb1),
+          surface: Color(0xfffffefa),
+          surfaceContainerLow: Colors.white,
+          surfaceContainerHigh: Colors.white,
+          surfaceContainer: Color(0xfffffefa),
+        ),
+        cardTheme: CardThemeData(elevation: 2.0),
+      ),
+      home: Homescreen(),
+    );
   }
 }
