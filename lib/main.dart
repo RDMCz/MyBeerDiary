@@ -1,6 +1,7 @@
 import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/screen/home.dart";
 import "package:sqflite_common_ffi/sqflite_ffi.dart";
 import "package:sqflite_common_ffi_web/sqflite_ffi_web.dart";
@@ -32,11 +33,11 @@ class MainApp extends StatelessWidget {
       title: "Můj pivní deníček",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color(0xfff5ddb1),
-          surface: Color(0xfffffefa),
-          surfaceContainerLow: Colors.white,
-          surfaceContainerHigh: Colors.white,
-          surfaceContainer: Color(0xfffffefa),
+          seedColor: appColorSeed,
+          surface: appColorSurface,
+          surfaceContainer: appColorSurface,
+          surfaceContainerLow: appColorContainer,
+          surfaceContainerHigh: appColorContainer,
         ),
         cardTheme: CardThemeData(elevation: 2.0),
       ),

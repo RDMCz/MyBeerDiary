@@ -5,15 +5,22 @@ import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/widget/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/event_stat.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
 class EventScreen extends StatefulWidget {
+  final UserSettings userSettings;
   final Event event;
   final Tag? tag;
 
-  const EventScreen({super.key, required this.event, required this.tag});
+  const EventScreen({
+    super.key,
+    required this.userSettings,
+    required this.event,
+    required this.tag,
+  });
 
   @override
   State<EventScreen> createState() => _EventScreenState();
@@ -73,7 +80,10 @@ class _EventScreenState extends State<EventScreen> {
               children: [
                 EventStat(icon: SvgIcons.beer, text: "? piv"),
                 EventStat(icon: SvgIcons.money, text: "? Kč"),
-                EventStat(icon: SvgIcons.permille, text: "? promile"),
+                EventStat(
+                  icon: SvgIcons.permille,
+                  text: "? promile, ${widget.userSettings.weight}",
+                ),
               ],
             ),
             Spacer(),

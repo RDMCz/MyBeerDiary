@@ -56,7 +56,7 @@ class _TagAddEditDialogState extends State<TagAddEditDialog> {
       child: Padding(
         padding: DialogCommon.contentPadding,
         child: Column(
-          mainAxisSize: .min,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // = Header =

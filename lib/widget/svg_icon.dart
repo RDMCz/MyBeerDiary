@@ -14,7 +14,8 @@ enum SvgIcons {
   beerSizeLarge("beer_size_large"),
   beerSizeCustom("beer_size_custom"),
   money("money"),
-  permille("permille");
+  permille("permille"),
+  repeat("repeat");
 
   final String filename;
 

@@ -3,7 +3,8 @@ import "package:my_beer_diary/dialog/event_add_edit.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
-import "package:my_beer_diary/screen/settings.dart";
+import "package:my_beer_diary/model/user_settings.dart";
+import "package:my_beer_diary/screen/home_drawer.dart";
 import "package:my_beer_diary/widget/event_list.dart";
 import "package:my_beer_diary/widget/oneoff_list.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
@@ -48,11 +49,23 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
+  // = User settings =
+  UserSettings _userSettings = UserSettings.defaultUserSettings;
+
+  Future<void> _refreshUserSettings() async {
+    final userSettings = await userSettingsGet();
+    setState(() {
+      _userSettings = userSettings;
+    });
+  }
+
+  // = Init =
   @override
   void initState() {
     super.initState();
     _refreshEvents();
     _refreshOneoffs();
+    _refreshUserSettings();
   }
 
   // = GUI =
@@ -68,6 +81,7 @@ class _HomescreenState extends State<Homescreen> {
       // = Body with selected page =
       body: isEventPageSelected
           ? EventList(
+              userSettings: _userSettings,
               events: _events,
               tags: _tags,
               refreshEvents: _refreshEvents,
@@ -99,23 +113,10 @@ class _HomescreenState extends State<Homescreen> {
         onTap: _onBottomBarTap,
       ),
       // = Hamburger menu =
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Nastavení"),
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => SettingsScreen()),
-                );
-                // Refresh list after coming back from the settings (user may have changed some tags)
-                _refreshEvents();
-              },
-            ),
-          ],
-        ),
+      drawer: HomeDrawer(
+        refreshEvents: _refreshEvents,
+        refreshOneoffs: _refreshOneoffs,
+        refreshUserSettings: _refreshUserSettings,
       ),
       // = Plus button in the middle of BottomNavigationBar =
       floatingActionButton: FloatingActionButton(

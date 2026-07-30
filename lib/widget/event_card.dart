@@ -3,16 +3,19 @@ import "package:my_beer_diary/dialog/event_add_edit.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/screen/event.dart";
 import "package:my_beer_diary/widget/tag_chip.dart";
 
 class EventCard extends StatelessWidget {
+  final UserSettings userSettings;
   final Event event;
   final Map<int, Tag> tags;
   final VoidCallback refreshEvents;
 
   const EventCard({
     super.key,
+    required this.userSettings,
     required this.event,
     required this.tags,
     required this.refreshEvents,
@@ -69,7 +72,11 @@ class EventCard extends StatelessWidget {
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => EventScreen(event: event, tag: tag),
+              builder: (_) => EventScreen(
+                userSettings: userSettings,
+                event: event,
+                tag: tag,
+              ),
             ),
           );
           refreshEvents();

@@ -199,6 +199,10 @@ const List<String> breweryNames = [
   "Žlebské Chvalovice",
 ];
 
+const appColorSeed = Color(0xfff5ddb1);
+const appColorSurface = Color(0xfffffefa);
+const appColorContainer = Color(0xffffffff);
+
 const beerColorStraw = Color(0xfff3eb8f);
 const beerColorGold = Color(0xfffec95a);
 const beerColorAmber = Color(0xffd67100);

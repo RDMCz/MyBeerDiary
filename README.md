@@ -1,12 +1,28 @@
 # Můj pivní deníček
 
+* [ ] Rename files/classes a lil bit
 * [ ] Podtržítka?
 * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
 * [ ] Show brewery names from database in BreweryInput?
 
 ---
 
-* [ ] __3rd party licence__ (packages, icons)
+## Lincense
+
+### Dependencies
+
+Package|Author|License
+---|---|---
+[escape_parent_padding](https://pub.dev/packages/escape_parent_padding)|Mohamed Elsayed|[MIT](https://github.com/mosayyyed/escape_parent_padding/blob/main/LICENSE)
+[flutter](https://github.com/flutter/flutter)|The Flutter Authors|[BSD-3-Clause](https://github.com/flutter/flutter/blob/master/LICENSE)
+[flutter_svg](https://pub.dev/packages/flutter_svg)|Dan Field|[MIT](https://github.com/flutter/packages/blob/main/third_party/packages/flutter_svg/LICENSE)
+[path](https://pub.dev/packages/path)|the Dart project authors|[BSD-3-Clause](https://github.com/dart-lang/core/blob/main/pkgs/path/LICENSE)
+[shared_preferences](https://pub.dev/packages/shared_preferences)|The Flutter Authors|[BSD-3-Clause](https://github.com/flutter/packages/blob/main/packages/shared_preferences/shared_preferences/LICENSE)
+[sqflite](https://pub.dev/packages/sqflite)|Alexandre Roux Tekartik|[BSD-2-Clause](https://github.com/tekartik/sqflite/blob/master/sqflite/LICENSE)
+[sqflite_common_ffi](https://pub.dev/packages/sqflite_common_ffi)|Alexandre Roux Tekartik|[BSD-2-Clause](https://github.com/tekartik/sqflite/blob/master/sqflite_common_ffi/LICENSE)
+[sqflite_common_ffi_web](https://pub.dev/packages/sqflite_common_ffi_web)|Alexandre Roux Tekartik|[BSD-2-Clause](https://github.com/tekartik/sqflite/blob/master/packages_web/sqflite_common_ffi_web/LICENSE)
+
+### Icons
 
 Icon|Artist|License|SVGRepo ID
 ---|---|---|---
