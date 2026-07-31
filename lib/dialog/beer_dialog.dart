@@ -4,19 +4,19 @@ import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
 import "package:my_beer_diary/logic/color.dart";
 import "package:my_beer_diary/model/beer.dart";
-import "package:my_beer_diary/widget/beer_form.dart";
-import "package:my_beer_diary/widget/brewery_input.dart";
+import "package:my_beer_diary/widget/form/beer_form.dart";
+import "package:my_beer_diary/widget/form/brewery_input.dart";
 
-class BeerAddEditDialog extends StatefulWidget {
+class BeerDialog extends StatefulWidget {
   final Beer? beer;
 
-  const BeerAddEditDialog({super.key, this.beer});
+  const BeerDialog({super.key, this.beer});
 
   @override
-  State<BeerAddEditDialog> createState() => _BeerAddEditDialogState();
+  State<BeerDialog> createState() => _BeerDialogState();
 }
 
-class _BeerAddEditDialogState extends State<BeerAddEditDialog> {
+class _BeerDialogState extends State<BeerDialog> {
   final breweryTEC = TextEditingController();
   final beerDescTEC = TextEditingController();
   final epmTEC = TextEditingController();

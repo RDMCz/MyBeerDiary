@@ -1,9 +1,9 @@
 # Můj pivní deníček
 
-* [ ] Rename files/classes a lil bit
 * [ ] Podtržítka?
 * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
 * [ ] Show brewery names from database in BreweryInput?
+* [ ] text_divider.dart is currently unused
 
 ---
 

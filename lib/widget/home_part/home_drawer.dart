@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
-import "package:my_beer_diary/dialog/user_settings.dart";
-import "package:my_beer_diary/screen/beers.dart";
-import "package:my_beer_diary/screen/tags.dart";
+import "package:my_beer_diary/dialog/user_settings_dialog.dart";
+import "package:my_beer_diary/screen/beers_screen.dart";
+import "package:my_beer_diary/screen/tags_screen.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
 class HomeDrawer extends StatelessWidget {

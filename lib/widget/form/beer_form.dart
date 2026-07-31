@@ -3,8 +3,8 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
 import "package:my_beer_diary/logic/decimal_input_formatter.dart";
-import "package:my_beer_diary/widget/checkbox.dart";
-import "package:my_beer_diary/widget/color_picker.dart";
+import "package:my_beer_diary/widget/form/checkbox.dart";
+import "package:my_beer_diary/widget/form/color_picker.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
 class BeerForm extends StatefulWidget {

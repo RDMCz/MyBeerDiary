@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
-import "package:my_beer_diary/dialog/beer_add_edit.dart";
+import "package:my_beer_diary/dialog/beer_dialog.dart";
 import "package:my_beer_diary/model/beer.dart";
-import "package:my_beer_diary/widget/beer_card.dart";
+import "package:my_beer_diary/widget/card/beer_card.dart";
 
 class BeersScreen extends StatefulWidget {
   const BeersScreen({super.key});
@@ -43,7 +43,7 @@ class _BeersScreenState extends State<BeersScreen> {
         onPressed: () async {
           final result = await showDialog(
             context: context,
-            builder: (_) => BeerAddEditDialog(),
+            builder: (_) => BeerDialog(),
           );
           if (result ?? false) {
             _refreshBeers();

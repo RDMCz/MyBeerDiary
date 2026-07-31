@@ -3,7 +3,7 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/model/user_settings.dart";
-import "package:my_beer_diary/widget/event_card.dart";
+import "package:my_beer_diary/widget/card/event_card.dart";
 
 class EventList extends StatelessWidget {
   final UserSettings userSettings;

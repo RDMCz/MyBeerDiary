@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
-import "package:my_beer_diary/dialog/beer_add_edit.dart";
+import "package:my_beer_diary/dialog/beer_dialog.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
@@ -57,7 +57,7 @@ class BeerCard extends StatelessWidget {
                   onPressed: () async {
                     final result = await showDialog(
                       context: context,
-                      builder: (_) => BeerAddEditDialog(beer: beer),
+                      builder: (_) => BeerDialog(beer: beer),
                     );
                     if (result ?? false) {
                       refreshBeers();

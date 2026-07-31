@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
-import "package:my_beer_diary/dialog/beer_consumption_options.dart";
+import "package:my_beer_diary/dialog/beer_consumption_options_dialog.dart";
 import "package:my_beer_diary/logic/beer_size.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";

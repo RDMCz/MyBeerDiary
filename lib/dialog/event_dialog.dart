@@ -7,17 +7,17 @@ import "package:my_beer_diary/model/tag.dart";
 
 enum EventTagScenario { noTag, useExisting, createNew }
 
-class EventAddEditDialog extends StatefulWidget {
+class EventDialog extends StatefulWidget {
   final Map<int, Tag> tags;
   final Event? event; // Determines the dialog variant (add/edit)
 
-  const EventAddEditDialog({super.key, required this.tags, this.event});
+  const EventDialog({super.key, required this.tags, this.event});
 
   @override
-  State<EventAddEditDialog> createState() => _EventAddEditDialogState();
+  State<EventDialog> createState() => _EventDialogState();
 }
 
-class _EventAddEditDialogState extends State<EventAddEditDialog> {
+class _EventDialogState extends State<EventDialog> {
   final nameTextEditController = TextEditingController();
   final tagTextEditController = TextEditingController();
   Tag? selectedTag;

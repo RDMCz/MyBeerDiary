@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
-import "package:my_beer_diary/dialog/event_add_edit.dart";
+import "package:my_beer_diary/dialog/event_dialog.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/model/user_settings.dart";
-import "package:my_beer_diary/screen/event.dart";
+import "package:my_beer_diary/screen/event_screen.dart";
 import "package:my_beer_diary/widget/tag_chip.dart";
 
 class EventCard extends StatelessWidget {
@@ -84,7 +84,7 @@ class EventCard extends StatelessWidget {
         onLongPress: () async {
           final result = await showDialog(
             context: context,
-            builder: (_) => EventAddEditDialog(tags: tags, event: event),
+            builder: (_) => EventDialog(tags: tags, event: event),
           );
           if (result ?? false) {
             // Event was either edited or deleted => refresh list

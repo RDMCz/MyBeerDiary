@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
-import "package:my_beer_diary/dialog/tag_add_edit.dart";
+import "package:my_beer_diary/dialog/tag_dialog.dart";
 import "package:my_beer_diary/model/tag.dart";
-import "package:my_beer_diary/widget/tag_card.dart";
+import "package:my_beer_diary/widget/card/tag_card.dart";
 
 class TagsScreen extends StatefulWidget {
   const TagsScreen({super.key});
@@ -43,7 +43,7 @@ class _TagsScreenState extends State<TagsScreen> {
         onPressed: () async {
           final result = await showDialog(
             context: context,
-            builder: (_) => TagAddEditDialog(),
+            builder: (_) => TagDialog(),
           );
           if (result ?? false) {
             _refreshTags();

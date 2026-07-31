@@ -2,7 +2,7 @@ import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";
-import "package:my_beer_diary/screen/home.dart";
+import "package:my_beer_diary/screen/home_screen.dart";
 import "package:sqflite_common_ffi/sqflite_ffi.dart";
 import "package:sqflite_common_ffi_web/sqflite_ffi_web.dart";
 
@@ -41,7 +41,7 @@ class MainApp extends StatelessWidget {
         ),
         cardTheme: CardThemeData(elevation: 2.0),
       ),
-      home: Homescreen(),
+      home: HomeScreen(),
     );
   }
 }

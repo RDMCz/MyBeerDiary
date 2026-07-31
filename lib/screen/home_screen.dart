@@ -1,22 +1,22 @@
 import "package:flutter/material.dart";
-import "package:my_beer_diary/dialog/event_add_edit.dart";
+import "package:my_beer_diary/dialog/event_dialog.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/model/user_settings.dart";
-import "package:my_beer_diary/screen/home_drawer.dart";
-import "package:my_beer_diary/widget/event_list.dart";
-import "package:my_beer_diary/widget/oneoff_list.dart";
+import "package:my_beer_diary/widget/home_part/home_drawer.dart";
+import "package:my_beer_diary/widget/home_part/event_list.dart";
+import "package:my_beer_diary/widget/home_part/oneoff_list.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
-class Homescreen extends StatefulWidget {
-  const Homescreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<Homescreen> createState() => _HomescreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomescreenState extends State<Homescreen> {
+class _HomeScreenState extends State<HomeScreen> {
   // = BottomNavigationBar =
   int _bottomBarIndex = 0;
 
@@ -124,7 +124,7 @@ class _HomescreenState extends State<Homescreen> {
           if (isEventPageSelected) {
             final result = await showDialog(
               context: context,
-              builder: (_) => EventAddEditDialog(tags: _tags),
+              builder: (_) => EventDialog(tags: _tags),
             );
             if (result ?? false) {
               _refreshEvents();

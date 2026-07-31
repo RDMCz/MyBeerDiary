@@ -2,18 +2,18 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/logic/color.dart";
 import "package:my_beer_diary/model/tag.dart";
-import "package:my_beer_diary/widget/color_picker.dart";
+import "package:my_beer_diary/widget/form/color_picker.dart";
 
-class TagAddEditDialog extends StatefulWidget {
+class TagDialog extends StatefulWidget {
   final Tag? tag;
 
-  const TagAddEditDialog({super.key, this.tag});
+  const TagDialog({super.key, this.tag});
 
   @override
-  State<TagAddEditDialog> createState() => _TagAddEditDialogState();
+  State<TagDialog> createState() => _TagDialogState();
 }
 
-class _TagAddEditDialogState extends State<TagAddEditDialog> {
+class _TagDialogState extends State<TagDialog> {
   final textEditController = TextEditingController();
 
   double hueSliderValue = 0.0;

@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
-import "package:my_beer_diary/widget/beer_consumption_card.dart";
+import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 
 class OneoffList extends StatelessWidget {
   final List<BeerConsumption> oneoffs;

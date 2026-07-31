@@ -11,29 +11,28 @@ import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
-import "package:my_beer_diary/widget/beer_card_mini.dart";
-import "package:my_beer_diary/widget/beer_card_mini_new.dart";
-import "package:my_beer_diary/widget/beer_form.dart";
-import "package:my_beer_diary/widget/brewery_input.dart";
-import "package:my_beer_diary/widget/checkbox.dart";
+import "package:my_beer_diary/widget/card/beer_card_mini.dart";
+import "package:my_beer_diary/widget/card/beer_card_mini_new.dart";
+import "package:my_beer_diary/widget/form/beer_form.dart";
+import "package:my_beer_diary/widget/form/brewery_input.dart";
+import "package:my_beer_diary/widget/form/checkbox.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
-class BeerConsumptionAddDialog extends StatefulWidget {
+class BeerConsumptionDialog extends StatefulWidget {
   final int? eventId;
   final List<Beer> beers;
 
-  const BeerConsumptionAddDialog({
+  const BeerConsumptionDialog({
     super.key,
     required this.eventId,
     required this.beers,
   });
 
   @override
-  State<BeerConsumptionAddDialog> createState() =>
-      _BeerConsumptionAddDialogState();
+  State<BeerConsumptionDialog> createState() => _BeerConsumptionDialogState();
 }
 
-class _BeerConsumptionAddDialogState extends State<BeerConsumptionAddDialog> {
+class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
   // Outline card serves as a "group box"
   static const _outlineCardPadding = EdgeInsets.symmetric(
     horizontal: 11,
