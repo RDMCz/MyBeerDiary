@@ -6,23 +6,19 @@ import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/screen/event_screen.dart";
 import "package:my_beer_diary/widget/tag_chip.dart";
+import "package:provider/provider.dart";
 
 class EventCard extends StatelessWidget {
   final UserSettings userSettings;
   final Event event;
-  final Map<int, Tag> tags;
-  final VoidCallback refreshEvents;
 
-  const EventCard({
-    super.key,
-    required this.userSettings,
-    required this.event,
-    required this.tags,
-    required this.refreshEvents,
-  });
+  const EventCard({super.key, required this.userSettings, required this.event});
 
   @override
   Widget build(BuildContext context) {
+    // Watch because this widget might change on Tags change
+    final tags = context.watch<TagNotifier>().itemMap;
+
     final tagId = event.tagId;
     final Tag? tag = tags[tagId];
 
@@ -79,16 +75,21 @@ class EventCard extends StatelessWidget {
               ),
             ),
           );
-          refreshEvents();
+          // Refresh events here because event totals (nBeers, cost) could get updated
+          if (context.mounted) {
+            context.read<EventNotifier>().refresh();
+          }
         },
         onLongPress: () async {
           final result = await showDialog(
             context: context,
             builder: (_) => EventDialog(tags: tags, event: event),
           );
-          if (result ?? false) {
+          if (context.mounted && (result ?? false)) {
             // Event was either edited or deleted => refresh list
-            refreshEvents();
+            context.read<EventNotifier>().refresh();
+            // New tag could have created in the dialog too
+            context.read<TagNotifier>().refresh();
           }
         },
       ),

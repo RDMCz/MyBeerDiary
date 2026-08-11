@@ -1,5 +1,6 @@
 # Můj pivní deníček
 
+* [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
 * [ ] Podtržítka?
 * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
 * [ ] Show brewery names from database in BreweryInput?
@@ -17,6 +18,7 @@ Package|Author|License
 [flutter](https://github.com/flutter/flutter)|The Flutter Authors|[BSD-3-Clause](https://github.com/flutter/flutter/blob/master/LICENSE)
 [flutter_svg](https://pub.dev/packages/flutter_svg)|Dan Field|[MIT](https://github.com/flutter/packages/blob/main/third_party/packages/flutter_svg/LICENSE)
 [path](https://pub.dev/packages/path)|the Dart project authors|[BSD-3-Clause](https://github.com/dart-lang/core/blob/main/pkgs/path/LICENSE)
+[provider](https://pub.dev/packages/provider)|Remi Rousselet|[MIT](https://github.com/rrousselGit/provider/blob/master/packages/provider/LICENSE)
 [shared_preferences](https://pub.dev/packages/shared_preferences)|The Flutter Authors|[BSD-3-Clause](https://github.com/flutter/packages/blob/main/packages/shared_preferences/shared_preferences/LICENSE)
 [sqflite](https://pub.dev/packages/sqflite)|Alexandre Roux Tekartik|[BSD-2-Clause](https://github.com/tekartik/sqflite/blob/master/sqflite/LICENSE)
 [sqflite_common_ffi](https://pub.dev/packages/sqflite_common_ffi)|Alexandre Roux Tekartik|[BSD-2-Clause](https://github.com/tekartik/sqflite/blob/master/sqflite_common_ffi/LICENSE)

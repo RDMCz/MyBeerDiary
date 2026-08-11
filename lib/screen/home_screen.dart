@@ -8,6 +8,7 @@ import "package:my_beer_diary/widget/home_part/home_drawer.dart";
 import "package:my_beer_diary/widget/home_part/event_list.dart";
 import "package:my_beer_diary/widget/home_part/oneoff_list.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
+import "package:provider/provider.dart";
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,19 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onBottomBarTap(int index) {
     setState(() {
       _bottomBarIndex = index;
-    });
-  }
-
-  // = Events list =
-  List<Event> _events = [];
-  Map<int, Tag> _tags = {}; // Needed to get tag names and pictures for events
-
-  Future<void> _refreshEvents() async {
-    final events = await eventList();
-    final tags = await tagMap();
-    setState(() {
-      _events = events;
-      _tags = tags;
     });
   }
 
@@ -63,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _refreshEvents();
     _refreshOneoffs();
     _refreshUserSettings();
   }
@@ -80,12 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: Text("Můj pivní deníček")),
       // = Body with selected page =
       body: isEventPageSelected
-          ? EventList(
-              userSettings: _userSettings,
-              events: _events,
-              tags: _tags,
-              refreshEvents: _refreshEvents,
-            )
+          ? EventList(userSettings: _userSettings)
           : OneoffList(oneoffs: _oneoffs),
       // = BottomNavigationBar =
       bottomNavigationBar: BottomNavigationBar(
@@ -114,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       // = Hamburger menu =
       drawer: HomeDrawer(
-        refreshEvents: _refreshEvents,
+        //refreshEvents: _refreshEvents,
         refreshOneoffs: _refreshOneoffs,
         refreshUserSettings: _refreshUserSettings,
       ),
@@ -122,15 +104,23 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (isEventPageSelected) {
+            // = Add new event =
+            // It currently seems cleaner to pass [tags] to [EventDialog] instead of letting it read them for itself
+            final tags = context.read<TagNotifier>().itemMap;
+
             final result = await showDialog(
               context: context,
-              builder: (_) => EventDialog(tags: _tags),
+              builder: (_) => EventDialog(tags: tags),
             );
-            if (result ?? false) {
-              _refreshEvents();
+            if (context.mounted) {
+              if (result ?? false) {
+                // Refresh both events and tags, because tag could have been added in the dialog
+                context.read<EventNotifier>().refresh();
+                context.read<TagNotifier>().refresh();
+              }
             }
           } else {
-            //
+            // = Add new oneoff beer =
           }
         },
         shape: CircleBorder(),

@@ -1,6 +1,7 @@
 // Event can have one tag associated with it, eg. name of the pub (#Azyl) or activity (#čundr).
 // User can assign same tag to multiple events to categorize them.
 
+import "package:flutter/foundation.dart";
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:sqflite/sqlite_api.dart";
@@ -85,11 +86,13 @@ Future<List<Tag>> tagList() async {
   return [for (final m in maps) Tag.fromMap(m)];
 }
 
+/*
 Future<Map<int, Tag>> tagMap() async {
   final db = await AppDatabase.instance.database;
   final maps = await db.query(tagTable);
   return {for (final m in maps) m[tagColId] as int: Tag.fromMap(m)};
 }
+*/
 
 Future<void> tagUpdate(Tag tag) async {
   final db = await AppDatabase.instance.database;
@@ -114,4 +117,19 @@ Future<void> tagDelete(int id) async {
     where: "$eventColTagId = ?",
     whereArgs: [id],
   );
+}
+
+class TagNotifier extends ChangeNotifier {
+  List<Tag> itemList = [];
+  Map<int, Tag> itemMap = {};
+
+  Future<void> refresh() async {
+    itemList = await tagList();
+    itemMap = {
+      for (final item in itemList)
+        if (item.id != null) item.id!: item,
+    };
+
+    notifyListeners();
+  }
 }

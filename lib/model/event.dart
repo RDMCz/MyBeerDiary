@@ -1,5 +1,6 @@
 // An event where a user drinks more than one beer
 
+import "package:flutter/foundation.dart";
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 
@@ -138,4 +139,13 @@ Future<void> eventDelete(int id) async {
   await db.delete(eventTable, where: "$eventColId = ?", whereArgs: [id]);
   // Delete event's beer consumptions
   await beerConsumptionOnEventDelete(id);
+}
+
+class EventNotifier extends ChangeNotifier {
+  List<Event> items = [];
+
+  Future<void> refresh() async {
+    items = await eventList();
+    notifyListeners();
+  }
 }

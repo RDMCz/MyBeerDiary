@@ -2,7 +2,10 @@ import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";
+import "package:my_beer_diary/model/event.dart";
+import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/screen/home_screen.dart";
+import "package:provider/provider.dart";
 import "package:sqflite_common_ffi/sqflite_ffi.dart";
 import "package:sqflite_common_ffi_web/sqflite_ffi_web.dart";
 
@@ -20,7 +23,15 @@ void main() {
     databaseFactory = databaseFactoryFfi;
   }
 
-  runApp(const MainApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => EventNotifier()..refresh()),
+        ChangeNotifierProvider(create: (_) => TagNotifier()..refresh()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
