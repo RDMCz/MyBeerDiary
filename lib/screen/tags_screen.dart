@@ -5,14 +5,9 @@ import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/card/tag_card.dart";
 import "package:provider/provider.dart";
 
-class TagsScreen extends StatefulWidget {
+class TagsScreen extends StatelessWidget {
   const TagsScreen({super.key});
 
-  @override
-  State<TagsScreen> createState() => _TagsScreenState();
-}
-
-class _TagsScreenState extends State<TagsScreen> {
   @override
   Widget build(BuildContext context) {
     final tags = context.watch<TagNotifier>().itemList;

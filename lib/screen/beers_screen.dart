@@ -5,14 +5,9 @@ import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/card/beer_card.dart";
 import "package:provider/provider.dart";
 
-class BeersScreen extends StatefulWidget {
+class BeersScreen extends StatelessWidget {
   const BeersScreen({super.key});
 
-  @override
-  State<BeersScreen> createState() => _BeersScreenState();
-}
-
-class _BeersScreenState extends State<BeersScreen> {
   @override
   Widget build(BuildContext context) {
     final beers = context.watch<BeerNotifier>().itemList;

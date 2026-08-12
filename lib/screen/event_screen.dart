@@ -11,7 +11,7 @@ import "package:my_beer_diary/widget/event_stat.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
-class EventScreen extends StatefulWidget {
+class EventScreen extends StatelessWidget {
   final UserSettings userSettings;
   final Event event;
   final Tag? tag;
@@ -24,21 +24,14 @@ class EventScreen extends StatefulWidget {
   });
 
   @override
-  State<EventScreen> createState() => _EventScreenState();
-}
-
-class _EventScreenState extends State<EventScreen> {
-  @override
   Widget build(BuildContext context) {
-    final title = widget.tag == null
-        ? widget.event.name
-        : "${widget.tag!.name} ${widget.event.name}";
+    final title = tag == null ? event.name : "${tag!.name} ${event.name}";
 
     final beers = context.watch<BeerNotifier>().itemMap;
 
     final beerConsumptions = context
         .watch<BeerConsumptionNotifier>()
-        .itemsForEvent(widget.event.id);
+        .itemsForEvent(event.id);
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
@@ -70,7 +63,7 @@ class _EventScreenState extends State<EventScreen> {
                 EventStat(icon: SvgIcons.money, text: "? Kč"),
                 EventStat(
                   icon: SvgIcons.permille,
-                  text: "? promile, ${widget.userSettings.weight}",
+                  text: "? promile, ${userSettings.weight}",
                 ),
               ],
             ),
@@ -84,7 +77,7 @@ class _EventScreenState extends State<EventScreen> {
                     final result = await showDialog(
                       context: context,
                       builder: (_) => BeerConsumptionDialog(
-                        eventId: widget.event.id,
+                        eventId: event.id,
                         beers: beers.values.toList(),
                       ),
                     );
