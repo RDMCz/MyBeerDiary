@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/event_dialog.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
-import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/widget/home_part/home_drawer.dart";
 import "package:my_beer_diary/widget/home_part/event_list.dart";
 import "package:my_beer_diary/widget/home_part/oneoff_list.dart";
@@ -26,23 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // = User settings =
-  UserSettings _userSettings = UserSettings.defaultUserSettings;
-
-  Future<void> _refreshUserSettings() async {
-    final userSettings = await userSettingsGet();
-    setState(() {
-      _userSettings = userSettings;
-    });
-  }
-
-  // = Init =
-  @override
-  void initState() {
-    super.initState();
-    _refreshUserSettings();
-  }
-
   // = GUI =
   @override
   Widget build(BuildContext context) {
@@ -54,9 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(title: Text("Můj pivní deníček")),
       // = Body with selected page =
-      body: isEventPageSelected
-          ? EventList(userSettings: _userSettings)
-          : OneoffList(),
+      body: isEventPageSelected ? EventList() : OneoffList(),
       // = BottomNavigationBar =
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -83,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onBottomBarTap,
       ),
       // = Hamburger menu =
-      drawer: HomeDrawer(refreshUserSettings: _refreshUserSettings),
+      drawer: HomeDrawer(),
       // = Plus button in the middle of BottomNavigationBar =
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

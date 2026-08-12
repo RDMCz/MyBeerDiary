@@ -1,3 +1,4 @@
+import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 const String _userSettingsIsMale = "isMale";
@@ -33,4 +34,13 @@ Future<void> userSettingsSet(UserSettings userSettings) async {
 
   await prefs.setBool(_userSettingsIsMale, userSettings.isMale);
   await prefs.setInt(_userSettingsWeight, userSettings.weight);
+}
+
+class UserSettingsNotifier extends ChangeNotifier {
+  UserSettings value = UserSettings.defaultUserSettings;
+  
+  Future<void> refresh() async {
+    value = await userSettingsGet();
+    notifyListeners();
+  }
 }

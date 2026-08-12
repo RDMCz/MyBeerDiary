@@ -1,14 +1,11 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/event.dart";
-import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/widget/card/event_card.dart";
 import "package:provider/provider.dart";
 
 class EventList extends StatelessWidget {
-  final UserSettings userSettings;
-
-  const EventList({super.key, required this.userSettings});
+  const EventList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +17,7 @@ class EventList extends StatelessWidget {
       itemCount: events.length,
       itemBuilder: (_, int idx) => Padding(
         padding: CardListCommon.itemPadding,
-        child: EventCard(userSettings: userSettings, event: events[idx]),
+        child: EventCard(event: events[idx]),
       ),
     );
   }

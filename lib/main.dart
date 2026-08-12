@@ -6,6 +6,7 @@ import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/screen/home_screen.dart";
 import "package:provider/provider.dart";
 import "package:sqflite_common_ffi/sqflite_ffi.dart";
@@ -28,15 +29,25 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => BeerNotifier()..refresh()),
-
         ChangeNotifierProvider(
-          create: (_) => BeerConsumptionNotifier()..refresh(),
+          create: (_) => BeerNotifier()..refresh(), //
         ),
 
-        ChangeNotifierProvider(create: (_) => EventNotifier()..refresh()),
+        ChangeNotifierProvider(
+          create: (_) => BeerConsumptionNotifier()..refresh(), //
+        ),
 
-        ChangeNotifierProvider(create: (_) => TagNotifier()..refresh()),
+        ChangeNotifierProvider(
+          create: (_) => EventNotifier()..refresh(), //
+        ),
+
+        ChangeNotifierProvider(
+          create: (_) => TagNotifier()..refresh(), //
+        ),
+
+        ChangeNotifierProvider(
+          create: (_) => UserSettingsNotifier()..refresh(), //
+        ),
       ],
       child: const MainApp(),
     ),

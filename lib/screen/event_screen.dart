@@ -12,16 +12,10 @@ import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
 class EventScreen extends StatelessWidget {
-  final UserSettings userSettings;
   final Event event;
   final Tag? tag;
 
-  const EventScreen({
-    super.key,
-    required this.userSettings,
-    required this.event,
-    required this.tag,
-  });
+  const EventScreen({super.key, required this.event, required this.tag});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +26,8 @@ class EventScreen extends StatelessWidget {
     final beerConsumptions = context
         .watch<BeerConsumptionNotifier>()
         .itemsForEvent(event.id);
+
+    final userSettings = context.watch<UserSettingsNotifier>().value;
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),

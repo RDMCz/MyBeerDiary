@@ -2,15 +2,14 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/user_settings_dialog.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/screen/beers_screen.dart";
 import "package:my_beer_diary/screen/tags_screen.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
 class HomeDrawer extends StatelessWidget {
-  final VoidCallback refreshUserSettings;
-
-  const HomeDrawer({super.key, required this.refreshUserSettings});
+  const HomeDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,8 @@ class HomeDrawer extends StatelessWidget {
                 context: context,
                 builder: (_) => UserSettingsDialog(),
               );
-              if (result ?? false) {
-                refreshUserSettings();
+              if (context.mounted && (result ?? false)) {
+                context.read<UserSettingsNotifier>().refresh();
               }
             },
           ),

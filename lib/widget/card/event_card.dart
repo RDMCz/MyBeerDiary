@@ -3,16 +3,14 @@ import "package:my_beer_diary/dialog/event_dialog.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
-import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/screen/event_screen.dart";
 import "package:my_beer_diary/widget/tag_chip.dart";
 import "package:provider/provider.dart";
 
 class EventCard extends StatelessWidget {
-  final UserSettings userSettings;
   final Event event;
 
-  const EventCard({super.key, required this.userSettings, required this.event});
+  const EventCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +66,7 @@ class EventCard extends StatelessWidget {
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => EventScreen(
-                userSettings: userSettings,
-                event: event,
-                tag: tag,
-              ),
+              builder: (_) => EventScreen(event: event, tag: tag),
             ),
           );
           // Refresh events here because event totals (nBeers, cost) could get updated

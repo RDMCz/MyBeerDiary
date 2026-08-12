@@ -49,6 +49,7 @@ class _EventDialogState extends State<EventDialog> {
     super.dispose();
   }
 
+  /// Returns proper Tag ID for given Tag name and scenario, creates new Tag in DB if necessary
   Future<int?> resolveProperTagId(
     EventTagScenario tagScenario,
     String tagTextTrim,

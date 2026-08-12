@@ -1,14 +1,13 @@
 # Můj pivní deníček
 
 * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
-* [ ] Podtržítka?
 * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
 * [ ] Show brewery names from database in BreweryInput?
 * [ ] text_divider.dart is currently unused
 
 ---
 
-## Lincense
+## License
 
 ### Dependencies
 

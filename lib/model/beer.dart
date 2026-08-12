@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 
 const String beerTable = "Beers";
 const String beerColId = "_id";
@@ -136,7 +137,13 @@ Future<void> beerUpdate(Beer beer) async {
 Future<void> beerDelete(int id) async {
   final db = await AppDatabase.instance.database;
   await db.delete(beerTable, where: "$beerColId = ?", whereArgs: [id]);
-  //TODO set beer FKs to NULL ?
+
+  await db.update(
+    beerConsumptionTable,
+    {beerConsumptionColBeerId: null},
+    where: "$beerConsumptionColBeerId = ?",
+    whereArgs: [id],
+  );
 }
 
 class BeerNotifier extends ChangeNotifier {
