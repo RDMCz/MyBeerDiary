@@ -8,21 +8,18 @@ import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
 class BeerConsumptionCard extends StatelessWidget {
-  final Map<int, Beer> beers;
+  final Beer beer;
   final BeerConsumption beerConsumption;
 
   const BeerConsumptionCard({
     super.key,
-    required this.beers,
+    required this.beer,
     required this.beerConsumption,
   });
 
   @override
   Widget build(BuildContext context) {
     const detailsTextStyle = TextStyle(fontSize: 15.5);
-
-    final beerId = beerConsumption.beerId;
-    final beer = beers[beerId] ?? Beer.defaultBeer;
 
     final BeerSize beerSize = doubleToBeerSize(beerConsumption.litres);
     final String beerSizeStr = doubleToBeerSizeStr(beerConsumption.litres);

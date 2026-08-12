@@ -3,12 +3,12 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/beer_dialog.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
+import "package:provider/provider.dart";
 
 class BeerCard extends StatelessWidget {
   final Beer beer;
-  final VoidCallback refreshBeers;
 
-  const BeerCard({super.key, required this.beer, required this.refreshBeers});
+  const BeerCard({super.key, required this.beer});
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +59,8 @@ class BeerCard extends StatelessWidget {
                       context: context,
                       builder: (_) => BeerDialog(beer: beer),
                     );
-                    if (result ?? false) {
-                      refreshBeers();
+                    if (context.mounted && (result ?? false)) {
+                      context.read<BeerNotifier>().refresh();
                     }
                   },
                   icon: Icon(Icons.edit),
@@ -94,7 +94,9 @@ class BeerCard extends StatelessWidget {
 
                     if (result ?? false) {
                       await beerDelete(beer.id!);
-                      refreshBeers();
+                      if (context.mounted) {
+                        context.read<BeerNotifier>().refresh();
+                      }
                     }
                   },
                   icon: Icon(Icons.delete),

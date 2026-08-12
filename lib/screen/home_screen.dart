@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/event_dialog.dart";
-import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/model/user_settings.dart";
@@ -27,16 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // = One-offs list =
-  List<BeerConsumption> _oneoffs = [];
-
-  Future<void> _refreshOneoffs() async {
-    final oneoffs = await beerConsumptionListAll(); //TODO temp
-    setState(() {
-      _oneoffs = oneoffs;
-    });
-  }
-
   // = User settings =
   UserSettings _userSettings = UserSettings.defaultUserSettings;
 
@@ -51,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _refreshOneoffs();
     _refreshUserSettings();
   }
 
@@ -68,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // = Body with selected page =
       body: isEventPageSelected
           ? EventList(userSettings: _userSettings)
-          : OneoffList(oneoffs: _oneoffs),
+          : OneoffList(),
       // = BottomNavigationBar =
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -95,11 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onBottomBarTap,
       ),
       // = Hamburger menu =
-      drawer: HomeDrawer(
-        //refreshEvents: _refreshEvents,
-        refreshOneoffs: _refreshOneoffs,
-        refreshUserSettings: _refreshUserSettings,
-      ),
+      drawer: HomeDrawer(refreshUserSettings: _refreshUserSettings),
       // = Plus button in the middle of BottomNavigationBar =
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

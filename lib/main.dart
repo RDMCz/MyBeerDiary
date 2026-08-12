@@ -2,6 +2,8 @@ import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";
+import "package:my_beer_diary/model/beer.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/screen/home_screen.dart";
@@ -26,7 +28,14 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => BeerNotifier()..refresh()),
+
+        ChangeNotifierProvider(
+          create: (_) => BeerConsumptionNotifier()..refresh(),
+        ),
+
         ChangeNotifierProvider(create: (_) => EventNotifier()..refresh()),
+
         ChangeNotifierProvider(create: (_) => TagNotifier()..refresh()),
       ],
       child: const MainApp(),

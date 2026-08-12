@@ -8,14 +8,9 @@ import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
 class HomeDrawer extends StatelessWidget {
-  final VoidCallback refreshOneoffs;
   final VoidCallback refreshUserSettings;
 
-  const HomeDrawer({
-    super.key,
-    required this.refreshOneoffs,
-    required this.refreshUserSettings,
-  });
+  const HomeDrawer({super.key, required this.refreshUserSettings});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +53,6 @@ class HomeDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (_) => BeersScreen()),
               );
-              refreshOneoffs();
             },
           ),
         ],

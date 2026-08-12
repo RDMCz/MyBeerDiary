@@ -3,6 +3,7 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/tag_dialog.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/card/tag_card.dart";
+import "package:provider/provider.dart";
 
 class TagsScreen extends StatefulWidget {
   const TagsScreen({super.key});
@@ -12,31 +13,18 @@ class TagsScreen extends StatefulWidget {
 }
 
 class _TagsScreenState extends State<TagsScreen> {
-  List<Tag> _tags = [];
-
-  Future<void> _refreshTags() async {
-    final tags = await tagList();
-    setState(() {
-      _tags = tags;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _refreshTags();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final tags = context.watch<TagNotifier>().itemList;
+
     return Scaffold(
       appBar: AppBar(title: Text("Správa tagů")),
       body: ListView.builder(
         padding: CardListCommon.listPadding,
-        itemCount: _tags.length,
+        itemCount: tags.length,
         itemBuilder: (_, int idx) => Padding(
           padding: CardListCommon.itemPadding,
-          child: TagCard(tag: _tags[idx], refreshTags: _refreshTags),
+          child: TagCard(tag: tags[idx]),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -45,8 +33,8 @@ class _TagsScreenState extends State<TagsScreen> {
             context: context,
             builder: (_) => TagDialog(),
           );
-          if (result ?? false) {
-            _refreshTags();
+          if (context.mounted && (result ?? false)) {
+            context.read<TagNotifier>().refresh();
           }
         },
         tooltip: "Přidat nový tag",

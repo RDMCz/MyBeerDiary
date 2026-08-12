@@ -1,5 +1,6 @@
 // Act of ordering/drinking a beer
 
+import "package:flutter/material.dart";
 import "package:my_beer_diary/db.dart";
 
 const String beerConsumptionTable = "BeerConsumptions";
@@ -94,6 +95,7 @@ Future<void> beerConsumptionAdd(BeerConsumption bc) async {
   await db.insert(beerConsumptionTable, bc.toMap());
 }
 
+/*
 Future<List<BeerConsumption>> beerConsumptionList(int? eventId) async {
   final db = await AppDatabase.instance.database;
   final maps = await db.query(
@@ -103,8 +105,9 @@ Future<List<BeerConsumption>> beerConsumptionList(int? eventId) async {
   );
   return [for (final m in maps) BeerConsumption.fromMap(m)];
 }
+*/
 
-Future<List<BeerConsumption>> beerConsumptionListAll() async {
+Future<List<BeerConsumption>> beerConsumptionList() async {
   final db = await AppDatabase.instance.database;
   final maps = await db.query(beerConsumptionTable);
   return [for (final m in maps) BeerConsumption.fromMap(m)];
@@ -136,4 +139,19 @@ Future<void> beerConsumptionOnEventDelete(int eventId) async {
     where: "$beerConsumptionColEventId = ?",
     whereArgs: [eventId],
   );
+}
+
+class BeerConsumptionNotifier extends ChangeNotifier {
+  List<BeerConsumption> _items = [];
+
+  List<BeerConsumption> itemsForEvent(int? eventId) =>
+      _items.where((bc) => bc.eventId == eventId).toList();
+
+  //TODO TEMP
+  List<BeerConsumption> items() => _items;
+
+  Future<void> refresh() async {
+    _items = await beerConsumptionList();
+    notifyListeners();
+  }
 }

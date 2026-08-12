@@ -3,12 +3,12 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/tag_dialog.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/tag_chip.dart";
+import "package:provider/provider.dart";
 
 class TagCard extends StatelessWidget {
   final Tag tag;
-  final VoidCallback refreshTags;
 
-  const TagCard({super.key, required this.tag, required this.refreshTags});
+  const TagCard({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class TagCard extends StatelessWidget {
                   context: context,
                   builder: (_) => TagDialog(tag: tag),
                 );
-                if (result ?? false) {
-                  refreshTags();
+                if (context.mounted && (result ?? false)) {
+                  context.read<TagNotifier>().refresh();
                 }
               },
               icon: Icon(Icons.edit),
@@ -58,7 +58,9 @@ class TagCard extends StatelessWidget {
 
                 if (result ?? false) {
                   await tagDelete(tag.id!);
-                  refreshTags();
+                  if (context.mounted) {
+                    context.read<TagNotifier>().refresh();
+                  }
                 }
               },
               icon: Icon(Icons.delete),

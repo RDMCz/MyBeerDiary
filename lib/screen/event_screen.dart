@@ -9,6 +9,7 @@ import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/event_stat.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
+import "package:provider/provider.dart";
 
 class EventScreen extends StatefulWidget {
   final UserSettings userSettings;
@@ -27,30 +28,17 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
-  Map<int, Beer> _beers = {};
-  List<BeerConsumption> _beerConsumptions = [];
-
-  Future<void> _refreshBeers() async {
-    final beers = await beerMap();
-    final beerConsumptions = await beerConsumptionList(widget.event.id);
-
-    setState(() {
-      _beers = beers;
-      _beerConsumptions = beerConsumptions;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _refreshBeers();
-  }
-
   @override
   Widget build(BuildContext context) {
     final title = widget.tag == null
         ? widget.event.name
         : "${widget.tag!.name} ${widget.event.name}";
+
+    final beers = context.watch<BeerNotifier>().itemMap;
+
+    final beerConsumptions = context
+        .watch<BeerConsumptionNotifier>()
+        .itemsForEvent(widget.event.id);
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
@@ -59,12 +47,12 @@ class _EventScreenState extends State<EventScreen> {
         padding: EdgeInsets.symmetric(
           horizontal: CardListCommon.listPaddingHorizontal,
         ),
-        itemCount: _beerConsumptions.length,
+        itemCount: beerConsumptions.length,
         itemBuilder: (_, int idx) => Padding(
           padding: CardListCommon.itemPadding,
           child: BeerConsumptionCard(
-            beers: _beers,
-            beerConsumption: _beerConsumptions[idx],
+            beer: beers[beerConsumptions[idx].beerId] ?? Beer.defaultBeer,
+            beerConsumption: beerConsumptions[idx],
           ),
         ),
       ),
@@ -97,11 +85,13 @@ class _EventScreenState extends State<EventScreen> {
                       context: context,
                       builder: (_) => BeerConsumptionDialog(
                         eventId: widget.event.id,
-                        beers: _beers.values.toList(),
+                        beers: beers.values.toList(),
                       ),
                     );
-                    if (result ?? false) {
-                      _refreshBeers();
+                    if (context.mounted && (result ?? false)) {
+                      // New beer could have been created
+                      context.read<BeerNotifier>().refresh();
+                      context.read<BeerConsumptionNotifier>().refresh();
                     }
                   },
                   child: Icon(Icons.add),

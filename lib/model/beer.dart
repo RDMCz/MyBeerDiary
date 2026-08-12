@@ -1,5 +1,6 @@
 // Beers can be reused in multiple events and in the one-off page
 
+import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
@@ -114,11 +115,13 @@ Future<List<Beer>> beerList() async {
   return [for (final m in maps) Beer.fromMap(m)];
 }
 
+/*
 Future<Map<int, Beer>> beerMap() async {
   final db = await AppDatabase.instance.database;
   final maps = await db.query(beerTable);
   return {for (final m in maps) m[beerColId] as int: Beer.fromMap(m)};
 }
+*/
 
 Future<void> beerUpdate(Beer beer) async {
   final db = await AppDatabase.instance.database;
@@ -134,4 +137,19 @@ Future<void> beerDelete(int id) async {
   final db = await AppDatabase.instance.database;
   await db.delete(beerTable, where: "$beerColId = ?", whereArgs: [id]);
   //TODO set beer FKs to NULL ?
+}
+
+class BeerNotifier extends ChangeNotifier {
+  List<Beer> itemList = [];
+  Map<int, Beer> itemMap = {};
+
+  Future<void> refresh() async {
+    itemList = await beerList();
+    itemMap = {
+      for (final item in itemList)
+        if (item.id != null) item.id!: item,
+    };
+
+    notifyListeners();
+  }
 }
