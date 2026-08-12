@@ -71,6 +71,11 @@ class MainApp extends StatelessWidget {
           surfaceContainerHigh: appColorContainer,
         ),
         cardTheme: CardThemeData(elevation: 2.0),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          extendedTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       home: HomeScreen(),
     );

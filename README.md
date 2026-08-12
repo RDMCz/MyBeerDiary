@@ -1,9 +1,14 @@
 # Můj pivní deníček
 
-* [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
-* [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
-* [ ] Show brewery names from database in BreweryInput?
-* [ ] text_divider.dart is currently unused
+* ;)
+  * [ ] BeersScreen delete přidat info o tom že Consumptions nebudou smazány
+  * [ ] text_divider.dart is currently unused
+* ?
+  * [ ] Po přidání provideru může nyní snadněji dialog přímo refreshnout něco, namísto vyzvednutí výsledku dialogu a následného případného refreshe
+* \>\<
+  * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
+  * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
+  * [ ] Show brewery names from database in BreweryInput?
 
 ---
 

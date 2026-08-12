@@ -68,16 +68,12 @@ class BeerCard extends StatelessWidget {
                 // = Delete Button =
                 IconButton(
                   onPressed: () async {
-                    final breweryNameWithSpace = beer.breweryName.isNotEmpty
-                        ? "${beer.breweryName} "
-                        : "";
-
                     final result = await showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
                         title: Text("Smazat pivo"),
                         content: Text(
-                          "Opravdu si přejete smazat pivo „$breweryNameWithSpace${beer.description}“?",
+                          "Opravdu si přejete smazat pivo „${beer.toDisplayString()}“?",
                         ),
                         actions: [
                           TextButton(

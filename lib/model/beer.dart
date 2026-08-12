@@ -83,6 +83,14 @@ class Beer {
   String toString() =>
       "id=$id, breweryName=$breweryName, description=$description, epm=$epm, abv=$abv, color=$color";
 
+  String toDisplayString() =>
+      switch ((breweryName.isNotEmpty, description.isNotEmpty)) {
+        (false, false) => "",
+        (false, true) => description,
+        (true, false) => breweryName,
+        (true, true) => "$breweryName $description",
+      };
+
   // If user does not fill these fields or the beer was deleted, default values will be used
   static const Beer defaultBeer = Beer(
     breweryName: "Neznámý pivovar",

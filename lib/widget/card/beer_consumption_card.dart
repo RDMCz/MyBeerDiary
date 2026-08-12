@@ -90,7 +90,8 @@ class BeerConsumptionCard extends StatelessWidget {
           await showDialog(
             context: context,
             builder: (_) => BeerConsumptionOptionsDialog(
-              title: "${beer.breweryName} ${beer.description}",
+              beer: beer,
+              beerConsumption: beerConsumption,
             ),
           );
         },
