@@ -149,7 +149,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                     children: [
                       // - New beer card -
                       BeerCardMiniNew(
-                        breweryNameStr: breweryNameTextTrim,
+                        //breweryNameStr: breweryNameTextTrim,
                         isSelected: selectedBeer == null,
                         onTap: clearBeerForm,
                       ),

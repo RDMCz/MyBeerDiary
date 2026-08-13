@@ -6,6 +6,8 @@ import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
+enum BeerConsumptionEditOption { editRecord, editBeerGlobally, deleteRecord }
+
 class BeerConsumptionOptionsDialog extends StatelessWidget {
   final Beer beer;
   final BeerConsumption beerConsumption;
@@ -18,6 +20,10 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fabForegroundColor = Theme.of(
+      context,
+    ).colorScheme.onSecondaryContainer;
+
     return Dialog(
       insetPadding: DialogCommon.insetPadding,
       shape: DialogCommon.shape,
@@ -31,32 +37,25 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
             Text(beer.toDisplayString(), style: DialogCommon.headerStyle),
             SizedBox(height: DialogCommon.headerMarginBottom),
 
+            // = Two FABS =
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // = Button :: Edit BeerConsumption =
-                    TextButton.icon(
-                      label: Text("Upravit záznam"),
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        //TODO
-                      },
-                    ),
-                    // = Button :: Edit Beer =
-                    TextButton.icon(
-                      label: Text("Upravit pivo globálně"),
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        //TODO
-                      },
-                    ),
-                    // = Button :: Delete BeerConsumption =
-                    TextButton.icon(
-                      label: Text("Smazat záznam"),
-                      icon: Icon(Icons.delete_forever),
-                      onPressed: () async {
+                // = FAB :: Edit =
+                PopupMenuButton(
+                  popUpAnimationStyle: AnimationStyle.noAnimation,
+                  onSelected: (value) async {
+                    switch (value) {
+                      // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+                      case BeerConsumptionEditOption.editRecord:
+                        // TODO: Handle this case.
+                        break;
+                      // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+                      case BeerConsumptionEditOption.editBeerGlobally:
+                        // TODO: Handle this case.
+                        break;
+                      // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+                      case BeerConsumptionEditOption.deleteRecord:
                         if (beerConsumption.id == null) {
                           return;
                         }
@@ -100,23 +99,73 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                             Navigator.of(context).pop(true);
                           }
                         }
-                      },
+                        break;
+                      // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+                    }
+                  },
+                  itemBuilder: (_) =>
+                      <PopupMenuEntry<BeerConsumptionEditOption>>[
+                        PopupMenuItem(
+                          value: BeerConsumptionEditOption.editRecord,
+                          child: ListTile(
+                            leading: Icon(Icons.edit),
+                            title: Text("Upravit záznam"),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: BeerConsumptionEditOption.editBeerGlobally,
+                          child: ListTile(
+                            leading: Icon(Icons.edit),
+                            title: Text("Upravit pivo globálně"),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: BeerConsumptionEditOption.deleteRecord,
+                          child: ListTile(
+                            leading: Icon(Icons.delete_forever),
+                            title: Text("Smazat záznam"),
+                          ),
+                        ),
+                      ],
+                  child: Material(
+                    // Fake FAB because cannot use real FAB as child of PopupMenuButton (menu wouldn't show up)
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(16.0),
+                    elevation: 8.0,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 19.0,
+                        vertical: 16.0,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.edit, color: fabForegroundColor),
+                          SizedBox(width: 6.0),
+                          Text(
+                            "Upravit",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: fabForegroundColor,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
-                Spacer(),
-                // = Button :: Repeat =
+                SizedBox(width: 24.0),
+                // = FAB :: Repeat =
                 FloatingActionButton.extended(
                   label: Text("Znovu"),
                   icon: SvgIcon(
                     icon: SvgIcons.repeat,
-                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    color: fabForegroundColor,
                   ),
                   onPressed: () {
                     //TODO
                   },
                 ),
-                Spacer(),
               ],
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
