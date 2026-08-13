@@ -41,7 +41,7 @@ class TagCard extends StatelessWidget {
                   builder: (BuildContext context) => AlertDialog(
                     title: Text("Smazat tag"),
                     content: Text(
-                      "Opravdu si přejete smazat tag „${tag.name}“?\nUdálosti s tímto tagem budou zachovány.",
+                      "Opravdu si přejete smazat tag „${tag.name}“?\n\nUdálosti s tímto tagem budou zachovány.",
                     ),
                     actions: [
                       TextButton(

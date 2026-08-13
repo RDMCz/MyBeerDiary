@@ -73,7 +73,8 @@ class BeerCard extends StatelessWidget {
                       builder: (BuildContext context) => AlertDialog(
                         title: Text("Smazat pivo"),
                         content: Text(
-                          "Opravdu si přejete smazat pivo „${beer.toDisplayString()}“?",
+                          "Opravdu si přejete smazat pivo „${beer.toDisplayString()}“?"
+                          "\n\nU záznamů vypití tohoto piva bude nastaveno „neznámé pivo“.",
                         ),
                         actions: [
                           TextButton(

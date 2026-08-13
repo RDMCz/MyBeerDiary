@@ -1,7 +1,7 @@
 # Můj pivní deníček
 
 * ;)
-  * [ ] BeersScreen delete přidat info o tom že Consumptions nebudou smazány
+  * [x] BeersScreen delete přidat info o tom že Consumptions nebudou smazány
   * [ ] text_divider.dart is currently unused
 * ?
   * [ ] Po přidání provideru může nyní snadněji dialog přímo refreshnout něco, namísto vyzvednutí výsledku dialogu a následného případného refreshe
@@ -37,6 +37,7 @@ Beer Foam Drink|Vectopus|MIT|[455286](https://www.svgrepo.com/svg/455286/beer-fo
 Calendar Lines Pen \*|Dazzle UI|CC BY|[533396](https://www.svgrepo.com/svg/533396/calendar-lines-pen)
 Can Of Beer \*|soco-st|CC BY|[493174](https://www.svgrepo.com/svg/493174/can-of-beer)
 Coins|zest|MIT|[509863](https://www.svgrepo.com/svg/509863/coins)
+Edit|Vaneet Thakur|CC BY|[513824](https://www.svgrepo.com/svg/513824/edit)
 Factory|Cosmin Negoita|CC BY|[408856](https://www.svgrepo.com/svg/408856/factory)
 Measure \*|Shannon E. Thomas|CC BY|[412236](https://www.svgrepo.com/svg/412236/measure)
 

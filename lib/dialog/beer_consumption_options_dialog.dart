@@ -12,11 +12,14 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
   final Beer beer;
   final BeerConsumption beerConsumption;
 
-  const BeerConsumptionOptionsDialog({
+  BeerConsumptionOptionsDialog({
     super.key,
     required this.beer,
     required this.beerConsumption,
   });
+
+  final editMenuKey =
+      GlobalKey<PopupMenuButtonState<BeerConsumptionEditOption>>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +46,9 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
               children: [
                 // = FAB :: Edit =
                 PopupMenuButton(
+                  key: editMenuKey,
+                  //clipBehavior: Clip.hardEdge,
+                  //tooltip: null,
                   popUpAnimationStyle: AnimationStyle.noAnimation,
                   onSelected: (value) async {
                     switch (value) {
@@ -127,30 +133,12 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                           ),
                         ),
                       ],
-                  child: Material(
-                    // Fake FAB because cannot use real FAB as child of PopupMenuButton (menu wouldn't show up)
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(16.0),
-                    elevation: 8.0,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 19.0,
-                        vertical: 16.0,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.edit, color: fabForegroundColor),
-                          SizedBox(width: 6.0),
-                          Text(
-                            "Upravit",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: fabForegroundColor,
-                            ),
-                          ),
-                        ],
-                      ),
+                  child: FloatingActionButton.extended(
+                    onPressed: () => editMenuKey.currentState?.showButtonMenu(),
+                    label: Text("Upravit"),
+                    icon: SvgIcon(
+                      icon: SvgIcons.edit,
+                      color: fabForegroundColor,
                     ),
                   ),
                 ),
