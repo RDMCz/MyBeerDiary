@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
@@ -47,8 +48,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                 // = FAB :: Edit =
                 PopupMenuButton(
                   key: editMenuKey,
-                  //clipBehavior: Clip.hardEdge,
-                  //tooltip: null,
+                  tooltip: "",
                   popUpAnimationStyle: AnimationStyle.noAnimation,
                   onSelected: (value) async {
                     switch (value) {
@@ -100,7 +100,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                           }
 
                           if (context.mounted) {
-                            // BeerConsuption was deleted, so refresh list and close this options dialog
+                            // BeerConsumption was deleted, so refresh list and close this options dialog
                             context.read<BeerConsumptionNotifier>().refresh();
                             Navigator.of(context).pop(true);
                           }
@@ -134,6 +134,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                         ),
                       ],
                   child: FloatingActionButton.extended(
+                    clipBehavior: Clip.hardEdge,
                     onPressed: () => editMenuKey.currentState?.showButtonMenu(),
                     label: Text("Upravit"),
                     icon: SvgIcon(
@@ -150,8 +151,27 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                     icon: SvgIcons.repeat,
                     color: fabForegroundColor,
                   ),
-                  onPressed: () {
-                    //TODO
+                  onPressed: () async {
+                    // Clone the beerConsumption with current timestamp and null ID (DB will assign new ID)
+                    await beerConsumptionAdd(
+                      beerConsumption.copyWith(
+                        id: () => null,
+                        timestamp: () => secondsSinceEpoch(),
+                      ),
+                    );
+                    // Update totals if necessary
+                    if (beerConsumption.eventId != null) {
+                      eventUpdateTotals(
+                        eventId: beerConsumption.eventId!,
+                        totalBeersIncrease: 1,
+                        totalCostIncrease: beerConsumption.price,
+                      );
+                    }
+                    // BeerConsumption was added, so refresh list and close this options dialog
+                    if (context.mounted) {
+                      context.read<BeerConsumptionNotifier>().refresh();
+                      Navigator.of(context).pop(true);
+                    }
                   },
                 ),
               ],

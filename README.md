@@ -1,7 +1,8 @@
 # Můj pivní deníček
 
 * ;)
-  * [x] BeersScreen delete přidat info o tom že Consumptions nebudou smazány
+  * [ ] Zaskrolováno dolu jakmile otevřeme event
+  * [ ] Zaskrolováno dolu jakmile otevřeme oneoffs
   * [ ] text_divider.dart is currently unused
 * ?
   * [ ] Po přidání provideru může nyní snadněji dialog přímo refreshnout něco, namísto vyzvednutí výsledku dialogu a následného případného refreshe
