@@ -55,10 +55,20 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                       // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
                       case BeerConsumptionEditOption.editRecord:
                         // TODO: Handle this case.
+                        if (context.mounted) {
+                          // Pop true, caller of this dialog will refresh beerConsumptions
+                          Navigator.of(context).pop(true);
+                        }
                         break;
                       // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
                       case BeerConsumptionEditOption.editBeerGlobally:
                         // TODO: Handle this case.
+                        if (context.mounted) {
+                          // Beer was changed
+                          context.read<BeerNotifier>().refresh();
+                          // BeerConsumptions haven't changed, but pop true anyways, alcohol needs to be recalculated (beer ABV may have changed)
+                          Navigator.of(context).pop(true);
+                        }
                         break;
                       // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
                       case BeerConsumptionEditOption.deleteRecord:
@@ -100,11 +110,11 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                           }
 
                           if (context.mounted) {
-                            // BeerConsumption was deleted, so refresh list and close this options dialog
-                            context.read<BeerConsumptionNotifier>().refresh();
+                            // Pop true, caller of this dialog will refresh beerConsumptions
                             Navigator.of(context).pop(true);
                           }
                         }
+                        // (Do not close this dialog on delete abort)
                         break;
                       // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
                     }
@@ -167,9 +177,8 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                         totalCostIncrease: beerConsumption.price,
                       );
                     }
-                    // BeerConsumption was added, so refresh list and close this options dialog
                     if (context.mounted) {
-                      context.read<BeerConsumptionNotifier>().refresh();
+                      // Pop true, caller of this dialog will refresh beerConsumptions
                       Navigator.of(context).pop(true);
                     }
                   },

@@ -6,6 +6,7 @@ import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
+import "package:provider/provider.dart";
 
 class BeerConsumptionCard extends StatelessWidget {
   final Beer beer;
@@ -87,13 +88,16 @@ class BeerConsumptionCard extends StatelessWidget {
           ),
         ),
         onLongPress: () async {
-          await showDialog(
+          final result = await showDialog(
             context: context,
             builder: (_) => BeerConsumptionOptionsDialog(
               beer: beer,
               beerConsumption: beerConsumption,
             ),
           );
+          if (context.mounted && (result ?? false)) {
+            context.read<BeerConsumptionNotifier>().refresh();
+          }
         },
       ),
     );

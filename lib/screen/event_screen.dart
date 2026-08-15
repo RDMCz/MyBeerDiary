@@ -27,7 +27,8 @@ class EventScreen extends StatelessWidget {
         .watch<BeerConsumptionNotifier>()
         .itemsForEvent(event.id);
 
-    final userSettings = context.watch<UserSettingsNotifier>().value;
+    // Read is enough, no need to watch, because user settings cannot be changed from this screen or its children
+    final userSettings = context.read<UserSettingsNotifier>().value;
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
@@ -55,8 +56,8 @@ class EventScreen extends StatelessWidget {
               spacing: 4,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                EventStat(icon: SvgIcons.beer, text: "? piv"),
-                EventStat(icon: SvgIcons.money, text: "? Kč"),
+                EventStat(icon: SvgIcons.beer, text: "${event.totalBeers} piv"),
+                EventStat(icon: SvgIcons.money, text: "${event.totalCost} Kč"),
                 EventStat(
                   icon: SvgIcons.permille,
                   text: "? promile, ${userSettings.weight}",

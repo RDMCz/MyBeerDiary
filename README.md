@@ -3,6 +3,8 @@
 * ;)
   * [ ] Zaskrolováno dolu jakmile otevřeme event
   * [ ] Zaskrolováno dolu jakmile otevřeme oneoffs
+  * [ ] Zaskrolovat dolu jakmile přidáme pivo do eventu
+  * [ ] Zaskrolovat dolu jakmile přidáme pivo do oneoffs
   * [ ] text_divider.dart is currently unused
 * ?
   * [ ] Po přidání provideru může nyní snadněji dialog přímo refreshnout něco, namísto vyzvednutí výsledku dialogu a následného případného refreshe
