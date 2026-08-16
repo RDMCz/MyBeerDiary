@@ -17,15 +17,18 @@ import "package:my_beer_diary/widget/form/beer_form.dart";
 import "package:my_beer_diary/widget/form/brewery_input.dart";
 import "package:my_beer_diary/widget/form/checkbox.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
+import "package:provider/provider.dart";
 
 class BeerConsumptionDialog extends StatefulWidget {
   final int? eventId;
-  final List<Beer> beers;
+  final Beer? beer;
+  final BeerConsumption? beerConsumption;
 
   const BeerConsumptionDialog({
     super.key,
     required this.eventId,
-    required this.beers,
+    required this.beer,
+    required this.beerConsumption,
   });
 
   @override
@@ -71,6 +74,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
   @override
   void initState() {
     super.initState();
+
     breweryTEC.addListener(() {
       final breweryNameStr = breweryTEC.text;
       // The listener gets also called on focus se we need to check if the text was actually changed
@@ -89,6 +93,15 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
 
     // Update ABV if checkbox checked
     epmTEC.addListener(() => setState(() {}));
+
+    if (widget.beer != null && widget.beerConsumption != null) {
+      final b = widget.beer!;
+      final bc = widget.beerConsumption!;
+
+      breweryTEC.text = b.breweryName;
+      beerDescTEC.text=b.description;
+      //TODO WIP
+    }
   }
 
   @override
@@ -104,6 +117,8 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
   @override
   Widget build(BuildContext context) {
     final breweryNameTextTrim = breweryTEC.text.trim();
+
+    final beers = context.read<BeerNotifier>().itemList;
 
     return Dialog.fullscreen(
       child: SingleChildScrollView(
@@ -156,7 +171,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
 
                       // - Beer suggestion cards -
                       if (breweryNameTextTrim.length >= 2)
-                        for (final beer in widget.beers.where(
+                        for (final beer in beers.where(
                           (e) => e.breweryName.toLowerCase().contains(
                             breweryNameTextTrim.toLowerCase(),
                           ),

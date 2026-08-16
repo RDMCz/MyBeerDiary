@@ -55,6 +55,7 @@ class EventScreen extends StatelessWidget {
         height: 112,
         child: Row(
           children: [
+            // = Stats =
             Column(
               spacing: 4,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,6 +69,7 @@ class EventScreen extends StatelessWidget {
               ],
             ),
             Spacer(),
+            // = FAB =
             SizedBox(
               width: 72,
               height: 72,
@@ -78,7 +80,8 @@ class EventScreen extends StatelessWidget {
                       context: context,
                       builder: (_) => BeerConsumptionDialog(
                         eventId: event.id,
-                        beers: beers.values.toList(),
+                        beer: null,
+                        beerConsumption: null,
                       ),
                     );
                     if (context.mounted && (result ?? false)) {

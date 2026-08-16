@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/dialog/beer_consumption_dialog.dart";
 import "package:my_beer_diary/dialog/beer_dialog.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
@@ -55,8 +56,15 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                     switch (value) {
                       // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
                       case BeerConsumptionEditOption.editRecord:
-                        // TODO: Handle this case.
-                        if (context.mounted) {
+                        final result = await showDialog(
+                          context: context,
+                          builder: (_) => BeerConsumptionDialog(
+                            eventId: null,
+                            beer: beer,
+                            beerConsumption: beerConsumption,
+                          ),
+                        );
+                        if (context.mounted && (result ?? false)) {
                           // Pop true, caller of this dialog will refresh beerConsumptions
                           Navigator.of(context).pop(true);
                         }

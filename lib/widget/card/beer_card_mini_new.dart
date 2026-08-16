@@ -38,7 +38,7 @@ class BeerCardMiniNew extends StatelessWidget {
                         : "Přidat nové pivo\nod neznámého pivovaru",
                   ),
                   */
-                  Text("Přidat nové pivo od\ndaného pivovaru"),
+                  Text("Přidat nové pivo od\nzadaného pivovaru"),
                 ],
               ),
               IgnorePointer(
