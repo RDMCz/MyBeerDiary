@@ -10,7 +10,7 @@ class EventList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Watch because this widget might change on Events change
-    final events = context.watch<EventNotifier>().items;
+    final events = context.watch<EventNotifier>().itemList;
 
     return ListView.builder(
       padding: CardListCommon.listPadding,

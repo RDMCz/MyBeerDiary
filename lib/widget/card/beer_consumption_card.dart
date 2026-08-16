@@ -5,6 +5,7 @@ import "package:my_beer_diary/logic/beer_size.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
+import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
@@ -97,6 +98,7 @@ class BeerConsumptionCard extends StatelessWidget {
           );
           if (context.mounted && (result ?? false)) {
             context.read<BeerConsumptionNotifier>().refresh();
+            context.read<EventNotifier>().refresh();
           }
         },
       ),

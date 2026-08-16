@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/dialog/beer_dialog.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
@@ -62,13 +63,17 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                         break;
                       // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
                       case BeerConsumptionEditOption.editBeerGlobally:
-                        // TODO: Handle this case.
-                        if (context.mounted) {
+                        final result = await showDialog(
+                          context: context,
+                          builder: (_) => BeerDialog(beer: beer),
+                        );
+                        if (context.mounted && (result ?? false)) {
                           // Beer was changed
                           context.read<BeerNotifier>().refresh();
                           // BeerConsumptions haven't changed, but pop true anyways, alcohol needs to be recalculated (beer ABV may have changed)
                           Navigator.of(context).pop(true);
                         }
+                        // (Do not close this dialog on edit beer abort)
                         break;
                       // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
                       case BeerConsumptionEditOption.deleteRecord:

@@ -63,10 +63,14 @@ class EventCard extends StatelessWidget {
           ),
         ),
         onTap: () async {
+          if (event.id == null) {
+            return;
+          }
+
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => EventScreen(event: event, tag: tag),
+              builder: (_) => EventScreen(eventId: event.id!, tag: tag),
             ),
           );
           // Refresh events here because event totals (nBeers, cost) could get updated

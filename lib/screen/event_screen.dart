@@ -12,13 +12,16 @@ import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
 class EventScreen extends StatelessWidget {
-  final Event event;
+  final int eventId;
   final Tag? tag;
 
-  const EventScreen({super.key, required this.event, required this.tag});
+  const EventScreen({super.key, required this.eventId, required this.tag});
 
   @override
   Widget build(BuildContext context) {
+    final events = context.watch<EventNotifier>().itemMap;
+    final event = events[eventId] ?? Event.errorEvent;
+
     final title = tag == null ? event.name : "${tag!.name} ${event.name}";
 
     final beers = context.watch<BeerNotifier>().itemMap;

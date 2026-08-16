@@ -80,6 +80,13 @@ class Event {
   @override
   String toString() =>
       "id=$id, tagId=$tagId, name=$name, timestamp=$timestamp, totalBeers=$totalBeers, totalCost=$totalCost";
+
+  static const Event errorEvent = Event(
+    name: "ERROR EVENT!",
+    timestamp: 0,
+    totalBeers: 0,
+    totalCost: 0,
+  );
 }
 
 Future<void> eventAdd(Event event) async {
@@ -142,10 +149,16 @@ Future<void> eventDelete(int id) async {
 }
 
 class EventNotifier extends ChangeNotifier {
-  List<Event> items = [];
+  List<Event> itemList = [];
+  Map<int, Event> itemMap = {};
 
   Future<void> refresh() async {
-    items = await eventList();
+    itemList = await eventList();
+    itemMap = {
+      for (final item in itemList)
+        if (item.id != null) item.id!: item,
+    };
+
     notifyListeners();
   }
 }
