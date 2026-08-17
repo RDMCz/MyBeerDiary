@@ -19,6 +19,8 @@ import "package:my_beer_diary/widget/form/checkbox.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
+enum EditSummaryAction { applyOne, applyAll, cancel }
+
 class BeerConsumptionDialog extends StatefulWidget {
   final int? eventId;
   final Beer? beer;
@@ -94,13 +96,26 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
     // Update ABV if checkbox checked
     epmTEC.addListener(() => setState(() {}));
 
+    // Fill fields if editing existing beerConsumption
     if (widget.beer != null && widget.beerConsumption != null) {
       final b = widget.beer!;
-      final bc = widget.beerConsumption!;
-
       breweryTEC.text = b.breweryName;
-      beerDescTEC.text=b.description;
-      //TODO WIP
+      beerDescTEC.text = b.description;
+      epmTEC.text = doubleToTextField(b.epm);
+      abvTEC.text = doubleToTextField(b.abv);
+      beerColor = hexStringToColor(b.color);
+
+      selectedBeer = b;
+
+      final bc = widget.beerConsumption!;
+      priceTEC.text = bc.price.toString();
+      isDraft = bc.isDraft;
+
+      beerSizeSelected = doubleToBeerSize(bc.litres);
+      if (beerSizeSelected == BeerSize.custom) {
+        customBeerSizeValue = bc.litres;
+        customBeerSizeName = doubleToBeerSizeStr(customBeerSizeValue);
+      }
     }
   }
 
@@ -116,6 +131,8 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final isEdit = widget.beer != null && widget.beerConsumption != null;
+
     final breweryNameTextTrim = breweryTEC.text.trim();
 
     final beers = context.read<BeerNotifier>().itemList;
@@ -130,7 +147,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
               Row(
                 children: [
                   Text(
-                    "Další pivo",
+                    isEdit ? "Upravit záznam vypití piva" : "Další pivo",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22.0,
@@ -315,63 +332,233 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                     ),
                   ),
                   Spacer(),
-                  // = Button to add beer consumption =
+                  // = Button to add/edit beerConsumption =
                   FloatingActionButton.extended(
-                    label: Text("Přidat"),
-                    icon: Icon(Icons.add),
-                    onPressed: () async {
-                      // Resolve Beer
-                      final beerId = selectedBeer != null
-                          ? selectedBeer!.id
-                          // selectedBeer == null => user wants to add new beer to DB
-                          : await beerAdd(
-                              Beer(
-                                breweryName: Beer.breweryNameOrDefault(
-                                  breweryNameTextTrim,
-                                ),
-                                description: beerDescTEC.text.trim(),
-                                epm: Beer.epmOrDefault(epmTEC.text),
-                                abv: Beer.abvOrDefault(abvTEC.text),
-                                color: colorToHexString(beerColor),
+                    label: Text(isEdit ? "Potvrdit" : "Přidat"),
+                    icon: Icon(isEdit ? Icons.check : Icons.add),
+                    onPressed: !isEdit
+                        // ---  Add new beerConsumption  --- --- --- --- --- --- --- --- --- --- ---
+                        ? () async {
+                            // Resolve Beer
+                            final beerId = selectedBeer != null
+                                ? selectedBeer!.id
+                                // selectedBeer == null => user wants to add new beer to DB
+                                : await beerAdd(
+                                    Beer(
+                                      breweryName: Beer.breweryNameOrDefault(
+                                        breweryNameTextTrim,
+                                      ),
+                                      description: beerDescTEC.text.trim(),
+                                      epm: Beer.epmOrDefault(epmTEC.text),
+                                      abv: Beer.abvOrDefault(abvTEC.text),
+                                      color: colorToHexString(beerColor),
+                                    ),
+                                  );
+
+                            // Resolve litres
+                            final litres = switch (beerSizeSelected) {
+                              BeerSize.small => 0.3,
+                              BeerSize.large => 0.5,
+                              BeerSize.custom => customBeerSizeValue,
+                            };
+
+                            // Resolve price
+                            final price = int.tryParse(priceTEC.text) ?? 0;
+
+                            // Add beer consumption to DB
+                            await beerConsumptionAdd(
+                              BeerConsumption(
+                                timestamp: secondsSinceEpoch(),
+                                eventId: widget.eventId,
+                                beerId: beerId,
+                                litres: litres,
+                                price: price,
+                                isDraft: isDraft,
                               ),
                             );
 
-                      // Resolve litres
-                      final litres = switch (beerSizeSelected) {
-                        BeerSize.small => 0.3,
-                        BeerSize.large => 0.5,
-                        BeerSize.custom => customBeerSizeValue,
-                      };
+                            // Update event stats (total beers and total price)
+                            if (widget.eventId != null) {
+                              eventUpdateTotals(
+                                eventId: widget.eventId!,
+                                totalBeersIncrease: 1,
+                                totalCostIncrease: price,
+                              );
+                            }
 
-                      // Resolve price
-                      final price = int.tryParse(priceTEC.text) ?? 0;
+                            // Close the dialog
+                            if (context.mounted) {
+                              Navigator.of(context).pop(true);
+                            }
+                          }
+                        // --- Edit existing beerConsumption --- --- --- --- --- --- --- --- --- ---
+                        : () async {
+                            // Firm: id, timestamp, eventId
+                            // Can change: beerId, litres, price, isDraft
+                            final b = widget.beer!;
+                            final bc = widget.beerConsumption!;
 
-                      // Add beer consumption to DB
-                      await beerConsumptionAdd(
-                        BeerConsumption(
-                          timestamp: secondsSinceEpoch(),
-                          eventId: widget.eventId,
-                          beerId: beerId,
-                          litres: litres,
-                          price: price,
-                          isDraft: isDraft,
-                        ),
-                      );
+                            // Resolve beer
+                            final isBeerChange =
+                                selectedBeer == null ||
+                                selectedBeer!.id != b.id;
 
-                      // Update event stats (total beers and total price)
-                      if (widget.eventId != null) {
-                        eventUpdateTotals(
-                          eventId: widget.eventId!,
-                          totalBeersIncrease: 1,
-                          totalCostIncrease: price,
-                        );
-                      }
+                            final beerId = !isBeerChange
+                                ? b.id
+                                : selectedBeer != null
+                                ? selectedBeer!.id
+                                : await beerAdd(
+                                    Beer(
+                                      breweryName: Beer.breweryNameOrDefault(
+                                        breweryNameTextTrim,
+                                      ),
+                                      description: beerDescTEC.text.trim(),
+                                      epm: Beer.epmOrDefault(epmTEC.text),
+                                      abv: Beer.abvOrDefault(abvTEC.text),
+                                      color: colorToHexString(beerColor),
+                                    ),
+                                  );
 
-                      // Close the dialog
-                      if (context.mounted) {
-                        Navigator.of(context).pop(true);
-                      }
-                    },
+                            // Resolve litres
+                            final litres = switch (beerSizeSelected) {
+                              BeerSize.small => 0.3,
+                              BeerSize.large => 0.5,
+                              BeerSize.custom => customBeerSizeValue,
+                            };
+                            final isLitresChange = litres != bc.litres;
+
+                            // Resolve price
+                            final price = int.tryParse(priceTEC.text) ?? 0;
+                            final isPriceChange = price != bc.price;
+
+                            // Resolve isDraft
+                            final isIsDrasftChange = isDraft != bc.isDraft;
+
+                            // Apply changes
+                            if (!isBeerChange &&
+                                !isLitresChange &&
+                                !isPriceChange &&
+                                !isIsDrasftChange) {
+                              // No changes
+                              if (context.mounted) {
+                                Navigator.of(context).pop(false);
+                              }
+                            } else {
+                              // Create summary of the beerConsumption changes
+                              String editSummary = "";
+                              if (isBeerChange) {
+                                final newBeerStr = selectedBeer != null
+                                    ? selectedBeer!.toDisplayString()
+                                    : "Nové pivo";
+                                editSummary +=
+                                    "Pivo: ${b.toDisplayString()} → $newBeerStr\n";
+                              }
+                              if (isLitresChange) {
+                                editSummary +=
+                                    "Objem: ${bc.litres} L → $litres\n";
+                              }
+                              if (isPriceChange) {
+                                editSummary +=
+                                    "Cena: ${bc.price} Kč → $price Kč\n";
+                              }
+                              if (isIsDrasftChange) {
+                                editSummary +=
+                                    "Čepované: ${bc.isDraft} → $isDraft\n";
+                              }
+
+                              // Show edit summary dialog
+                              if (context.mounted) {
+                                final result =
+                                    await showDialog<EditSummaryAction>(
+                                      context: context,
+                                      builder: (BuildContext context) => SimpleDialog(
+                                        title: Text("Souhrn změn"),
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 20.0,
+                                            ),
+                                            child: Text(editSummary),
+                                          ),
+                                          SimpleDialogOption(
+                                            onPressed: () {
+                                              Navigator.of(
+                                                context,
+                                              ).pop(EditSummaryAction.applyOne);
+                                            },
+                                            child: Text(
+                                              "Provést změny pro tento záznam",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          if (widget.eventId != null)
+                                            // (Not avaliable for oneoffs)
+                                            SimpleDialogOption(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(
+                                                  EditSummaryAction.applyAll,
+                                                );
+                                              },
+                                              child: Text(
+                                                "Provést změny pro všechny identické záznamy této události",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          SimpleDialogOption(
+                                            onPressed: () {
+                                              Navigator.of(
+                                                context,
+                                              ).pop(EditSummaryAction.cancel);
+                                            },
+                                            child: Text(
+                                              "Zrušit",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ) ??
+                                    EditSummaryAction.cancel;
+                                switch (result) {
+                                  case EditSummaryAction.applyOne:
+                                    // Edit beerConsumption in DB
+                                    await beerConsumptionUpdate(
+                                      bc.copyWith(
+                                        beerId: () => beerId,
+                                        litres: () => litres,
+                                        price: () => price,
+                                        isDraft: () => isDraft,
+                                      ),
+                                    );
+                                    // Update totals
+                                    if (widget.eventId != null) {
+                                      eventUpdateTotals(
+                                        eventId: widget.eventId!,
+                                        totalBeersIncrease: 0,
+                                        totalCostIncrease: -bc.price + price,
+                                      );
+                                    }
+                                    // Close the dialog
+                                    if (context.mounted) {
+                                      Navigator.of(context).pop(true);
+                                    }
+                                    break;
+                                  case EditSummaryAction.applyAll:
+                                    // TODO: Handle this case.
+                                    break;
+                                  case EditSummaryAction.cancel:
+                                    // Do nothing
+                                    break;
+                                }
+                              }
+                            }
+                          },
                   ),
                 ],
               ),

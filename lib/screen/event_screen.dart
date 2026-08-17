@@ -44,6 +44,7 @@ class EventScreen extends StatelessWidget {
         itemBuilder: (_, int idx) => Padding(
           padding: CardListCommon.itemPadding,
           child: BeerConsumptionCard(
+            eventId: event.id,
             beer: beers[beerConsumptions[idx].beerId] ?? Beer.defaultBeer,
             beerConsumption: beerConsumptions[idx],
           ),

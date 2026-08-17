@@ -10,11 +10,13 @@ import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
 class BeerConsumptionCard extends StatelessWidget {
+  final int? eventId;
   final Beer beer;
   final BeerConsumption beerConsumption;
 
   const BeerConsumptionCard({
     super.key,
+    required this.eventId,
     required this.beer,
     required this.beerConsumption,
   });
@@ -92,6 +94,7 @@ class BeerConsumptionCard extends StatelessWidget {
           final result = await showDialog(
             context: context,
             builder: (_) => BeerConsumptionOptionsDialog(
+              eventId: eventId,
               beer: beer,
               beerConsumption: beerConsumption,
             ),
