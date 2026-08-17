@@ -123,6 +123,17 @@ Future<void> beerConsumptionUpdate(BeerConsumption bc) async {
   );
 }
 
+Future<void> beerConsumptionUpdateIdentical({
+  required BeerConsumption old,
+  required int? newBeerId,
+  required double newLitres,
+  required int newPrice,
+  required bool newIsDraft,
+}) async {
+  final db = await AppDatabase.instance.database;
+  //TODO
+}
+
 Future<void> beerConsumptionDelete(int id) async {
   final db = await AppDatabase.instance.database;
   await db.delete(

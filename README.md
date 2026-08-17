@@ -5,6 +5,7 @@
   * [ ] Zaskrolováno dolu jakmile otevřeme oneoffs
   * [ ] Zaskrolovat dolu jakmile přidáme pivo do eventu
   * [ ] Zaskrolovat dolu jakmile přidáme pivo do oneoffs
+  * [ ] Start/end of the list indicator when trying to scroll further
   * [ ] text_divider.dart is currently unused
 * ?
   * [ ] Po přidání provideru může nyní snadněji dialog přímo refreshnout něco, namísto vyzvednutí výsledku dialogu a následného případného refreshe

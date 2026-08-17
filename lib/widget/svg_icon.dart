@@ -16,7 +16,8 @@ enum SvgIcons {
   money("money"),
   permille("permille"),
   repeat("repeat"),
-  edit("edit");
+  edit("edit"),
+  sober("sober");
 
   final String filename;
 

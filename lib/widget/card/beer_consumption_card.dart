@@ -99,9 +99,13 @@ class BeerConsumptionCard extends StatelessWidget {
               beerConsumption: beerConsumption,
             ),
           );
-          if (context.mounted && (result ?? false)) {
-            context.read<BeerConsumptionNotifier>().refresh();
-            context.read<EventNotifier>().refresh();
+          if (result ?? false) {
+            if (context.mounted) {
+              await context.read<BeerConsumptionNotifier>().refresh();
+            }
+            if (context.mounted) {
+              await context.read<EventNotifier>().refresh();
+            }
           }
         },
       ),

@@ -61,7 +61,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                         final result = await showDialog(
                           context: context,
                           builder: (_) => BeerConsumptionDialog(
-                            eventId: null,
+                            eventId: eventId,
                             beer: beer,
                             beerConsumption: beerConsumption,
                           ),
