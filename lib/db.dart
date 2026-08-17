@@ -11,7 +11,7 @@ class AppDatabase {
   static final AppDatabase instance = AppDatabase._init();
 
   static final _databaseName = "MyBeerDiary.db";
-  static final _databaseVersion = 4;
+  static final _databaseVersion = 6;
   static Database? _database;
 
   Future<Database> get database async {

@@ -21,7 +21,7 @@ class OneoffList extends StatelessWidget {
         padding: CardListCommon.itemPadding,
         child: BeerConsumptionCard(
           eventId: null,
-          beer: beers[oneoffs[idx].beerId] ?? Beer.defaultBeer,
+          beer: beers[oneoffs[idx].beerId] ?? Beer.unknownBeer,
           beerConsumption: oneoffs[idx],
         ),
       ),

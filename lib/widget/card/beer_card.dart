@@ -66,6 +66,7 @@ class BeerCard extends StatelessWidget {
                   icon: Icon(Icons.edit),
                 ),
                 // = Delete Button =
+                /*
                 IconButton(
                   onPressed: () async {
                     final result = await showDialog(
@@ -98,6 +99,7 @@ class BeerCard extends StatelessWidget {
                   },
                   icon: Icon(Icons.delete),
                 ),
+                */
               ],
             ),
           ],

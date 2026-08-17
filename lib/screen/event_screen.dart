@@ -45,7 +45,7 @@ class EventScreen extends StatelessWidget {
           padding: CardListCommon.itemPadding,
           child: BeerConsumptionCard(
             eventId: event.id,
-            beer: beers[beerConsumptions[idx].beerId] ?? Beer.defaultBeer,
+            beer: beers[beerConsumptions[idx].beerId] ?? Beer.unknownBeer,
             beerConsumption: beerConsumptions[idx],
           ),
         ),
@@ -85,10 +85,13 @@ class EventScreen extends StatelessWidget {
                         beerConsumption: null,
                       ),
                     );
-                    if (context.mounted && (result ?? false)) {
-                      // New beer could have been created
-                      context.read<BeerNotifier>().refresh();
-                      context.read<BeerConsumptionNotifier>().refresh();
+                    if (result ?? false) {
+                      if (context.mounted) {
+                        await context.read<BeerConsumptionNotifier>().refresh();
+                      }
+                      if (context.mounted) {
+                        await context.read<EventNotifier>().refresh();
+                      }
                     }
                   },
                   child: Icon(Icons.add),

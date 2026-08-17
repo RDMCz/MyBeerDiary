@@ -5,6 +5,7 @@
   * [ ] Zaskrolováno dolu jakmile otevřeme oneoffs
   * [ ] Zaskrolovat dolu jakmile přidáme pivo do eventu
   * [ ] Zaskrolovat dolu jakmile přidáme pivo do oneoffs
+  * [ ] Zaskrolováno na dané pivo když edituji beerConsumption
   * [ ] Start/end of the list indicator when trying to scroll further
   * [ ] text_divider.dart is currently unused
 * ?
@@ -13,6 +14,9 @@
   * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
   * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
   * [ ] Show brewery names from database in BreweryInput?
+* Problems:
+  * User edits beerConsumption, changes to new beer, beer is created in DB, then user chooses EditSummaryAction.cancel
+  * Beers can't be deleted right now, it would be nice if user could atleast "merge two beers into one"
 
 ---
 

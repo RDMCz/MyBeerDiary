@@ -91,23 +91,21 @@ class Beer {
         (true, true) => "$breweryName $description",
       };
 
-  // If user does not fill these fields or the beer was deleted, default values will be used
-  static const Beer defaultBeer = Beer(
-    breweryName: "Neznámý pivovar",
+  // Fallback beer if can't find proper one in DB (shouldn't happen)
+  static const Beer unknownBeer = Beer(
+    breweryName: "Neznámé pivo",
     description: "",
     epm: 11.0,
     abv: 4.4,
     color: beerColorGoldStr,
   );
 
-  static String breweryNameOrDefault(String s) =>
-      s.isNotEmpty ? s : defaultBeer.breweryName;
-
+  // If user does not fill these fields, default values will be used
   static double epmOrDefault(String s) =>
-      s.isNotEmpty ? textFieldToDouble(s) : defaultBeer.epm;
+      s.isNotEmpty ? textFieldToDouble(s) : unknownBeer.epm;
 
   static double abvOrDefault(String s) =>
-      s.isNotEmpty ? textFieldToDouble(s) : defaultBeer.abv;
+      s.isNotEmpty ? textFieldToDouble(s) : unknownBeer.abv;
 }
 
 Future<int> beerAdd(Beer beer) async {

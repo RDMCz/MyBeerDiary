@@ -121,9 +121,7 @@ class _BeerDialogState extends State<BeerDialog> {
                       ? () async {
                           await beerAdd(
                             Beer(
-                              breweryName: Beer.breweryNameOrDefault(
-                                breweryNameTextTrim,
-                              ),
+                              breweryName: breweryNameTextTrim,
                               description: beerDescTextTrim,
                               epm: Beer.epmOrDefault(epmTEC.text),
                               abv: Beer.abvOrDefault(abvTEC.text),
@@ -136,11 +134,8 @@ class _BeerDialogState extends State<BeerDialog> {
                         }
                       // .: Editing existing beer :.
                       : () async {
-                          final breweryName = Beer.breweryNameOrDefault(
-                            breweryNameTextTrim,
-                          );
                           final isBreweryNameChange =
-                              widget.beer!.breweryName != breweryName;
+                              widget.beer!.breweryName != breweryNameTextTrim;
 
                           final isBeerDescChange =
                               widget.beer!.description != beerDescTextTrim;
@@ -165,7 +160,7 @@ class _BeerDialogState extends State<BeerDialog> {
                             // Write changes to DB
                             await beerUpdate(
                               widget.beer!.copyWith(
-                                breweryName: () => breweryName,
+                                breweryName: () => breweryNameTextTrim,
                                 description: () => beerDescTextTrim,
                                 epm: () => epm,
                                 abv: () => abv,

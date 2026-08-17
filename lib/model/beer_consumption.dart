@@ -17,7 +17,7 @@ const String beerConsumptionTableCreate =
     "$beerConsumptionColId INTEGER PRIMARY KEY AUTOINCREMENT," // Surrogate key
     "$beerConsumptionColTimestamp INTEGER NOT NULL,"
     "$beerConsumptionColEventId INTEGER," // NULL = One-off beer, NOT NULL = Event beer
-    "$beerConsumptionColBeerId INTEGER," // NULL = Unknown beer
+    "$beerConsumptionColBeerId INTEGER NOT NULL,"
     "$beerConsumptionColLitres REAL NOT NULL,"
     "$beerConsumptionColPrice INTEGER NOT NULL,"
     "$beerConsumptionColIsDraft INTEGER NOT NULL"
@@ -30,7 +30,7 @@ class BeerConsumption {
   final int? id;
   final int timestamp;
   final int? eventId;
-  final int? beerId;
+  final int beerId;
   final double litres;
   final int price;
   final bool isDraft;
@@ -39,7 +39,7 @@ class BeerConsumption {
     this.id,
     required this.timestamp,
     this.eventId,
-    this.beerId,
+    required this.beerId,
     required this.litres,
     required this.price,
     required this.isDraft,
@@ -61,7 +61,7 @@ class BeerConsumption {
     id: m[beerConsumptionColId] as int?,
     timestamp: m[beerConsumptionColTimestamp] as int,
     eventId: m[beerConsumptionColEventId] as int?,
-    beerId: m[beerConsumptionColBeerId] as int?,
+    beerId: m[beerConsumptionColBeerId] as int,
     litres: m[beerConsumptionColLitres] as double,
     price: m[beerConsumptionColPrice] as int,
     isDraft: (m[beerConsumptionColIsDraft] as int) == 1,
@@ -71,7 +71,7 @@ class BeerConsumption {
     int? Function()? id,
     int Function()? timestamp,
     int? Function()? eventId,
-    int? Function()? beerId,
+    int Function()? beerId,
     double Function()? litres,
     int Function()? price,
     bool Function()? isDraft,
@@ -125,7 +125,7 @@ Future<void> beerConsumptionUpdate(BeerConsumption bc) async {
 
 Future<void> beerConsumptionUpdateIdentical({
   required BeerConsumption old,
-  required int? newBeerId,
+  required int newBeerId,
   required double newLitres,
   required int newPrice,
   required bool newIsDraft,

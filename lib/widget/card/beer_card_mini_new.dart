@@ -2,13 +2,11 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 
 class BeerCardMiniNew extends StatelessWidget {
-  //final String breweryNameStr;
   final bool isSelected;
   final VoidCallback onTap;
 
   const BeerCardMiniNew({
     super.key,
-    //required this.breweryNameStr,
     required this.isSelected,
     required this.onTap,
   });
@@ -30,14 +28,7 @@ class BeerCardMiniNew extends StatelessWidget {
                   Text(
                     "Nové pivo ",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  /*
-                  Text(
-                    breweryNameStr.isNotEmpty
-                        ? "Přidat nové pivo\nod pivovaru „$breweryNameStr“"
-                        : "Přidat nové pivo\nod neznámého pivovaru",
-                  ),
-                  */
+                  ),                  
                   Text("Přidat nové pivo od\nzadaného pivovaru"),
                 ],
               ),

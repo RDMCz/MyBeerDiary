@@ -93,6 +93,8 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
       }
     });
 
+    beerDescTEC.addListener(() => setState(() {}));
+
     // Update ABV if checkbox checked
     epmTEC.addListener(() => setState(() {}));
 
@@ -134,6 +136,10 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
     final isEdit = widget.beer != null && widget.beerConsumption != null;
 
     final breweryNameTextTrim = breweryTEC.text.trim();
+    final beerDescTextTrim = beerDescTEC.text.trim();
+
+    final isValid =
+        breweryNameTextTrim.isNotEmpty || beerDescTextTrim.isNotEmpty;
 
     final beers = context.read<BeerNotifier>().itemList;
 
@@ -181,37 +187,35 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                     children: [
                       // - New beer card -
                       BeerCardMiniNew(
-                        //breweryNameStr: breweryNameTextTrim,
                         isSelected: selectedBeer == null,
                         onTap: clearBeerForm,
                       ),
 
                       // - Beer suggestion cards -
-                      if (breweryNameTextTrim.length >= 2)
-                        for (final beer in beers.where(
-                          (e) => e.breweryName.toLowerCase().contains(
-                            breweryNameTextTrim.toLowerCase(),
-                          ),
-                        ))
-                          BeerCardMini(
-                            beer: beer,
-                            isSelected:
-                                selectedBeer != null &&
-                                selectedBeer!.id == beer.id,
-                            onTap: () {
-                              setState(() {
-                                isAbvGuess = false;
-                                breweryTEC.text = beer.breweryName;
-                                beerDescTEC.text = beer.description;
-                                epmTEC.text = doubleToTextField(beer.epm);
-                                abvTEC.text = doubleToTextField(beer.abv);
-                                beerColor = hexStringToColor(beer.color);
+                      for (final beer in beers.where(
+                        (e) => e.breweryName.toLowerCase().contains(
+                          breweryNameTextTrim.toLowerCase(),
+                        ),
+                      ))
+                        BeerCardMini(
+                          beer: beer,
+                          isSelected:
+                              selectedBeer != null &&
+                              selectedBeer!.id == beer.id,
+                          onTap: () {
+                            setState(() {
+                              isAbvGuess = false;
+                              breweryTEC.text = beer.breweryName;
+                              beerDescTEC.text = beer.description;
+                              epmTEC.text = doubleToTextField(beer.epm);
+                              abvTEC.text = doubleToTextField(beer.abv);
+                              beerColor = hexStringToColor(beer.color);
 
-                                // Beer must be set after changing brewery name field otherwise it would be set to null by listener
-                                selectedBeer = beer;
-                              });
-                            },
-                          ),
+                              // Beer must be set after changing brewery name field otherwise it would be set to null by listener
+                              selectedBeer = beer;
+                            });
+                          },
+                        ),
                     ],
                   ),
                 ),
@@ -336,19 +340,25 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                   FloatingActionButton.extended(
                     label: Text(isEdit ? "Potvrdit" : "Přidat"),
                     icon: Icon(isEdit ? Icons.check : Icons.add),
-                    onPressed: !isEdit
+                    backgroundColor: isValid
+                        ? Theme.of(context).colorScheme.secondaryContainer
+                        : Color(0xffcfcec9),
+                    disabledElevation: 0,
+                    onPressed: !isValid
+                        ? null
+                        : !isEdit
                         // ---  Add new beerConsumption  --- --- --- --- --- --- --- --- --- --- ---
                         ? () async {
                             // Resolve Beer
-                            final beerId = selectedBeer != null
-                                ? selectedBeer!.id
-                                // selectedBeer == null => user wants to add new beer to DB
+                            final beerId =
+                                selectedBeer != null && selectedBeer!.id != null
+                                // User has selected valid BeerCardMini => use that beer
+                                ? selectedBeer!.id!
+                                // User has selected BeerCardMiniNew => create new beer and use its ID
                                 : await beerAdd(
                                     Beer(
-                                      breweryName: Beer.breweryNameOrDefault(
-                                        breweryNameTextTrim,
-                                      ),
-                                      description: beerDescTEC.text.trim(),
+                                      breweryName: breweryNameTextTrim,
+                                      description: beerDescTextTrim,
                                       epm: Beer.epmOrDefault(epmTEC.text),
                                       abv: Beer.abvOrDefault(abvTEC.text),
                                       color: colorToHexString(beerColor),
@@ -388,6 +398,9 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
 
                             // Close the dialog
                             if (context.mounted) {
+                              if (selectedBeer == null) {
+                                context.read<BeerNotifier>().refresh();
+                              }
                               Navigator.of(context).pop(true);
                             }
                           }
@@ -398,21 +411,28 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                             final b = widget.beer!;
                             final bc = widget.beerConsumption!;
 
+                            if (b.id == null ||
+                                (selectedBeer != null &&
+                                    selectedBeer!.id == null)) {
+                              return;
+                            }
+
                             // Resolve beer
                             final isBeerChange =
                                 selectedBeer == null ||
-                                selectedBeer!.id != b.id;
+                                selectedBeer!.id! != b.id!;
 
                             final beerId = !isBeerChange
-                                ? b.id
+                                // No changes to beer => use old beer's ID
+                                ? b.id!
                                 : selectedBeer != null
-                                ? selectedBeer!.id
+                                // User has selected valid BeerCardMini => use that beer
+                                ? selectedBeer!.id!
+                                // User has selected BeerCardMiniNew => create new beer and use its ID
                                 : await beerAdd(
                                     Beer(
-                                      breweryName: Beer.breweryNameOrDefault(
-                                        breweryNameTextTrim,
-                                      ),
-                                      description: beerDescTEC.text.trim(),
+                                      breweryName: breweryNameTextTrim,
+                                      description: beerDescTextTrim,
                                       epm: Beer.epmOrDefault(epmTEC.text),
                                       abv: Beer.abvOrDefault(abvTEC.text),
                                       color: colorToHexString(beerColor),
@@ -508,6 +528,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                                 ),
                                               ),
                                             ),
+                                          /*
                                           SimpleDialogOption(
                                             onPressed: () {
                                               Navigator.of(
@@ -521,6 +542,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                               ),
                                             ),
                                           ),
+                                          */
                                         ],
                                       ),
                                     ) ??
@@ -537,7 +559,8 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                       ),
                                     );
                                     // Update totals
-                                    if (widget.eventId != null) {
+                                    if (widget.eventId != null &&
+                                        isPriceChange) {
                                       eventUpdateTotals(
                                         eventId: widget.eventId!,
                                         totalBeersIncrease: 0,
@@ -546,6 +569,9 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                     }
                                     // Close the dialog
                                     if (context.mounted) {
+                                      if (isBeerChange) {
+                                        context.read<BeerNotifier>().refresh();
+                                      }
                                       Navigator.of(context).pop(true);
                                     }
                                     break;
