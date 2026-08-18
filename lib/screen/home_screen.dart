@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/dialog/beer_consumption_dialog.dart";
 import "package:my_beer_diary/dialog/event_dialog.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/home_part/home_drawer.dart";
@@ -85,6 +87,17 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           } else {
             // = Add new oneoff beer =
+            final result = await showDialog(
+              context: context,
+              builder: (_) => BeerConsumptionDialog(
+                eventId: null,
+                beer: null,
+                beerConsumption: null,
+              ),
+            );
+            if (context.mounted && (result ?? false)) {
+              await context.read<BeerConsumptionNotifier>().refresh();
+            }
           }
         },
         shape: CircleBorder(),

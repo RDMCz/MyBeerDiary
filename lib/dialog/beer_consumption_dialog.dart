@@ -22,8 +22,13 @@ import "package:provider/provider.dart";
 enum EditSummaryAction { applyOne, applyAll, cancel }
 
 class BeerConsumptionDialog extends StatefulWidget {
+  /// Links this dialog to a specific Event, use null for Oneoffs
   final int? eventId;
+
+  /// Used for editing variant of this dialog, beer will be preselected and fields filled
   final Beer? beer;
+
+  /// Used for editing variant of this dialog, fields will be filled
   final BeerConsumption? beerConsumption;
 
   const BeerConsumptionDialog({

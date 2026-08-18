@@ -169,6 +169,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 24.0),
+                
                 // = FAB :: Repeat =
                 FloatingActionButton.extended(
                   label: Text("Znovu"),

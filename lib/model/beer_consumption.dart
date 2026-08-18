@@ -188,8 +188,8 @@ class BeerConsumptionNotifier extends ChangeNotifier {
   List<BeerConsumption> itemsForEvent(int? eventId) =>
       _items.where((bc) => bc.eventId == eventId).toList();
 
-  //TODO TEMP
-  List<BeerConsumption> items() => _items;
+  List<BeerConsumption> itemsOneoffs() =>
+      _items.where((bc) => bc.eventId == null).toList();
 
   Future<void> refresh() async {
     _items = await beerConsumptionList();

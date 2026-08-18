@@ -12,7 +12,7 @@ class OneoffList extends StatelessWidget {
   Widget build(BuildContext context) {
     // Watch because this widget might change on Beer/Consumption change (oneoffs/beers CRUD)
     final beers = context.watch<BeerNotifier>().itemMap;
-    final oneoffs = context.watch<BeerConsumptionNotifier>().items();
+    final oneoffs = context.watch<BeerConsumptionNotifier>().itemsOneoffs();
 
     return ListView.builder(
       padding: CardListCommon.listPadding,

@@ -2,6 +2,7 @@ import "dart:ui";
 import "package:my_beer_diary/model/beer.dart";
 
 const List<String> breweryNames = [
+  "Neznámý pivovar",
   "Agent",
   "Albert Michler",
   "Albrecht",
