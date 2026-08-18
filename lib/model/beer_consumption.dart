@@ -123,7 +123,7 @@ Future<void> beerConsumptionUpdate(BeerConsumption bc) async {
   );
 }
 
-Future<void> beerConsumptionUpdateIdentical({
+Future<int> beerConsumptionUpdateIdentical({
   required BeerConsumption old,
   required int newBeerId,
   required double newLitres,
@@ -131,7 +131,37 @@ Future<void> beerConsumptionUpdateIdentical({
   required bool newIsDraft,
 }) async {
   final db = await AppDatabase.instance.database;
-  //TODO
+  final whereParts = <String>[];
+  final whereArgs = <Object?>[];
+
+  whereParts.add("$beerConsumptionColEventId = ?");
+  whereArgs.add(old.eventId);
+
+  whereParts.add("$beerConsumptionColBeerId = ?");
+  whereArgs.add(old.beerId);
+
+  whereParts.add("$beerConsumptionColLitres = ?");
+  whereArgs.add(old.litres);
+
+  whereParts.add("$beerConsumptionColPrice = ?");
+  whereArgs.add(old.price);
+
+  whereParts.add("$beerConsumptionColIsDraft = ?");
+  whereArgs.add(old.isDraft ? 1 : 0);
+
+  final where = whereParts.join(" AND ");
+
+  return await db.update(
+    beerConsumptionTable,
+    {
+      beerConsumptionColBeerId: newBeerId,
+      beerConsumptionColLitres: newLitres,
+      beerConsumptionColPrice: newPrice,
+      beerConsumptionColIsDraft: newIsDraft ? 1 : 0,
+    },
+    where: where,
+    whereArgs: whereArgs,
+  );
 }
 
 Future<void> beerConsumptionDelete(int id) async {

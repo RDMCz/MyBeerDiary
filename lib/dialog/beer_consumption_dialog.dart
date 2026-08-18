@@ -576,7 +576,33 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                     }
                                     break;
                                   case EditSummaryAction.applyAll:
-                                    // TODO: Handle this case.
+                                    // Edit beerConsumptions in DB
+                                    final nRows =
+                                        await beerConsumptionUpdateIdentical(
+                                          old: bc,
+                                          newBeerId: beerId,
+                                          newLitres: litres,
+                                          newPrice: price,
+                                          newIsDraft: isDraft,
+                                        );
+                                    // Update totals
+                                    if (widget.eventId != null &&
+                                        isPriceChange) {
+                                      eventUpdateTotals(
+                                        eventId: widget.eventId!,
+                                        totalBeersIncrease: 0,
+                                        totalCostIncrease:
+                                            -(nRows * bc.price) +
+                                            (nRows * price),
+                                      );
+                                    }
+                                    // Close the dialog
+                                    if (context.mounted) {
+                                      if (isBeerChange) {
+                                        context.read<BeerNotifier>().refresh();
+                                      }
+                                      Navigator.of(context).pop(true);
+                                    }
                                     break;
                                   case EditSummaryAction.cancel:
                                     // Do nothing
