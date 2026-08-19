@@ -38,5 +38,6 @@ String epmToAbvDialog(String epmStr) {
   return doubleToTextField(abv);
 }
 
-// .:  :.
-// .:==:.
+// .: BAC :.
+// .:=====:.
+/* https://github.com/RadekMocek/PAA/blob/main/app/src/main/java/com/radekmocek/mybeerdiary/util/Calc.java */

@@ -12,13 +12,11 @@ import "package:provider/provider.dart";
 enum BeerConsumptionEditOption { editRecord, editBeerGlobally, deleteRecord }
 
 class BeerConsumptionOptionsDialog extends StatelessWidget {
-  final int? eventId;
   final Beer beer;
   final BeerConsumption beerConsumption;
 
   BeerConsumptionOptionsDialog({
     super.key,
-    required this.eventId,
     required this.beer,
     required this.beerConsumption,
   });
@@ -61,7 +59,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                         final result = await showDialog(
                           context: context,
                           builder: (_) => BeerConsumptionDialog(
-                            eventId: eventId,
+                            eventId: beerConsumption.eventId,
                             beer: beer,
                             beerConsumption: beerConsumption,
                           ),
@@ -169,7 +167,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 24.0),
-                
+
                 // = FAB :: Repeat =
                 FloatingActionButton.extended(
                   label: Text("Znovu"),

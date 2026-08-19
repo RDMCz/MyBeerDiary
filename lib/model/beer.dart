@@ -140,6 +140,7 @@ Future<void> beerUpdate(Beer beer) async {
   );
 }
 
+/*
 Future<void> beerDelete(int id) async {
   final db = await AppDatabase.instance.database;
   await db.delete(beerTable, where: "$beerColId = ?", whereArgs: [id]);
@@ -151,6 +152,7 @@ Future<void> beerDelete(int id) async {
     whereArgs: [id],
   );
 }
+*/
 
 class BeerNotifier extends ChangeNotifier {
   List<Beer> itemList = [];
