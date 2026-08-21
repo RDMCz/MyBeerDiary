@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 
 const String beerTable = "Beers";
 const String beerColId = "_id";
@@ -139,19 +140,17 @@ Future<void> beerUpdate(Beer beer) async {
   );
 }
 
-/*
-Future<void> beerDelete(int id) async {
+Future<void> beerMerge(int oldId, int newId) async {
   final db = await AppDatabase.instance.database;
-  await db.delete(beerTable, where: "$beerColId = ?", whereArgs: [id]);
+  await db.delete(beerTable, where: "$beerColId = ?", whereArgs: [oldId]);
 
   await db.update(
     beerConsumptionTable,
-    {beerConsumptionColBeerId: null},
+    {beerConsumptionColBeerId: newId},
     where: "$beerConsumptionColBeerId = ?",
-    whereArgs: [id],
+    whereArgs: [oldId],
   );
 }
-*/
 
 class BeerNotifier extends ChangeNotifier {
   List<Beer> itemList = [];

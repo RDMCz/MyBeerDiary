@@ -7,7 +7,7 @@
   * [ ] Zaskrolovat dolu jakmile přidáme pivo do oneoffs
   * [ ] Zaskrolováno na dané pivo když edituji beerConsumption
   * [ ] Start/end of the list indicator when trying to scroll further
-  * [ ] text_divider.dart is currently unused
+  * [ ] text_divider.dart is currently unused; zakomentované funkce v _model_
 * ?
   * [ ] Po přidání provideru může nyní snadněji dialog přímo refreshnout něco, namísto vyzvednutí výsledku dialogu a následného případného refreshe
 * \>\<
@@ -16,7 +16,6 @@
   * [ ] Show brewery names from database in BreweryInput?
 * Problems:
   * User edits beerConsumption, changes to new beer, beer is created in DB, then user chooses EditSummaryAction.cancel
-  * Beers can't be deleted right now, it would be nice if user could atleast "merge two beers into one"
 
 ---
 

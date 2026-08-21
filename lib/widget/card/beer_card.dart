@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/beer_dialog.dart";
+import "package:my_beer_diary/dialog/beer_merge_dialog.dart";
 import "package:my_beer_diary/model/beer.dart";
+import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
@@ -66,40 +68,23 @@ class BeerCard extends StatelessWidget {
                   icon: Icon(Icons.edit),
                 ),
                 // = Delete Button =
-                /*
                 IconButton(
                   onPressed: () async {
                     final result = await showDialog(
                       context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: Text("Smazat pivo"),
-                        content: Text(
-                          "Opravdu si přejete smazat pivo „${beer.toDisplayString()}“?"
-                          "\n\nU záznamů vypití tohoto piva bude nastaveno „neznámé pivo“.",
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: Text("Zrušit"),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(true),
-                            child: Text("Smazat"),
-                          ),
-                        ],
-                      ),
+                      builder: (_) => BeerMergeDialog(beer: beer),
                     );
+                    if (result ?? false) {}
 
-                    if (result ?? false) {
-                      await beerDelete(beer.id!);
-                      if (context.mounted) {
-                        context.read<BeerNotifier>().refresh();
-                      }
+                    if (context.mounted) {
+                      await context.read<BeerNotifier>().refresh();
+                    }
+                    if (context.mounted) {
+                      await context.read<BeerConsumptionNotifier>().refresh();
                     }
                   },
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.move_down_rounded),
                 ),
-                */
               ],
             ),
           ],
