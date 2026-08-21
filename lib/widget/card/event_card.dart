@@ -16,9 +16,7 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Watch because this widget might change on Tags change
     final tags = context.watch<TagNotifier>().itemMap;
-
-    final tagId = event.tagId;
-    final Tag? tag = tags[tagId];
+    final Tag? tag = tags[event.tagId];
 
     return Card(
       clipBehavior: Clip.hardEdge,

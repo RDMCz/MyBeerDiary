@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/beer_consumption_dialog.dart";
+import "package:my_beer_diary/dialog/beer_consumption_move_dialog.dart";
 import "package:my_beer_diary/dialog/beer_dialog.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
@@ -65,7 +66,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                           ),
                         );
                         if (context.mounted && (result ?? false)) {
-                          // Pop true, caller of this dialog will refresh beerConsumptions
+                          // Pop true, caller of this dialog will refresh beerConsumptions and Events
                           Navigator.of(context).pop(true);
                         }
                         break;
@@ -123,7 +124,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                           }
 
                           if (context.mounted) {
-                            // Pop true, caller of this dialog will refresh beerConsumptions
+                            // Pop true, caller of this dialog will refresh beerConsumptions and Events
                             Navigator.of(context).pop(true);
                           }
                         }
@@ -192,7 +193,7 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
                       );
                     }
                     if (context.mounted) {
-                      // Pop true, caller of this dialog will refresh beerConsumptions
+                      // Pop true, caller of this dialog will refresh beerConsumptions and Events
                       Navigator.of(context).pop(true);
                     }
                   },
@@ -200,6 +201,28 @@ class BeerConsumptionOptionsDialog extends StatelessWidget {
               ],
             ),
             SizedBox(height: DialogCommon.bodyMarginBottom),
+
+            if (beerConsumption.eventId == null) ...[
+              Center(
+                child: TextButton.icon(
+                  onPressed: () async {
+                    final result = await showDialog(
+                      context: context,
+                      builder: (_) => BeerConsumptionMoveDialog(
+                        beerConsumption: beerConsumption,
+                      ),
+                    );
+                    if (context.mounted && (result ?? false)) {
+                      // Pop true, caller of this dialog will refresh beerConsumptions and Events
+                      Navigator.of(context).pop(true);
+                    }
+                  },
+                  label: Text("Přesunout záznam do události"),
+                  icon: Icon(Icons.move_down_rounded),
+                ),
+              ),
+              SizedBox(height: DialogCommon.bodyMarginBottom),
+            ],
 
             // = Button :: Close =
             Row(

@@ -3,6 +3,7 @@
 import "package:flutter/foundation.dart";
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
+import "package:my_beer_diary/model/tag.dart";
 
 const String eventTable = "Events";
 const String eventColId = "_id";
@@ -80,6 +81,8 @@ class Event {
   @override
   String toString() =>
       "id=$id, tagId=$tagId, name=$name, timestamp=$timestamp, totalBeers=$totalBeers, totalCost=$totalCost";
+
+  String toDisplayString(Tag? tag) => tag == null ? name : "${tag.name} $name";
 
   static const Event errorEvent = Event(
     name: "ERROR EVENT!",

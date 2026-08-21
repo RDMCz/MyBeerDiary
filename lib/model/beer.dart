@@ -4,7 +4,6 @@ import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/db.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
-import "package:my_beer_diary/model/beer_consumption.dart";
 
 const String beerTable = "Beers";
 const String beerColId = "_id";

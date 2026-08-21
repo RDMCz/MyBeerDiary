@@ -22,8 +22,6 @@ class EventScreen extends StatelessWidget {
     final events = context.watch<EventNotifier>().itemMap;
     final event = events[eventId] ?? Event.errorEvent;
 
-    final title = tag == null ? event.name : "${tag!.name} ${event.name}";
-
     final beers = context.watch<BeerNotifier>().itemMap;
 
     final beerConsumptions = context
@@ -34,7 +32,7 @@ class EventScreen extends StatelessWidget {
     final userSettings = context.read<UserSettingsNotifier>().value;
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(event.toDisplayString(tag))),
       // = Body with beerConsumption card list =
       body: ListView.builder(
         padding: EdgeInsets.symmetric(
