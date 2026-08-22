@@ -15,15 +15,19 @@ class OneoffList extends StatelessWidget {
     final oneoffs = context.watch<BeerConsumptionNotifier>().itemsOneoffs();
 
     return ListView.builder(
-      padding: CardListCommon.listPadding,
+      reverse: true,
+      padding: CardListCommon.listOnHomeScreenPadding,
       itemCount: oneoffs.length,
-      itemBuilder: (_, int idx) => Padding(
-        padding: CardListCommon.itemPadding,
-        child: BeerConsumptionCard(
-          beer: beers[oneoffs[idx].beerId] ?? Beer.unknownBeer,
-          beerConsumption: oneoffs[idx],
-        ),
-      ),
+      itemBuilder: (_, int idxR) {
+        final idx = oneoffs.length - 1 - idxR;
+        return Padding(
+          padding: CardListCommon.itemPadding,
+          child: BeerConsumptionCard(
+            beer: beers[oneoffs[idx].beerId] ?? Beer.unknownBeer,
+            beerConsumption: oneoffs[idx],
+          ),
+        );
+      },
     );
   }
 }

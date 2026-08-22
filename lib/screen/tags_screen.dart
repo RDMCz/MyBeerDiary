@@ -15,7 +15,7 @@ class TagsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Správa tagů")),
       body: ListView.builder(
-        padding: CardListCommon.listPadding,
+        padding: CardListCommon.listWithFABPadding,
         itemCount: tags.length,
         itemBuilder: (_, int idx) => Padding(
           padding: CardListCommon.itemPadding,

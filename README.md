@@ -1,15 +1,8 @@
 # Můj pivní deníček
 
 * ;)
-  * [ ] Zaskrolováno dolu jakmile otevřeme event
-  * [ ] Zaskrolováno dolu jakmile otevřeme oneoffs
-  * [ ] Zaskrolovat dolu jakmile přidáme pivo do eventu
-  * [ ] Zaskrolovat dolu jakmile přidáme pivo do oneoffs
-  * [ ] Zaskrolováno na dané pivo když edituji beerConsumption
-  * [ ] Start/end of the list indicator when trying to scroll further
+  * [ ] Date separators?
   * [ ] text_divider.dart is currently unused; zakomentované funkce v _model_
-* ?
-  * [ ] Po přidání provideru může nyní snadněji dialog přímo refreshnout něco, namísto vyzvednutí výsledku dialogu a následného případného refreshe
 * \>\<
   * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
   * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?

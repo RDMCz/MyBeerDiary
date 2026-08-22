@@ -35,9 +35,16 @@ class CardCommon {
 
 class CardListCommon {
   static const listPaddingHorizontal = 12.0;
-  static const listPadding = EdgeInsets.only(
+
+  static const listWithFABPadding = EdgeInsets.only(
     // Space after all cards so user can scroll little further and see the whole card (otherwise FAB would cover it)
     bottom: 72.0,
+    left: listPaddingHorizontal,
+    right: listPaddingHorizontal,
+  );
+
+  static const listOnHomeScreenPadding = EdgeInsets.only(
+    bottom: 32.0,
     left: listPaddingHorizontal,
     right: listPaddingHorizontal,
   );

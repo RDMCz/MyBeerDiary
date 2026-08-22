@@ -13,7 +13,7 @@ class EventList extends StatelessWidget {
     final events = context.watch<EventNotifier>().itemList;
 
     return ListView.builder(
-      padding: CardListCommon.listPadding,
+      padding: CardListCommon.listOnHomeScreenPadding,
       itemCount: events.length,
       itemBuilder: (_, int idx) => Padding(
         padding: CardListCommon.itemPadding,

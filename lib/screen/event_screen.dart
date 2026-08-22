@@ -35,17 +35,21 @@ class EventScreen extends StatelessWidget {
       appBar: AppBar(title: Text(event.toDisplayString(tag))),
       // = Body with beerConsumption card list =
       body: ListView.builder(
+        reverse: true,
         padding: EdgeInsets.symmetric(
           horizontal: CardListCommon.listPaddingHorizontal,
         ),
         itemCount: beerConsumptions.length,
-        itemBuilder: (_, int idx) => Padding(
-          padding: CardListCommon.itemPadding,
-          child: BeerConsumptionCard(
-            beer: beers[beerConsumptions[idx].beerId] ?? Beer.unknownBeer,
-            beerConsumption: beerConsumptions[idx],
-          ),
-        ),
+        itemBuilder: (_, int idxR) {
+          final idx = beerConsumptions.length - 1 - idxR;
+          return Padding(
+            padding: CardListCommon.itemPadding,
+            child: BeerConsumptionCard(
+              beer: beers[beerConsumptions[idx].beerId] ?? Beer.unknownBeer,
+              beerConsumption: beerConsumptions[idx],
+            ),
+          );
+        },
       ),
       // = Bottom bar with stats and FAB =
       bottomNavigationBar: BottomAppBar(

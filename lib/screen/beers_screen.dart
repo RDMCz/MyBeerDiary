@@ -15,7 +15,7 @@ class BeersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Správa piv")),
       body: ListView.builder(
-        padding: CardListCommon.listPadding,
+        padding: CardListCommon.listWithFABPadding,
         itemCount: beers.length,
         itemBuilder: (_, int idx) => Padding(
           padding: CardListCommon.itemPadding,
