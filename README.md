@@ -3,6 +3,7 @@
 * ;)
   * [ ] Date separators?
   * [ ] text_divider.dart is currently unused; zakomentované funkce v _model_
+  * [ ] 1 pivo, 2/3/4 piva, 5+ piv
 * \>\<
   * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
   * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?

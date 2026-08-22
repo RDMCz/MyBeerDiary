@@ -72,11 +72,21 @@ class EventScreen extends StatelessWidget {
             ),
             Spacer(),
             // = FAB =
+            Padding(
+              padding: EdgeInsets.only(top: 21),
+              child: FloatingActionButton.small(
+                heroTag: "eventfab1",
+                onPressed: () {},
+                child: Icon(Icons.equalizer),
+              ),
+            ),
+            SizedBox(width: 20),
             SizedBox(
               width: 72,
               height: 72,
               child: FittedBox(
                 child: FloatingActionButton(
+                  heroTag: "eventfab2",
                   onPressed: () async {
                     final result = await showDialog(
                       context: context,

@@ -12,12 +12,16 @@ class UserSettingsDialog extends StatefulWidget {
 
 class _UserSettingsDialogState extends State<UserSettingsDialog> {
   bool isMale = UserSettings.defaultUserSettings.isMale;
+  final birthyearTEC = TextEditingController();
+  final heightTEC = TextEditingController();
   final weightTEC = TextEditingController();
 
   Future<void> _init() async {
     final userSettings = await userSettingsGet();
     setState(() {
       isMale = userSettings.isMale;
+      birthyearTEC.text = userSettings.birthyear.toString();
+      heightTEC.text = userSettings.height.toString();
       weightTEC.text = userSettings.weight.toString();
     });
   }
@@ -30,12 +34,17 @@ class _UserSettingsDialogState extends State<UserSettingsDialog> {
 
   @override
   void dispose() {
+    birthyearTEC.dispose();
+    heightTEC.dispose();
     weightTEC.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // 12.0 from DialogCommon.bodyMarginBottom feels to little here...
+    const marginBottom = 15.0;
+
     return Dialog(
       insetPadding: DialogCommon.insetPadding,
       shape: DialogCommon.shape,
@@ -74,20 +83,45 @@ class _UserSettingsDialogState extends State<UserSettingsDialog> {
               multiSelectionEnabled: false,
               showSelectedIcon: false,
             ),
-            SizedBox(height: DialogCommon.bodyMarginBottom),
+            SizedBox(height: marginBottom),
+
+            // = Birthyear =
+            TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "Rok narození",
+              ),
+              controller: birthyearTEC,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: marginBottom),
+
+            // = height =
+            TextFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "Výška v centimetrech",
+                suffixText: "cm",
+              ),
+              controller: heightTEC,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: marginBottom),
 
             // = Weight =
             TextFormField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Váha v kilogramech",
-                suffixText: "Kg",
+                suffixText: "kg",
               ),
               controller: weightTEC,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: DialogCommon.bodyMarginBottom),
+            SizedBox(height: marginBottom),
 
             // = Buttons =
             Row(
@@ -108,6 +142,12 @@ class _UserSettingsDialogState extends State<UserSettingsDialog> {
                     await userSettingsSet(
                       UserSettings(
                         isMale: isMale,
+                        birthyear:
+                            int.tryParse(birthyearTEC.text) ??
+                            UserSettings.defaultUserSettings.birthyear,
+                        height:
+                            int.tryParse(heightTEC.text) ??
+                            UserSettings.defaultUserSettings.height,
                         weight:
                             int.tryParse(weightTEC.text) ??
                             UserSettings.defaultUserSettings.weight,

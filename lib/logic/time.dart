@@ -1,8 +1,9 @@
 int secondsSinceEpoch() =>
-    DateTime.now().toUtc().millisecondsSinceEpoch ~/ 1000;
+    DateTime.now().toUtc().millisecondsSinceEpoch ~/
+    Duration.millisecondsPerSecond;
 
 DateTime _secondsToDateTime(int s) =>
-    DateTime.fromMillisecondsSinceEpoch(s * 1000);
+    DateTime.fromMillisecondsSinceEpoch(s * Duration.millisecondsPerSecond);
 
 String secondsToDateString(int s) {
   final date = _secondsToDateTime(s);
