@@ -203,6 +203,7 @@ const List<String> breweryNames = [
 const appColorSeed = Color(0xfff5ddb1);
 const appColorSurface = Color(0xfffffefa);
 const appColorContainer = Color(0xffffffff);
+const appColorDisabledFAB = Color(0xffcfcec9);
 
 const beerColorStraw = Color(0xfff3eb8f);
 const beerColorGold = Color(0xfffec95a);

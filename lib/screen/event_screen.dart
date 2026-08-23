@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/dialog/beer_consumption_dialog.dart";
+import "package:my_beer_diary/logic/alcohol.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
@@ -30,6 +32,12 @@ class EventScreen extends StatelessWidget {
 
     // Read is enough, no need to watch, because user settings cannot be changed from this screen or its children
     final userSettings = context.read<UserSettingsNotifier>().value;
+
+    final stats = eventStats(
+      beers: beers,
+      beerConsumptions: beerConsumptions,
+      userSettings: userSettings,
+    );
 
     return Scaffold(
       appBar: AppBar(title: Text(event.toDisplayString(tag))),
@@ -66,7 +74,8 @@ class EventScreen extends StatelessWidget {
                 EventStat(icon: SvgIcons.money, text: "${event.totalCost} Kč"),
                 EventStat(
                   icon: SvgIcons.permille,
-                  text: "? promile, ${userSettings.weight}",
+                  text:
+                      "${stats != null ? stats.maxPermille.toStringAsFixed(2) : 0} max. promile",
                 ),
               ],
             ),
@@ -76,7 +85,10 @@ class EventScreen extends StatelessWidget {
               padding: EdgeInsets.only(top: 21),
               child: FloatingActionButton.small(
                 heroTag: "eventfab1",
-                onPressed: () {},
+                backgroundColor: stats != null
+                    ? Theme.of(context).colorScheme.primaryContainer
+                    : appColorDisabledFAB,
+                onPressed: stats == null ? null : () {},
                 child: Icon(Icons.equalizer),
               ),
             ),

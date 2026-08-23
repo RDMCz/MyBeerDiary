@@ -346,8 +346,8 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                     label: Text(isEdit ? "Potvrdit" : "Přidat"),
                     icon: Icon(isEdit ? Icons.check : Icons.add),
                     backgroundColor: isValid
-                        ? Theme.of(context).colorScheme.secondaryContainer
-                        : Color(0xffcfcec9),
+                        ? Theme.of(context).colorScheme.primaryContainer
+                        : appColorDisabledFAB,
                     disabledElevation: 0,
                     onPressed: !isValid
                         ? null
@@ -457,13 +457,13 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                             final isPriceChange = price != bc.price;
 
                             // Resolve isDraft
-                            final isIsDrasftChange = isDraft != bc.isDraft;
+                            final isIsDraftChange = isDraft != bc.isDraft;
 
                             // Apply changes
                             if (!isBeerChange &&
                                 !isLitresChange &&
                                 !isPriceChange &&
-                                !isIsDrasftChange) {
+                                !isIsDraftChange) {
                               // No changes
                               if (context.mounted) {
                                 Navigator.of(context).pop(false);
@@ -486,7 +486,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                 editSummary +=
                                     "Cena: ${bc.price} Kč → $price Kč\n";
                               }
-                              if (isIsDrasftChange) {
+                              if (isIsDraftChange) {
                                 editSummary +=
                                     "Čepované: ${bc.isDraft} → $isDraft\n";
                               }
