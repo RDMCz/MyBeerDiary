@@ -9,8 +9,13 @@ import "package:provider/provider.dart";
 
 class EventCard extends StatelessWidget {
   final Event event;
+  final bool isInteractable;
 
-  const EventCard({super.key, required this.event});
+  const EventCard({
+    super.key,
+    required this.event,
+    required this.isInteractable,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +26,38 @@ class EventCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.hardEdge,
       child: InkWell(
+        onTap: !isInteractable
+            ? null
+            : () async {
+                if (event.id == null) {
+                  return;
+                }
+
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => EventScreen(event: event, tag: tag),
+                  ),
+                );
+                // Refresh events here because event totals (nBeers, cost) could get updated
+                if (context.mounted) {
+                  context.read<EventNotifier>().refresh();
+                }
+              },
+        onLongPress: !isInteractable
+            ? null
+            : () async {
+                final result = await showDialog(
+                  context: context,
+                  builder: (_) => EventDialog(tags: tags, event: event),
+                );
+                if (context.mounted && (result ?? false)) {
+                  // Event was either edited or deleted => refresh list
+                  context.read<EventNotifier>().refresh();
+                  // New tag could have created in the dialog too
+                  context.read<TagNotifier>().refresh();
+                }
+              },
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           child: Column(
@@ -60,34 +97,6 @@ class EventCard extends StatelessWidget {
             ],
           ),
         ),
-        onTap: () async {
-          if (event.id == null) {
-            return;
-          }
-
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => EventScreen(eventId: event.id!, tag: tag),
-            ),
-          );
-          // Refresh events here because event totals (nBeers, cost) could get updated
-          if (context.mounted) {
-            context.read<EventNotifier>().refresh();
-          }
-        },
-        onLongPress: () async {
-          final result = await showDialog(
-            context: context,
-            builder: (_) => EventDialog(tags: tags, event: event),
-          );
-          if (context.mounted && (result ?? false)) {
-            // Event was either edited or deleted => refresh list
-            context.read<EventNotifier>().refresh();
-            // New tag could have created in the dialog too
-            context.read<TagNotifier>().refresh();
-          }
-        },
       ),
     );
   }

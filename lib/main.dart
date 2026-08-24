@@ -1,6 +1,7 @@
 import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
@@ -72,9 +73,7 @@ class MainApp extends StatelessWidget {
         ),
         cardTheme: CardThemeData(elevation: 2.0),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          extendedTextStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          extendedTextStyle: boldTextStyle,
         ),
       ),
       home: HomeScreen(),

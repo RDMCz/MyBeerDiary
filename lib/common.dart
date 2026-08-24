@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 
+const boldTextStyle = TextStyle(fontWeight: FontWeight.bold);
+
 class DialogCommon {
   static const insetPadding = EdgeInsets.all(32.0);
 

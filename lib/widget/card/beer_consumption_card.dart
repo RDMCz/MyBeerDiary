@@ -13,10 +13,15 @@ class BeerConsumptionCard extends StatelessWidget {
   final Beer beer;
   final BeerConsumption beerConsumption;
 
+  /// Is the card used to show average beer on event stats screen?
+  /// If true, interactions will be disabled and timestamp will be replaced with "Average beer" header.
+  final bool isStats;
+
   const BeerConsumptionCard({
     super.key,
     required this.beer,
     required this.beerConsumption,
+    required this.isStats,
   });
 
   @override
@@ -29,6 +34,25 @@ class BeerConsumptionCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.hardEdge,
       child: InkWell(
+        onLongPress: isStats
+            ? null
+            : () async {
+                final result = await showDialog(
+                  context: context,
+                  builder: (_) => BeerConsumptionOptionsDialog(
+                    beer: beer,
+                    beerConsumption: beerConsumption,
+                  ),
+                );
+                if (result ?? false) {
+                  if (context.mounted) {
+                    await context.read<BeerConsumptionNotifier>().refresh();
+                  }
+                  if (context.mounted) {
+                    await context.read<EventNotifier>().refresh();
+                  }
+                }
+              },
         child: Padding(
           padding: CardCommon.normalPadding,
           child: Column(
@@ -40,7 +64,11 @@ class BeerConsumptionCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        secondsToDateTimeString(beerConsumption.timestamp),
+                        isStats
+                            ? "Průměrné pivo"
+                            : secondsToDateTimeString(
+                                beerConsumption.timestamp,
+                              ),
                         style: TextStyle(fontSize: 13),
                       ),
                       Text(
@@ -71,9 +99,17 @@ class BeerConsumptionCard extends StatelessWidget {
               Row(
                 children: [
                   SvgIcon(icon: beerSizeToIcon(beerSize), size: 20),
-                  Text(" $beerSizeStr", style: detailsTextStyle),
+                  Text(
+                    !isStats
+                        ? " $beerSizeStr"
+                        : " ${beerConsumption.litres.toStringAsFixed(2)} L",
+                    style: detailsTextStyle,
+                  ),
                   Spacer(),
-                  Text("${beer.epm}°", style: detailsTextStyle),
+                  Text(
+                    "${beer.epm.toStringAsFixed(1)}°",
+                    style: detailsTextStyle,
+                  ),
                 ],
               ),
               Row(
@@ -81,30 +117,16 @@ class BeerConsumptionCard extends StatelessWidget {
                   SvgIcon(icon: SvgIcons.money, size: 20),
                   Text(" ${beerConsumption.price} Kč", style: detailsTextStyle),
                   Spacer(),
-                  Text("${beer.abv} %", style: detailsTextStyle),
+                  Text(
+                    "${beer.abv.toStringAsFixed(1)} %",
+                    style: detailsTextStyle,
+                  ),
                 ],
               ),
               // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
             ],
           ),
         ),
-        onLongPress: () async {
-          final result = await showDialog(
-            context: context,
-            builder: (_) => BeerConsumptionOptionsDialog(
-              beer: beer,
-              beerConsumption: beerConsumption,
-            ),
-          );
-          if (result ?? false) {
-            if (context.mounted) {
-              await context.read<BeerConsumptionNotifier>().refresh();
-            }
-            if (context.mounted) {
-              await context.read<EventNotifier>().refresh();
-            }
-          }
-        },
       ),
     );
   }

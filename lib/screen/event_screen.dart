@@ -8,22 +8,20 @@ import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/model/user_settings.dart";
+import "package:my_beer_diary/screen/event_stats_screen.dart";
 import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/event_stat.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
 class EventScreen extends StatelessWidget {
-  final int eventId;
+  final Event event;
   final Tag? tag;
 
-  const EventScreen({super.key, required this.eventId, required this.tag});
+  const EventScreen({super.key, required this.event, required this.tag});
 
   @override
   Widget build(BuildContext context) {
-    final events = context.watch<EventNotifier>().itemMap;
-    final event = events[eventId] ?? Event.errorEvent;
-
     final beers = context.watch<BeerNotifier>().itemMap;
 
     final beerConsumptions = context
@@ -55,6 +53,7 @@ class EventScreen extends StatelessWidget {
             child: BeerConsumptionCard(
               beer: beers[beerConsumptions[idx].beerId] ?? Beer.unknownBeer,
               beerConsumption: beerConsumptions[idx],
+              isStats: false,
             ),
           );
         },
@@ -88,7 +87,17 @@ class EventScreen extends StatelessWidget {
                 backgroundColor: stats != null
                     ? Theme.of(context).colorScheme.primaryContainer
                     : appColorDisabledFAB,
-                onPressed: stats == null ? null : () {},
+                onPressed: stats == null
+                    ? null
+                    : () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                EventStatsScreen(event: event, stats: stats),
+                          ),
+                        );
+                      },
                 child: Icon(Icons.equalizer),
               ),
             ),

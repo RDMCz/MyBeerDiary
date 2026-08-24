@@ -513,9 +513,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                             },
                                             child: Text(
                                               "Provést změny pro tento záznam",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                              style: boldTextStyle,
                                             ),
                                           ),
                                           if (widget.eventId != null)
@@ -528,9 +526,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                               },
                                               child: Text(
                                                 "Provést změny pro všechny identické záznamy této události",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                style: boldTextStyle,
                                               ),
                                             ),
                                           /*
@@ -542,9 +538,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                             },
                                             child: Text(
                                               "Zrušit",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                              style: boldTextStyle
                                             ),
                                           ),
                                           */

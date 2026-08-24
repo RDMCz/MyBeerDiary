@@ -17,7 +17,7 @@ class EventList extends StatelessWidget {
       itemCount: events.length,
       itemBuilder: (_, int idx) => Padding(
         padding: CardListCommon.itemPadding,
-        child: EventCard(event: events[idx]),
+        child: EventCard(event: events[idx], isInteractable: true),
       ),
     );
   }

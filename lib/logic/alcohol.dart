@@ -91,9 +91,11 @@ EventStats? eventStats({
     weightKg: userSettings.weight,
   );
 
+  Beer beer = beers[beerConsumptions[0].beerId] ?? Beer.unknownBeer;
+
   double permille = alcoholPermille(
     litres: beerConsumptions[0].litres,
-    abv: (beers[beerConsumptions[0].beerId] ?? Beer.unknownBeer).abv,
+    abv: beer.abv,
     isMale: userSettings.isMale,
     totalBodyWater: tbw,
   );
@@ -101,12 +103,38 @@ EventStats? eventStats({
   int prevTimestamp = beerConsumptions[0].timestamp;
   double maxPermille = permille;
 
+  double totalLitres = beerConsumptions[0].litres;
+  double totalEPM = beer.epm; // For "average beer" stat
+  double totalABV = beer.abv; // For "average beer" stat
+
+  final Map<bool, int> isDraftCounter = {beerConsumptions[0].isDraft: 1};
+  final Map<String, int> breweryNameCounter = {beer.breweryName: 1};
+  final Map<String, int> descriptionCounter = {beer.description: 1};
+
   for (final bc in beerConsumptions.skip(1)) {
+    beer = beers[bc.beerId] ?? Beer.unknownBeer;
+
+    // Stats
+    totalLitres += bc.litres;
+    totalEPM += beer.epm;
+    totalABV += beer.abv;
+    isDraftCounter.update(bc.isDraft, (v) => v + 1, ifAbsent: () => 1);
+    breweryNameCounter.update(
+      beer.breweryName,
+      (v) => v + 1,
+      ifAbsent: () => 1,
+    );
+    descriptionCounter.update(
+      beer.description,
+      (v) => v + 1,
+      ifAbsent: () => 1,
+    );
+
     // Sobering
     final timestampDiff = bc.timestamp - prevTimestamp;
     final timestampDiffHours = timestampDiff / Duration.secondsPerHour;
 
-    final prevPermille = permille; // Save in case bac goes under zero
+    //final prevPermille = permille; // Save in case permille goes under zero
 
     permille -= timestampDiffHours * metabolismPermillePerHour;
 
@@ -118,7 +146,7 @@ EventStats? eventStats({
     // Drank another beer
     permille += alcoholPermille(
       litres: bc.litres,
-      abv: (beers[bc.beerId] ?? Beer.unknownBeer).abv,
+      abv: beer.abv,
       isMale: userSettings.isMale,
       totalBodyWater: tbw,
     );
@@ -131,5 +159,26 @@ EventStats? eventStats({
     prevTimestamp = bc.timestamp;
   }
 
-  return EventStats(maxPermille: maxPermille);
+  final soberInHours = permille / metabolismPermillePerHour;
+  final int soberTimestamp =
+      prevTimestamp + (soberInHours * Duration.secondsPerHour).round();
+
+  final durationHours =
+      (beerConsumptions.last.timestamp - beerConsumptions.first.timestamp) /
+      Duration.secondsPerHour;
+
+  //
+
+  final nBeers = beerConsumptions.length;
+
+  return EventStats(
+    //nBeers: beerConsumptions.length,
+    maxPermille: maxPermille,
+    soberTimestamp: soberTimestamp,
+    totalLitres: totalLitres,
+    durationHours: max(durationHours, 1.0), // Avoid division by zero
+    //
+    averageEPM: totalEPM / nBeers,
+    averageABV: totalABV / nBeers,
+  );
 }
