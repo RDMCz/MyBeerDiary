@@ -81,8 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
             if (context.mounted) {
               if (result ?? false) {
                 // Refresh both events and tags, because tag could have been added in the dialog
-                context.read<EventNotifier>().refresh();
-                context.read<TagNotifier>().refresh();
+                if (context.mounted) {
+                  await context.read<EventNotifier>().refresh();
+                }
+                if (context.mounted) {
+                  await context.read<TagNotifier>().refresh();
+                }
               }
             }
           } else {

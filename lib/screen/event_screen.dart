@@ -22,11 +22,16 @@ class EventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // We have to do this for total price and total beers to update at the bottom of this screen
+    final events = context.watch<EventNotifier>().itemMap;
+    // (Fallback to maybe outdated event, shouldn't happen)
+    final freshEvent = events[event.id] ?? event;
+
     final beers = context.watch<BeerNotifier>().itemMap;
 
     final beerConsumptions = context
         .watch<BeerConsumptionNotifier>()
-        .itemsForEvent(event.id);
+        .itemsForEvent(freshEvent.id);
 
     // Read is enough, no need to watch, because user settings cannot be changed from this screen or its children
     final userSettings = context.read<UserSettingsNotifier>().value;
@@ -38,7 +43,7 @@ class EventScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(event.toDisplayString(tag))),
+      appBar: AppBar(title: Text(freshEvent.toDisplayString(tag))),
       // = Body with beerConsumption card list =
       body: ListView.builder(
         reverse: true,
@@ -69,8 +74,14 @@ class EventScreen extends StatelessWidget {
               spacing: 4,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                EventStat(icon: SvgIcons.beer, text: "${event.totalBeers} piv"),
-                EventStat(icon: SvgIcons.money, text: "${event.totalCost} Kč"),
+                EventStat(
+                  icon: SvgIcons.beer,
+                  text: "${freshEvent.totalBeers} piv",
+                ),
+                EventStat(
+                  icon: SvgIcons.money,
+                  text: "${freshEvent.totalCost} Kč",
+                ),
                 EventStat(
                   icon: SvgIcons.permille,
                   text:
@@ -93,8 +104,10 @@ class EventScreen extends StatelessWidget {
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) =>
-                                EventStatsScreen(event: event, stats: stats),
+                            builder: (_) => EventStatsScreen(
+                              event: freshEvent,
+                              stats: stats,
+                            ),
                           ),
                         );
                       },
@@ -112,7 +125,7 @@ class EventScreen extends StatelessWidget {
                     final result = await showDialog(
                       context: context,
                       builder: (_) => BeerConsumptionDialog(
-                        eventId: event.id,
+                        eventId: freshEvent.id,
                         beer: null,
                         beerConsumption: null,
                       ),

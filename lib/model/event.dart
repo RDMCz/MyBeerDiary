@@ -83,13 +83,6 @@ class Event {
       "id=$id, tagId=$tagId, name=$name, timestamp=$timestamp, totalBeers=$totalBeers, totalCost=$totalCost";
 
   String toDisplayString(Tag? tag) => tag == null ? name : "${tag.name} $name";
-
-  static const Event errorEvent = Event(
-    name: "ERROR EVENT!",
-    timestamp: 0,
-    totalBeers: 0,
-    totalCost: 0,
-  );
 }
 
 Future<void> eventAdd(Event event) async {
