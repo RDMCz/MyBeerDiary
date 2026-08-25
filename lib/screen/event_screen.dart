@@ -47,9 +47,7 @@ class EventScreen extends StatelessWidget {
       // = Body with beerConsumption card list =
       body: ListView.builder(
         reverse: true,
-        padding: EdgeInsets.symmetric(
-          horizontal: CardListCommon.listPaddingHorizontal,
-        ),
+        padding: CardListCommon.horizontalPaddingOnly,
         itemCount: beerConsumptions.length,
         itemBuilder: (_, int idxR) {
           final idx = beerConsumptions.length - 1 - idxR;
@@ -107,6 +105,7 @@ class EventScreen extends StatelessWidget {
                             builder: (_) => EventStatsScreen(
                               event: freshEvent,
                               stats: stats,
+                              beers: beers,
                             ),
                           ),
                         );

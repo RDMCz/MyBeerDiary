@@ -7,6 +7,12 @@ class EventStats {
   //
   final double averageEPM;
   final double averageABV;
+  //
+  final List<MapEntry<bool, int>> topIsDrafts;
+  final List<MapEntry<String, int>> topBreweryNames;
+  final List<MapEntry<String, int>> topDescriptions;
+  final List<MapEntry<String, int>> topColors;
+  final List<MapEntry<int?, int>> topBeerIds;
 
   const EventStats({
     //required this.nBeers,
@@ -17,5 +23,11 @@ class EventStats {
     //
     required this.averageEPM,
     required this.averageABV,
+    //
+    required this.topIsDrafts,
+    required this.topBreweryNames,
+    required this.topDescriptions,
+    required this.topColors,
+    required this.topBeerIds,
   });
 }

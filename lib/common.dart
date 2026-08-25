@@ -52,4 +52,8 @@ class CardListCommon {
   );
 
   static const itemPadding = EdgeInsets.only(bottom: 6.0);
+
+  static const horizontalPaddingOnly = EdgeInsets.symmetric(
+    horizontal: CardListCommon.listPaddingHorizontal,
+  );
 }

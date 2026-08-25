@@ -5,6 +5,7 @@
 
 import "dart:math";
 
+import "package:my_beer_diary/logic/collection.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event_stats.dart";
@@ -110,6 +111,8 @@ EventStats? eventStats({
   final Map<bool, int> isDraftCounter = {beerConsumptions[0].isDraft: 1};
   final Map<String, int> breweryNameCounter = {beer.breweryName: 1};
   final Map<String, int> descriptionCounter = {beer.description: 1};
+  final Map<String, int> colorCounter = {beer.color: 1};
+  final Map<int?, int> beerIdCounter = {beer.id: 1};
 
   for (final bc in beerConsumptions.skip(1)) {
     beer = beers[bc.beerId] ?? Beer.unknownBeer;
@@ -129,6 +132,8 @@ EventStats? eventStats({
       (v) => v + 1,
       ifAbsent: () => 1,
     );
+    colorCounter.update(beer.color, (v) => v + 1, ifAbsent: () => 1);
+    beerIdCounter.update(beer.id, (v) => v + 1, ifAbsent: () => 1);
 
     // Sobering
     final timestampDiff = bc.timestamp - prevTimestamp;
@@ -180,5 +185,11 @@ EventStats? eventStats({
     //
     averageEPM: totalEPM / nBeers,
     averageABV: totalABV / nBeers,
+    //
+    topIsDrafts: sortedMapByValue(isDraftCounter),
+    topBreweryNames: sortedMapByValue(breweryNameCounter),
+    topDescriptions: sortedMapByValue(descriptionCounter),
+    topColors: sortedMapByValue(colorCounter),
+    topBeerIds: sortedMapByValue(beerIdCounter),
   );
 }

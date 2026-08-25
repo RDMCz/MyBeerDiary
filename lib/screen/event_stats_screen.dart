@@ -8,22 +8,29 @@ import "package:my_beer_diary/model/event_stats.dart";
 import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/card/event_card.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
+import "package:my_beer_diary/widget/text_divider.dart";
 
 class EventStatsScreen extends StatelessWidget {
   final Event event;
   final EventStats stats;
+  final Map<int, Beer> beers;
 
-  const EventStatsScreen({super.key, required this.event, required this.stats});
+  const EventStatsScreen({
+    super.key,
+    required this.event,
+    required this.stats,
+    required this.beers,
+  });
 
   @override
   Widget build(BuildContext context) {
     final averageBeer = Beer(
       id: -1,
-      breweryName: "",
-      description: "",
+      breweryName: stats.topBreweryNames.first.key,
+      description: stats.topDescriptions.first.key,
       epm: stats.averageEPM,
       abv: stats.averageABV,
-      color: "",
+      color: stats.topColors.first.key,
     );
 
     final averageBeerConsumption = BeerConsumption(
@@ -31,76 +38,118 @@ class EventStatsScreen extends StatelessWidget {
       beerId: -1,
       litres: stats.totalLitres / event.totalBeers,
       price: event.totalCost ~/ event.totalBeers,
-      isDraft: true,
+      isDraft: stats.topIsDrafts.first.key,
     );
 
     return Scaffold(
       appBar: AppBar(title: Text("Statistika události")),
-      body: Column(
-        children: [
-          // = Event card =
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: CardListCommon.listPaddingHorizontal,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // = Event card =
+            Padding(
+              padding: CardListCommon.horizontalPaddingOnly,
+              child: EventCard(event: event, isInteractable: false),
             ),
-            child: EventCard(event: event, isInteractable: false),
-          ),
-          SizedBox(height: 6.6),
-          ListView(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            children: [
-              // = Max permille =
-              ListTile(
-                leading: SvgIcon(icon: SvgIcons.permille),
-                title: Text(
-                  "Max promile: ${stats.maxPermille.toStringAsFixed(2)} ‰",
-                  style: boldTextStyle,
+            SizedBox(height: 6.6),
+            ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: [
+                // = Max permille =
+                ListTile(
+                  leading: SvgIcon(icon: SvgIcons.permille),
+                  title: Text(
+                    "Max promile: ${stats.maxPermille.toStringAsFixed(2)} ‰",
+                    style: boldTextStyle,
+                  ),
                 ),
-              ),
-              Divider(height: 0),
-              // = Sober in =
-              ListTile(
-                leading: SvgIcon(icon: SvgIcons.sober),
-                title: Text(
-                  "Vystřízlivění v ${secondsToDateTimeString(stats.soberTimestamp)}",
-                  style: boldTextStyle,
+                Divider(height: 0),
+                // = Sober in =
+                ListTile(
+                  leading: SvgIcon(icon: SvgIcons.sober),
+                  title: Text(
+                    "Vystřízlivění v ${secondsToDateTimeString(stats.soberTimestamp)}",
+                    style: boldTextStyle,
+                  ),
                 ),
-              ),
-              Divider(height: 0),
-              // = Total litres =
-              ListTile(
-                leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
-                title: Text(
-                  "Celkem vypito ${stats.totalLitres.toStringAsFixed(2)} litrů",
-                  style: boldTextStyle,
+                Divider(height: 0),
+                // = Total litres =
+                ListTile(
+                  leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
+                  title: Text(
+                    "Celkem vypito ${stats.totalLitres.toStringAsFixed(2)} litrů",
+                    style: boldTextStyle,
+                  ),
                 ),
-              ),
-              Divider(height: 0),
-              // = Litres per hour =
-              ListTile(
-                leading: Icon(Icons.speed),
-                title: Text(
-                  "Průměrně vypito ${(stats.totalLitres / stats.durationHours).toStringAsFixed(2)} litrů za hodinu",
-                  style: boldTextStyle,
+                Divider(height: 0),
+                // = Litres per hour =
+                ListTile(
+                  leading: Icon(Icons.speed),
+                  title: Text(
+                    "Průměrně vypito ${(stats.totalLitres / stats.durationHours).toStringAsFixed(2)} litrů za hodinu",
+                    style: boldTextStyle,
+                  ),
                 ),
-              ),
-              Divider(height: 0),
-            ],
-          ),
-          SizedBox(height: 6.6),
-          // = Average beer card =
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: CardListCommon.listPaddingHorizontal,
+                Divider(height: 0),
+              ],
             ),
-            child: BeerConsumptionCard(
-              beer: averageBeer,
-              beerConsumption: averageBeerConsumption,
-              isStats: true,
+            SizedBox(height: 6.6),
+            // = Average beer card =
+            Padding(
+              padding: CardListCommon.horizontalPaddingOnly,
+              child: BeerConsumptionCard(
+                beer: averageBeer,
+                beerConsumption: averageBeerConsumption,
+                isStats: true,
+              ),
             ),
-          ),
-        ],
+            // = Top brewery names =
+            TextDivider(text: "TOP PIVOVARY"),
+            DefaultTextStyle.merge(
+              style: TextStyle(fontSize: 16.0),
+              child: Padding(
+                padding: CardListCommon.horizontalPaddingOnly,
+                child: Column(
+                  children: [
+                    for (final (index, breweryNamePair)
+                        in stats.topBreweryNames.take(5).indexed)
+                      Row(
+                        children: [
+                          Text("#${index + 1}  ${breweryNamePair.key}"),
+                          Spacer(),
+                          Text("${breweryNamePair.value} x"),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            // = Top beers =
+            TextDivider(text: "TOP PIVA"),
+            DefaultTextStyle.merge(
+              style: TextStyle(fontSize: 16.0),
+              child: Padding(
+                padding: CardListCommon.horizontalPaddingOnly,
+                child: Column(
+                  children: [
+                    for (final (index, beerPair)
+                        in stats.topBeerIds.take(5).indexed)
+                      Row(
+                        children: [
+                          Text(
+                            "#${index + 1}  ${(beers[beerPair.key] ?? Beer.unknownBeer).toDisplayString()}",
+                          ),
+                          Spacer(),
+                          Text("${beerPair.value} x"),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

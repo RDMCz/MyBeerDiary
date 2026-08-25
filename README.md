@@ -1,11 +1,11 @@
 # Můj pivní deníček
 
 * ;)
-  * [ ] Date separators?
-  * [ ] text_divider.dart is currently unused; zakomentované funkce v _model_
+  * [ ] Date separators in card lists?
   * [ ] 1 pivo, 2/3/4 piva, 5+ piv
-  * [ ] Stats: Top pivovary, top pivo
   * [ ] Stats: GRAF
+  * [ ] Global stats – everything, oneoffs only, certain year, certain tag, ...
+  * [ ] Hamburger menu – help, about, ...
 * \>\<
   * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
   * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
