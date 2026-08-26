@@ -74,13 +74,13 @@ class BeerCard extends StatelessWidget {
                       context: context,
                       builder: (_) => BeerMergeDialog(beer: beer),
                     );
-                    if (result ?? false) {}
-
-                    if (context.mounted) {
-                      await context.read<BeerNotifier>().refresh();
-                    }
-                    if (context.mounted) {
-                      await context.read<BeerConsumptionNotifier>().refresh();
+                    if (result ?? false) {
+                      if (context.mounted) {
+                        await context.read<BeerNotifier>().refresh();
+                      }
+                      if (context.mounted) {
+                        await context.read<BeerConsumptionNotifier>().refresh();
+                      }
                     }
                   },
                   icon: Icon(Icons.move_down_rounded),
