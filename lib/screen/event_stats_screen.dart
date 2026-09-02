@@ -110,7 +110,12 @@ class EventStatsScreen extends StatelessWidget {
             // = Permille graph =
             SizedBox(
               height: 300,
-              child: AlcoholChart(chartPoints: stats.chartPoints),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: CardListCommon.listPaddingHorizontal + 4,
+                ),
+                child: AlcoholChart(chartPoints: stats.chartPoints),
+              ),
             ),
             SizedBox(height: 20),
             // = Top brewery names =

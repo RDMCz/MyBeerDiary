@@ -3,8 +3,12 @@
 * ;)
   * [ ] Date separators in card lists?
   * [ ] 1 pivo, 2/3/4 piva, 5+ piv
-  * [ ] Stats: GRAF
+  * [ ] Stats: permille graph
+    * [ ] Vertical line representing current time
+    * [ ] Make x-axis labels more clean
+    * [ ] More info in popup
   * [ ] Global stats – everything, oneoffs only, certain year, certain tag, ...
+  * [ ] Filter events by tags
   * [ ] Hamburger menu – help, about, ...
 * \>\<
   * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
