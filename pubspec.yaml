@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   escape_parent_padding: ^1.0.4
+  fl_chart: ^1.2.0
   flutter:
     sdk: flutter
   flutter_svg: ^2.3.0

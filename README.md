@@ -22,6 +22,7 @@
 Package|Author|License
 ---|---|---
 [escape_parent_padding](https://pub.dev/packages/escape_parent_padding)|Mohamed Elsayed|[MIT](https://github.com/mosayyyed/escape_parent_padding/blob/main/LICENSE)
+[fl_chart](https://pub.dev/packages/fl_chart)|Flutter 4 Fun|[MIT](https://github.com/imaNNeo/fl_chart/blob/main/LICENSE)
 [flutter](https://github.com/flutter/flutter)|The Flutter Authors|[BSD-3-Clause](https://github.com/flutter/flutter/blob/master/LICENSE)
 [flutter_svg](https://pub.dev/packages/flutter_svg)|Dan Field|[MIT](https://github.com/flutter/packages/blob/main/third_party/packages/flutter_svg/LICENSE)
 [path](https://pub.dev/packages/path)|the Dart project authors|[BSD-3-Clause](https://github.com/dart-lang/core/blob/main/pkgs/path/LICENSE)
