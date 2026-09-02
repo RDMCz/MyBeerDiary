@@ -5,6 +5,7 @@ import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/event_stats.dart";
+import "package:my_beer_diary/widget/alcohol_chart.dart";
 import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/card/event_card.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
@@ -55,6 +56,7 @@ class EventStatsScreen extends StatelessWidget {
             ListView(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               children: [
                 // = Max permille =
                 ListTile(
@@ -104,6 +106,13 @@ class EventStatsScreen extends StatelessWidget {
                 isStats: true,
               ),
             ),
+            SizedBox(height: 20),
+            // = Permille graph =
+            SizedBox(
+              height: 300,
+              child: AlcoholChart(chartPoints: stats.chartPoints),
+            ),
+            SizedBox(height: 20),
             // = Top brewery names =
             TextDivider(text: "TOP PIVOVARY"),
             DefaultTextStyle.merge(
@@ -148,6 +157,7 @@ class EventStatsScreen extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 10),
           ],
         ),
       ),

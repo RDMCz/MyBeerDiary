@@ -1,5 +1,5 @@
 class EventStats {
-  //final int nBeers; // Already stored in event
+  //
   final double maxPermille;
   final int soberTimestamp;
   final double totalLitres;
@@ -13,9 +13,11 @@ class EventStats {
   final List<MapEntry<String, int>> topDescriptions;
   final List<MapEntry<String, int>> topColors;
   final List<MapEntry<int?, int>> topBeerIds;
+  //
+  final List<(int, double)> chartPoints;
 
   const EventStats({
-    //required this.nBeers,
+    //
     required this.maxPermille,
     required this.soberTimestamp,
     required this.totalLitres,
@@ -29,5 +31,7 @@ class EventStats {
     required this.topDescriptions,
     required this.topColors,
     required this.topBeerIds,
+    //
+    required this.chartPoints,
   });
 }

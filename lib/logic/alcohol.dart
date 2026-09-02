@@ -114,6 +114,9 @@ EventStats? eventStats({
   final Map<String, int> colorCounter = {beer.color: 1};
   final Map<int?, int> beerIdCounter = {beer.id: 1};
 
+  // First chartPoint is the first beer drank
+  final chartPoints = <(int, double)>[(prevTimestamp, permille)];
+
   for (final bc in beerConsumptions.skip(1)) {
     beer = beers[bc.beerId] ?? Beer.unknownBeer;
 
@@ -139,14 +142,25 @@ EventStats? eventStats({
     final timestampDiff = bc.timestamp - prevTimestamp;
     final timestampDiffHours = timestampDiff / Duration.secondsPerHour;
 
-    //final prevPermille = permille; // Save in case permille goes under zero
+    final prevPermille = permille; // Save in case permille goes under zero
 
     permille -= timestampDiffHours * metabolismPermillePerHour;
 
     if (permille < 0) {
       permille = 0;
-      //todo use prevPermille to get sober timestamp
+
+      // Get sober timestamp
+      final soberTimestamp =
+          prevTimestamp +
+          ((prevPermille / metabolismPermillePerHour) * Duration.secondsPerHour)
+              .round();
+
+      // Sober chartPoint
+      chartPoints.add((soberTimestamp, 0.0));
     }
+
+    // ChartPoint after sobering right before drinking another beer
+    chartPoints.add((bc.timestamp, permille));
 
     // Drank another beer
     permille += alcoholPermille(
@@ -156,6 +170,10 @@ EventStats? eventStats({
       totalBodyWater: tbw,
     );
 
+    // ChartPoint right after drinking another beer
+    chartPoints.add((bc.timestamp + 1, permille));
+
+    // Stats
     if (permille > maxPermille) {
       maxPermille = permille;
     }
@@ -168,16 +186,19 @@ EventStats? eventStats({
   final int soberTimestamp =
       prevTimestamp + (soberInHours * Duration.secondsPerHour).round();
 
+  // Final charPoint when finish sobering the last beer
+  chartPoints.add((soberTimestamp, 0.0));
+
+  //
+
   final durationHours =
       (beerConsumptions.last.timestamp - beerConsumptions.first.timestamp) /
       Duration.secondsPerHour;
 
-  //
-
   final nBeers = beerConsumptions.length;
 
   return EventStats(
-    //nBeers: beerConsumptions.length,
+    //
     maxPermille: maxPermille,
     soberTimestamp: soberTimestamp,
     totalLitres: totalLitres,
@@ -191,5 +212,7 @@ EventStats? eventStats({
     topDescriptions: sortedMapByValue(descriptionCounter),
     topColors: sortedMapByValue(colorCounter),
     topBeerIds: sortedMapByValue(beerIdCounter),
+    //
+    chartPoints: chartPoints,
   );
 }
