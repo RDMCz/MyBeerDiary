@@ -4,14 +4,21 @@ import "package:my_beer_diary/logic/time.dart";
 
 class AlcoholChart extends StatelessWidget {
   final List<(int, double)> chartPoints;
+  final int durationHours;
 
-  const AlcoholChart({super.key, required this.chartPoints});
+  const AlcoholChart({
+    super.key,
+    required this.chartPoints,
+    required this.durationHours,
+  });
 
   @override
   Widget build(BuildContext context) {
     const hideAxisTitles = AxisTitles(
       sideTitles: SideTitles(showTitles: false),
     );
+
+    final currentTimestamp = secondsSinceEpoch();
 
     return LineChart(
       LineChartData(
@@ -42,8 +49,11 @@ class AlcoholChart extends StatelessWidget {
         ],
         // Axis labels
         titlesData: FlTitlesData(
+          //
           topTitles: hideAxisTitles,
+          //
           rightTitles: hideAxisTitles,
+          //
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -52,9 +62,14 @@ class AlcoholChart extends StatelessWidget {
               maxIncluded: false,
             ),
           ),
+          //
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
+              interval:
+                  ((durationHours / (MediaQuery.sizeOf(context).width / 80)) *
+                          Duration.secondsPerHour)
+                      .toDouble(),
               reservedSize: 44,
               minIncluded: false,
               maxIncluded: false,
@@ -83,8 +98,33 @@ class AlcoholChart extends StatelessWidget {
                 ),
             ],
           ),
+          getTouchedSpotIndicator: (_, spotIndexes) => [
+            for (final spot in spotIndexes)
+              TouchedSpotIndicatorData(
+                FlLine(strokeWidth: 0),
+                FlDotData(
+                  getDotPainter: (_, _, _, _) => FlDotCirclePainter(
+                    radius: 6,
+                    color: Theme.of(context).colorScheme.inverseSurface,
+                  ),
+                ),
+              ),
+          ],
         ),
+        // Vertical line showing current timestamp
+        extraLinesData: ExtraLinesData(
+          verticalLines: [
+            VerticalLine(
+              x: currentTimestamp.toDouble(),
+              color: Colors.blueAccent,
+              dashArray: [5, 10],
+            ),
+          ],
+        ),
+        // Grid
+        gridData: FlGridData(drawVerticalLine: false),
       ),
+      // Chart interaction
       transformationConfig: FlTransformationConfig(
         scaleAxis: FlScaleAxis.horizontal,
         minScale: 1.0,

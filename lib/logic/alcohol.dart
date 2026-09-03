@@ -195,6 +195,11 @@ EventStats? eventStats({
       (beerConsumptions.last.timestamp - beerConsumptions.first.timestamp) /
       Duration.secondsPerHour;
 
+  final durationWithSoberingHours =
+      ((soberTimestamp - beerConsumptions.first.timestamp) /
+              Duration.secondsPerHour)
+          .round();
+
   final nBeers = beerConsumptions.length;
 
   return EventStats(
@@ -214,5 +219,6 @@ EventStats? eventStats({
     topBeerIds: sortedMapByValue(beerIdCounter),
     //
     chartPoints: chartPoints,
+    durationWithSoberingHours: max(durationWithSoberingHours, 1),
   );
 }

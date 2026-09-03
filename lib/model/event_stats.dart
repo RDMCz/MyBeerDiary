@@ -15,6 +15,7 @@ class EventStats {
   final List<MapEntry<int?, int>> topBeerIds;
   //
   final List<(int, double)> chartPoints;
+  final int durationWithSoberingHours;
 
   const EventStats({
     //
@@ -33,5 +34,6 @@ class EventStats {
     required this.topBeerIds,
     //
     required this.chartPoints,
+    required this.durationWithSoberingHours,
   });
 }

@@ -114,7 +114,10 @@ class EventStatsScreen extends StatelessWidget {
                 padding: EdgeInsets.only(
                   right: CardListCommon.listPaddingHorizontal + 4,
                 ),
-                child: AlcoholChart(chartPoints: stats.chartPoints),
+                child: AlcoholChart(
+                  chartPoints: stats.chartPoints,
+                  durationHours: stats.durationWithSoberingHours,
+                ),
               ),
             ),
             SizedBox(height: 20),
