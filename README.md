@@ -2,7 +2,7 @@
 
 * ;)
   * [ ] Date separators in card lists?
-  * [ ] 1 pivo, 2/3/4 piva, 5+ piv
+  * [x] 1 pivo, 2/3/4 piva, 5+ piv
   * [ ] Stats: permille graph
     * [ ] Vertical line representing current time
     * [ ] Make x-axis labels more clean

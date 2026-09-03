@@ -3,6 +3,7 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/dialog/beer_consumption_dialog.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
+import "package:my_beer_diary/logic/cz.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
@@ -74,7 +75,8 @@ class EventScreen extends StatelessWidget {
               children: [
                 EventStat(
                   icon: SvgIcons.beer,
-                  text: "${freshEvent.totalBeers} piv",
+                  text:
+                      "${freshEvent.totalBeers} ${beerDeclension(freshEvent.totalBeers)}",
                 ),
                 EventStat(
                   icon: SvgIcons.money,

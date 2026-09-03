@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/event_dialog.dart";
+import "package:my_beer_diary/logic/cz.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
@@ -89,7 +90,7 @@ class EventCard extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    "${event.totalBeers} piv, ${event.totalCost} Kč",
+                    "${event.totalBeers} ${beerDeclension(event.totalBeers)}, ${event.totalCost} Kč",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
