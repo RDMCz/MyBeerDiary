@@ -1,10 +1,11 @@
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/logic/time.dart";
 
 class AlcoholChart extends StatelessWidget {
-  final List<(int, double)> chartPoints;
+  final List<(int, double, bool, String)> chartPoints;
   final int durationHours;
 
   const AlcoholChart({
@@ -89,22 +90,39 @@ class AlcoholChart extends StatelessWidget {
         // Popup
         lineTouchData: LineTouchData(
           touchTooltipData: LineTouchTooltipData(
+            fitInsideHorizontally: true,
+            // Popup background
             getTooltipColor: (_) => appColorInverseSurface,
+            // Popup content
             getTooltipItems: (touchedSpots) => [
               for (final spot in touchedSpots)
-                LineTooltipItem(
-                  "${spot.y.toStringAsFixed(2)} ‰",
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
+                (!chartPoints[spot.spotIndex].$3)
+                    ? null
+                    : LineTooltipItem(
+                        "", // Use [children] instead
+                        TextStyle(color: Colors.white),
+                        children: [
+                          TextSpan(
+                            text:
+                                "${secondsToDateTimeString(spot.x.toInt())}\n",
+                          ),
+                          TextSpan(
+                            text: "${spot.y.toStringAsFixed(2)} ‰\n",
+                            style: boldTextStyle,
+                          ),
+                          TextSpan(text: chartPoints[spot.spotIndex].$4),
+                        ],
+                      ),
             ],
           ),
+          // Circle indicator
           getTouchedSpotIndicator: (_, spotIndexes) => [
-            for (final spot in spotIndexes)
+            for (final _ in spotIndexes)
               TouchedSpotIndicatorData(
                 FlLine(strokeWidth: 0),
                 FlDotData(
-                  getDotPainter: (_, _, _, _) => FlDotCirclePainter(
-                    radius: 6,
+                  getDotPainter: (_, _, _, index) => FlDotCirclePainter(
+                    radius: chartPoints[index].$3 ? 6 : 0,
                     color: appColorInverseSurface,
                   ),
                 ),
@@ -128,7 +146,7 @@ class AlcoholChart extends StatelessWidget {
       transformationConfig: FlTransformationConfig(
         scaleAxis: FlScaleAxis.horizontal,
         minScale: 1.0,
-        maxScale: 25.0,
+        maxScale: (durationHours / 2).toDouble(),
         panEnabled: true,
         scaleEnabled: true,
       ),

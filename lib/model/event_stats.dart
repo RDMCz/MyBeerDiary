@@ -14,7 +14,15 @@ class EventStats {
   final List<MapEntry<String, int>> topColors;
   final List<MapEntry<int?, int>> topBeerIds;
   //
-  final List<(int, double)> chartPoints;
+  final List<
+    (
+      int, // Timestamp
+      double, // Permille
+      bool, // Show popup for this point?
+      String, // Beer name to show in popup
+    )
+  >
+  chartPoints;
   final int durationWithSoberingHours;
 
   const EventStats({

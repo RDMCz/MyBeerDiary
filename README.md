@@ -3,11 +3,7 @@
 * ;)
   * [ ] Date separators in card lists?
   * [x] 1 pivo, 2/3/4 piva, 5+ piv
-  * [ ] Stats: permille [graph](https://app.flchart.dev/#/line)
-    * [x] Vertical line representing current time
-    * [x] Make x-axis labels more clean
-    * [ ] More info in popup
-    * [ ] Variable max zoom level
+  * [x] Stats: permille [graph](https://app.flchart.dev/#/line)
   * [ ] Global stats – everything, oneoffs only, certain year, certain tag, ...
   * [ ] Filter events by tags
   * [ ] Hamburger menu – help, about, ...

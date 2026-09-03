@@ -115,7 +115,9 @@ EventStats? eventStats({
   final Map<int?, int> beerIdCounter = {beer.id: 1};
 
   // First chartPoint is the first beer drank
-  final chartPoints = <(int, double)>[(prevTimestamp, permille)];
+  final chartPoints = <(int, double, bool, String)>[
+    (prevTimestamp, permille, true, beer.toDisplayString()),
+  ];
 
   for (final bc in beerConsumptions.skip(1)) {
     beer = beers[bc.beerId] ?? Beer.unknownBeer;
@@ -156,11 +158,11 @@ EventStats? eventStats({
               .round();
 
       // Sober chartPoint
-      chartPoints.add((soberTimestamp, 0.0));
+      chartPoints.add((soberTimestamp, 0.0, true, ""));
     }
 
     // ChartPoint after sobering right before drinking another beer
-    chartPoints.add((bc.timestamp, permille));
+    chartPoints.add((bc.timestamp, permille, false, ""));
 
     // Drank another beer
     permille += alcoholPermille(
@@ -171,7 +173,7 @@ EventStats? eventStats({
     );
 
     // ChartPoint right after drinking another beer
-    chartPoints.add((bc.timestamp + 1, permille));
+    chartPoints.add((bc.timestamp + 1, permille, true, beer.toDisplayString()));
 
     // Stats
     if (permille > maxPermille) {
@@ -187,7 +189,7 @@ EventStats? eventStats({
       prevTimestamp + (soberInHours * Duration.secondsPerHour).round();
 
   // Final charPoint when finish sobering the last beer
-  chartPoints.add((soberTimestamp, 0.0));
+  chartPoints.add((soberTimestamp, 0.0, true, ""));
 
   //
 
