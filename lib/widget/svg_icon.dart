@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
+import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/logic/color.dart";
 
 enum SvgIcons {
@@ -36,7 +37,7 @@ class SvgIcon extends StatelessWidget {
     return SvgPicture.asset(
       "asset/icon/${icon.filename}.svg",
       colorFilter: ColorFilter.mode(
-        color ?? Theme.of(context).colorScheme.inverseSurface,
+        color ?? appColorInverseSurface,
         BlendMode.srcIn,
       ),
       width: size,

@@ -36,8 +36,8 @@ class BeerForm extends StatefulWidget {
 class _BeerFormState extends State<BeerForm> {
   @override
   Widget build(BuildContext context) {
-    final iconColorEnabled = Theme.of(context).colorScheme.inverseSurface;
-    final iconColorDisabled = Theme.of(context).colorScheme.secondary;
+    final iconColorEnabled = appColorInverseSurface;
+    final iconColorDisabled = appColorSecondary;
 
     final isAbvGuess = widget.isAbvGuess;
 

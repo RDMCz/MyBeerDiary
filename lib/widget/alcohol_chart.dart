@@ -1,5 +1,6 @@
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
+import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/logic/time.dart";
 
 class AlcoholChart extends StatelessWidget {
@@ -88,8 +89,7 @@ class AlcoholChart extends StatelessWidget {
         // Popup
         lineTouchData: LineTouchData(
           touchTooltipData: LineTouchTooltipData(
-            getTooltipColor: (_) =>
-                Theme.of(context).colorScheme.inverseSurface,
+            getTooltipColor: (_) => appColorInverseSurface,
             getTooltipItems: (touchedSpots) => [
               for (final spot in touchedSpots)
                 LineTooltipItem(
@@ -105,7 +105,7 @@ class AlcoholChart extends StatelessWidget {
                 FlDotData(
                   getDotPainter: (_, _, _, _) => FlDotCirclePainter(
                     radius: 6,
-                    color: Theme.of(context).colorScheme.inverseSurface,
+                    color: appColorInverseSurface,
                   ),
                 ),
               ),

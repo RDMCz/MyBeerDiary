@@ -96,7 +96,7 @@ class EventScreen extends StatelessWidget {
               child: FloatingActionButton.small(
                 heroTag: "eventfab1",
                 backgroundColor: stats != null
-                    ? Theme.of(context).colorScheme.primaryContainer
+                    ? appColorPrimaryContainer
                     : appColorDisabledFAB,
                 onPressed: stats == null
                     ? null

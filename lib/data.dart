@@ -205,6 +205,12 @@ const appColorSurface = Color(0xfffffefa);
 const appColorContainer = Color(0xffffffff);
 const appColorDisabledFAB = Color(0xffcfcec9);
 
+const appColorInverseSurface = Color(0xff353027);
+const appColorDisabled = Color(0xffaaa7a2);
+const appColorPrimary = Color(0xff785a0b);
+const appColorPrimaryContainer = Color(0xffffdf9f);
+const appColorSecondary = Color(0xff6b5c3f);
+
 const beerColorStraw = Color(0xfff3eb8f);
 const beerColorGold = Color(0xfffec95a);
 const beerColorAmber = Color(0xffd67100);

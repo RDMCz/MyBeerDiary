@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/dialog/beer_consumption_dialog.dart";
 import "package:my_beer_diary/dialog/event_dialog.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
@@ -30,8 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
   // = GUI =
   @override
   Widget build(BuildContext context) {
-    final bottomBarColorSelected = Theme.of(context).colorScheme.primary;
-    final bottomBarColorUnselected = Theme.of(context).colorScheme.secondary;
+    final bottomBarColorSelected = appColorPrimary;
+    final bottomBarColorUnselected = appColorSecondary;
 
     final isEventPageSelected = _bottomBarIndex == 0;
 

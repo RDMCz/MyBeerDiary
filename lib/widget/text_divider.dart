@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/data.dart";
 
 class TextDivider extends StatelessWidget {
   final String text;
@@ -17,12 +18,7 @@ class TextDivider extends StatelessWidget {
             SizedBox(width: 3),
             Transform.translate(
               offset: Offset(0, -2),
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
+              child: Text(text, style: TextStyle(color: appColorSecondary)),
             ),
             SizedBox(width: 3),
             Expanded(child: Divider()),

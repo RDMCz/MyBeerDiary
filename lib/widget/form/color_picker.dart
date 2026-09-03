@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/data.dart";
 
 class ColorPicker extends StatelessWidget {
   final bool isEnabled;
@@ -53,9 +54,7 @@ class ColorContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final darkColor = isEnabled
-        ? Theme.of(context).colorScheme.inverseSurface
-        : Theme.of(context).colorScheme.outlineVariant;
+    final darkColor = isEnabled ? appColorInverseSurface : appColorDisabled;
 
     const iconSize = 40.0;
     const iconBorderWidth = 1.309;

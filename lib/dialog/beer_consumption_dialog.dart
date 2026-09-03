@@ -346,7 +346,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                     label: Text(isEdit ? "Potvrdit" : "Přidat"),
                     icon: Icon(isEdit ? Icons.check : Icons.add),
                     backgroundColor: isValid
-                        ? Theme.of(context).colorScheme.primaryContainer
+                        ? appColorPrimaryContainer
                         : appColorDisabledFAB,
                     disabledElevation: 0,
                     onPressed: !isValid
