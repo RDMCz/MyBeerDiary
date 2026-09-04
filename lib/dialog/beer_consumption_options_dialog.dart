@@ -1,3 +1,6 @@
+// This dialog is shown on long press on the beer consumption card.
+// It allows to edit/delete/... selected beer consumption.
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/beer_consumption_dialog.dart";

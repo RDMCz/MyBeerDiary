@@ -1,3 +1,5 @@
+// Selecting this card allows user to reference existing beer in [BeerConsumptionDialog]
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer.dart";

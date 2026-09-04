@@ -1,4 +1,4 @@
-// Beers can be reused in multiple events and in the one-off page
+// Beers can be reused in multiple events and in the oneoff page
 
 import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";

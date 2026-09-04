@@ -1,3 +1,5 @@
+// Dialog to add or edit beers in the database
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";

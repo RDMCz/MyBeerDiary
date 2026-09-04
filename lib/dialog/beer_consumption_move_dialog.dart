@@ -1,3 +1,5 @@
+// Dialog to move a Oneoff beer consumption to some Event
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";

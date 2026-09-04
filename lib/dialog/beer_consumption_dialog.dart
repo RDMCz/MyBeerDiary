@@ -6,7 +6,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
-import "package:my_beer_diary/dialog/beer_consumption_edit_options_dialog.dart";
+import "package:my_beer_diary/dialog/beer_consumption_edit_summary_dialog.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
 import "package:my_beer_diary/logic/beer_size.dart";
 import "package:my_beer_diary/logic/color.dart";
@@ -497,7 +497,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                     await showDialog<EditSummaryAction>(
                                       context: context,
                                       builder: (BuildContext context) =>
-                                          BeerConsumptionEditOptionsDialog(
+                                          BeerConsumptionEditSummaryDialog(
                                             editSummary: editSummary,
                                             isOneoff: widget.eventId == null,
                                           ),

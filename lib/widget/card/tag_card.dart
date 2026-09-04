@@ -1,3 +1,5 @@
+// Display, edit, merge tags in [TagsScreen]
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/tag_dialog.dart";

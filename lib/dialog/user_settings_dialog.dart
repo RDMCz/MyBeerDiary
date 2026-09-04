@@ -1,3 +1,5 @@
+// Dialog to edit user settings
+
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:my_beer_diary/common.dart";

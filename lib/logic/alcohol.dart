@@ -205,7 +205,6 @@ EventStats? eventStats({
   final nBeers = beerConsumptions.length;
 
   return EventStats(
-    //
     maxPermille: maxPermille,
     soberTimestamp: soberTimestamp,
     totalLitres: totalLitres,

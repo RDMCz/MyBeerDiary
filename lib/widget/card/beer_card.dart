@@ -1,3 +1,5 @@
+// Display, edit, merge beers in [BeersScreen]
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/dialog/beer_dialog.dart";
@@ -67,7 +69,7 @@ class BeerCard extends StatelessWidget {
                   },
                   icon: Icon(Icons.edit),
                 ),
-                // = Delete Button =
+                // = Merge Button =
                 IconButton(
                   onPressed: () async {
                     final result = await showDialog(

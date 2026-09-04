@@ -1,5 +1,5 @@
+/// To transfer all the data shown on the [EventStatsScreen]
 class EventStats {
-  //
   final double maxPermille;
   final int soberTimestamp;
   final double totalLitres;
@@ -26,7 +26,6 @@ class EventStats {
   final int durationWithSoberingHours;
 
   const EventStats({
-    //
     required this.maxPermille,
     required this.soberTimestamp,
     required this.totalLitres,

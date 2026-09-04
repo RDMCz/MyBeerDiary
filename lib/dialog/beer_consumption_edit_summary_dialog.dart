@@ -1,12 +1,15 @@
+// This dialog is shown when using [BeerConsumptionDialog] in its editing variant.
+// It shows the user summary of the changes made and allows to apply those changes or cancel.
+
 import "package:flutter/material.dart";
 
 enum EditSummaryAction { applyOne, applyAll, cancel }
 
-class BeerConsumptionEditOptionsDialog extends StatelessWidget {
+class BeerConsumptionEditSummaryDialog extends StatelessWidget {
   final String editSummary;
   final bool isOneoff;
 
-  const BeerConsumptionEditOptionsDialog({
+  const BeerConsumptionEditSummaryDialog({
     super.key,
     required this.editSummary,
     required this.isOneoff,

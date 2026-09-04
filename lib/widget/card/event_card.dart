@@ -1,3 +1,5 @@
+// Display/open/edit particular event
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/dialog/event_dialog.dart";
 import "package:my_beer_diary/logic/cz.dart";

@@ -1,3 +1,5 @@
+// Dialog to "merge" beers: deletes some beer A and sets all beer consumptions of beer A to some other beer B
+
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer.dart";

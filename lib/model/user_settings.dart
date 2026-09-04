@@ -1,3 +1,5 @@
+// UserSettings are used to calculate blood alcohol concentration
+
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
