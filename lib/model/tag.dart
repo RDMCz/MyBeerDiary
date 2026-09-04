@@ -86,14 +86,6 @@ Future<List<Tag>> tagList() async {
   return [for (final m in maps) Tag.fromMap(m)];
 }
 
-/*
-Future<Map<int, Tag>> tagMap() async {
-  final db = await AppDatabase.instance.database;
-  final maps = await db.query(tagTable);
-  return {for (final m in maps) m[tagColId] as int: Tag.fromMap(m)};
-}
-*/
-
 Future<void> tagUpdate(Tag tag) async {
   final db = await AppDatabase.instance.database;
   await db.update(

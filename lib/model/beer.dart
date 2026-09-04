@@ -122,14 +122,6 @@ Future<List<Beer>> beerList() async {
   return [for (final m in maps) Beer.fromMap(m)];
 }
 
-/*
-Future<Map<int, Beer>> beerMap() async {
-  final db = await AppDatabase.instance.database;
-  final maps = await db.query(beerTable);
-  return {for (final m in maps) m[beerColId] as int: Beer.fromMap(m)};
-}
-*/
-
 Future<void> beerUpdate(Beer beer) async {
   final db = await AppDatabase.instance.database;
   await db.update(

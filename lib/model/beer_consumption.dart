@@ -95,18 +95,6 @@ Future<void> beerConsumptionAdd(BeerConsumption bc) async {
   await db.insert(beerConsumptionTable, bc.toMap());
 }
 
-/*
-Future<List<BeerConsumption>> beerConsumptionList(int? eventId) async {
-  final db = await AppDatabase.instance.database;
-  final maps = await db.query(
-    beerConsumptionTable,
-    where: "$beerConsumptionColEventId = ?",
-    whereArgs: [eventId],
-  );
-  return [for (final m in maps) BeerConsumption.fromMap(m)];
-}
-*/
-
 Future<List<BeerConsumption>> beerConsumptionList() async {
   final db = await AppDatabase.instance.database;
   final maps = await db.query(beerConsumptionTable);

@@ -1,9 +1,12 @@
+// Fullscreen dialog for adding/editing beer consumption, either Event or Oneoff
+
 import "dart:ui";
 import "package:escape_parent_padding/escapable_padding.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
+import "package:my_beer_diary/dialog/beer_consumption_edit_options_dialog.dart";
 import "package:my_beer_diary/logic/alcohol.dart";
 import "package:my_beer_diary/logic/beer_size.dart";
 import "package:my_beer_diary/logic/color.dart";
@@ -18,8 +21,6 @@ import "package:my_beer_diary/widget/form/brewery_input.dart";
 import "package:my_beer_diary/widget/form/checkbox.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
-
-enum EditSummaryAction { applyOne, applyAll, cancel }
 
 class BeerConsumptionDialog extends StatefulWidget {
   /// Links this dialog to a specific Event, use null for Oneoffs
@@ -413,9 +414,12 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                         : () async {
                             // Firm: id, timestamp, eventId
                             // Can change: beerId, litres, price, isDraft
-                            final b = widget.beer!;
-                            final bc = widget.beerConsumption!;
 
+                            // BeerConsumption we are edititng
+                            final bc = widget.beerConsumption!;
+                            // Original beer of that BeerConsumption
+                            final b = widget.beer!;
+                            // Should never be null but check just in case
                             if (b.id == null ||
                                 (selectedBeer != null &&
                                     selectedBeer!.id == null)) {
@@ -424,25 +428,21 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
 
                             // Resolve beer
                             final isBeerChange =
+                                // [b] definitely isn't null so [selectedBeer] being null means change (we'll be adding new beer)
                                 selectedBeer == null ||
+                                // Different IDs => change
                                 selectedBeer!.id! != b.id!;
 
-                            final beerId = !isBeerChange
-                                // No changes to beer => use old beer's ID
-                                ? b.id!
-                                : selectedBeer != null
-                                // User has selected valid BeerCardMini => use that beer
-                                ? selectedBeer!.id!
-                                // User has selected BeerCardMiniNew => create new beer and use its ID
-                                : await beerAdd(
-                                    Beer(
-                                      breweryName: breweryNameTextTrim,
-                                      description: beerDescTextTrim,
-                                      epm: Beer.epmOrDefault(epmTEC.text),
-                                      abv: Beer.abvOrDefault(abvTEC.text),
-                                      color: colorToHexString(beerColor),
-                                    ),
-                                  );
+                            int beerId = b.id!; // Valid if beer is not edited
+                            bool doCreateNewBeer = false;
+
+                            if (isBeerChange) {
+                              if (selectedBeer != null) {
+                                beerId = selectedBeer!.id!;
+                              } else {
+                                doCreateNewBeer = true;
+                              }
+                            }
 
                             // Resolve litres
                             final litres = switch (beerSizeSelected) {
@@ -496,58 +496,27 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                 final result =
                                     await showDialog<EditSummaryAction>(
                                       context: context,
-                                      builder: (BuildContext context) => SimpleDialog(
-                                        title: Text("Souhrn změn"),
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 20.0,
-                                            ),
-                                            child: Text(editSummary),
+                                      builder: (BuildContext context) =>
+                                          BeerConsumptionEditOptionsDialog(
+                                            editSummary: editSummary,
+                                            isOneoff: widget.eventId == null,
                                           ),
-                                          SimpleDialogOption(
-                                            onPressed: () {
-                                              Navigator.of(
-                                                context,
-                                              ).pop(EditSummaryAction.applyOne);
-                                            },
-                                            child: Text(
-                                              "Provést změny pro tento záznam",
-                                              style: boldTextStyle,
-                                            ),
-                                          ),
-                                          if (widget.eventId != null)
-                                            // (Not avaliable for oneoffs)
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                Navigator.of(context).pop(
-                                                  EditSummaryAction.applyAll,
-                                                );
-                                              },
-                                              child: Text(
-                                                "Provést změny pro všechny identické záznamy této události",
-                                                style: boldTextStyle,
-                                              ),
-                                            ),
-                                          /*
-                                          SimpleDialogOption(
-                                            onPressed: () {
-                                              Navigator.of(
-                                                context,
-                                              ).pop(EditSummaryAction.cancel);
-                                            },
-                                            child: Text(
-                                              "Zrušit",
-                                              style: boldTextStyle
-                                            ),
-                                          ),
-                                          */
-                                        ],
-                                      ),
                                     ) ??
                                     EditSummaryAction.cancel;
                                 switch (result) {
                                   case EditSummaryAction.applyOne:
+                                    // New beer?
+                                    if (doCreateNewBeer) {
+                                      beerId = await beerAdd(
+                                        Beer(
+                                          breweryName: breweryNameTextTrim,
+                                          description: beerDescTextTrim,
+                                          epm: Beer.epmOrDefault(epmTEC.text),
+                                          abv: Beer.abvOrDefault(abvTEC.text),
+                                          color: colorToHexString(beerColor),
+                                        ),
+                                      );
+                                    }
                                     // Edit beerConsumption in DB
                                     await beerConsumptionUpdate(
                                       bc.copyWith(
@@ -575,6 +544,18 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                                     }
                                     break;
                                   case EditSummaryAction.applyAll:
+                                    // New beer?
+                                    if (doCreateNewBeer) {
+                                      beerId = await beerAdd(
+                                        Beer(
+                                          breweryName: breweryNameTextTrim,
+                                          description: beerDescTextTrim,
+                                          epm: Beer.epmOrDefault(epmTEC.text),
+                                          abv: Beer.abvOrDefault(abvTEC.text),
+                                          color: colorToHexString(beerColor),
+                                        ),
+                                      );
+                                    }
                                     // Edit beerConsumptions in DB
                                     final nRows =
                                         await beerConsumptionUpdateIdentical(

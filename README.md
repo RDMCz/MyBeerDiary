@@ -1,5 +1,8 @@
 # Můj pivní deníček
 
+> [!WARNING]  
+> Under construction
+
 * ;)
   * [ ] Date separators in card lists?
   * [x] 1 pivo, 2/3/4 piva, 5+ piv
@@ -11,8 +14,6 @@
   * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
   * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
   * [ ] Show brewery names from database in BreweryInput?
-* Problems:
-  * User edits beerConsumption, changes to new beer, beer is created in DB, then user chooses EditSummaryAction.cancel
 
 ---
 
