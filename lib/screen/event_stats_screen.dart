@@ -8,6 +8,7 @@ import "package:my_beer_diary/model/event_stats.dart";
 import "package:my_beer_diary/widget/alcohol_chart.dart";
 import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/card/event_card.dart";
+import "package:my_beer_diary/widget/stat_list_tile.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:my_beer_diary/widget/text_divider.dart";
 
@@ -53,49 +54,33 @@ class EventStatsScreen extends StatelessWidget {
               child: EventCard(event: event, isInteractable: false),
             ),
             SizedBox(height: 6.6),
-            ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                // = Max permille =
-                ListTile(
-                  leading: SvgIcon(icon: SvgIcons.permille),
-                  title: Text(
-                    "Max promile: ${stats.maxPermille.toStringAsFixed(2)} ‰",
-                    style: boldTextStyle,
-                  ),
-                ),
-                Divider(height: 0),
-                // = Sober in =
-                ListTile(
-                  leading: SvgIcon(icon: SvgIcons.sober),
-                  title: Text(
-                    "Vystřízlivění v ${secondsToDateTimeString(stats.soberTimestamp)}",
-                    style: boldTextStyle,
-                  ),
-                ),
-                Divider(height: 0),
-                // = Total litres =
-                ListTile(
-                  leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
-                  title: Text(
-                    "Celkem vypito ${stats.totalLitres.toStringAsFixed(2)} litrů",
-                    style: boldTextStyle,
-                  ),
-                ),
-                Divider(height: 0),
-                // = Litres per hour =
-                ListTile(
-                  leading: Icon(Icons.speed),
-                  title: Text(
-                    "Průměrně vypito ${(stats.totalLitres / stats.durationHours).toStringAsFixed(2)} litrů za hodinu",
-                    style: boldTextStyle,
-                  ),
-                ),
-                Divider(height: 0),
-              ],
+            // = Max permille =
+            StatListTile(
+              leading: SvgIcon(icon: SvgIcons.permille),
+              text: "Max promile: ${stats.maxPermille.toStringAsFixed(2)} ‰",
             ),
+            Divider(height: 0),
+            // = Sober in =
+            StatListTile(
+              leading: SvgIcon(icon: SvgIcons.sober),
+              text:
+                  "Vystřízlivění v ${secondsToDateTimeString(stats.soberTimestamp)}",
+            ),
+            Divider(height: 0),
+            // = Total litres =
+            StatListTile(
+              leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
+              text:
+                  "Celkem vypito ${stats.totalLitres.toStringAsFixed(2)} litrů",
+            ),
+            Divider(height: 0),
+            // = Litres per hour =
+            StatListTile(
+              leading: Icon(Icons.speed),
+              text:
+                  "Průměrně vypito ${(stats.totalLitres / stats.durationHours).toStringAsFixed(2)} litrů za hodinu",
+            ),
+            Divider(height: 0),
             SizedBox(height: 6.6),
             // = Average beer card =
             Padding(

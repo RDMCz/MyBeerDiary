@@ -4,12 +4,13 @@
 > Under construction
 
 * ;)
-  * [ ] Date separators in card lists?
   * [x] 1 pivo, 2/3/4 piva, 5+ piv
   * [x] Stats: permille [graph](https://app.flchart.dev/#/line)
-  * [ ] Global stats – everything, oneoffs only, certain year, certain tag, ...
+  * [ ] Global stats – everything, certain year, certain tag
+  * [ ] Date separators in card lists?
   * [ ] Filter events by tags
-  * [ ] Hamburger menu – help, about, ...
+  * [ ] Help screen
+  * [ ] About screen
 * \>\<
   * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
   * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
