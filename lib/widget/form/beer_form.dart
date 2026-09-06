@@ -105,7 +105,6 @@ class _BeerFormState extends State<BeerForm> {
         LabeledCheckbox(
           isEnabled: widget.isEnabled,
           label: "Odhadnout procenta alkoholu ze stupňovistosti",
-          padding: EdgeInsets.all(0),
           value: isAbvGuess,
           onChanged: widget.onIsAbvGuessChanged,
         ),

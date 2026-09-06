@@ -3,7 +3,6 @@ import "package:flutter/material.dart";
 class LabeledCheckbox extends StatelessWidget {
   final bool isEnabled;
   final String label;
-  final EdgeInsets padding;
   final bool value;
   final ValueChanged<bool> onChanged;
 
@@ -11,7 +10,6 @@ class LabeledCheckbox extends StatelessWidget {
     super.key,
     required this.isEnabled,
     required this.label,
-    required this.padding,
     required this.value,
     required this.onChanged,
   });
@@ -24,21 +22,18 @@ class LabeledCheckbox extends StatelessWidget {
           onChanged(!value);
         }
       },
-      child: Padding(
-        padding: padding,
-        child: Row(
-          children: [
-            // Checkbox is only visual, InkWell handles the onTap
-            IgnorePointer(
-              child: Checkbox(
-                value: value,
-                // Null makes checkbox look disabled
-                onChanged: !isEnabled ? null : (_) {},
-              ),
+      child: Row(
+        children: [
+          // Checkbox is only visual, InkWell handles the onTap
+          IgnorePointer(
+            child: Checkbox(
+              value: value,
+              // Null makes checkbox look disabled
+              onChanged: !isEnabled ? null : (_) {},
             ),
-            Expanded(child: Text(label)),
-          ],
-        ),
+          ),
+          Expanded(child: Text(label)),
+        ],
       ),
     );
   }

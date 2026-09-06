@@ -44,12 +44,6 @@ class BeerConsumptionDialog extends StatefulWidget {
 }
 
 class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
-  // Outline card serves as a "group box"
-  static const _outlineCardPadding = EdgeInsets.symmetric(
-    horizontal: 11,
-    vertical: 13,
-  );
-
   final breweryTEC = TextEditingController();
   String breweryNameStrPrev = ""; // To check for text changes
 
@@ -231,7 +225,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
               // = Rest of the beer form =
               Card.outlined(
                 child: Padding(
-                  padding: _outlineCardPadding,
+                  padding: CardCommon.outlineCardPadding,
                   child: BeerForm(
                     isEnabled: selectedBeer == null,
                     beerDescTEC: beerDescTEC,
@@ -256,7 +250,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
 
               Card.outlined(
                 child: Padding(
-                  padding: _outlineCardPadding,
+                  padding: CardCommon.outlineCardPadding,
                   child: Column(
                     children: [
                       // = Choose beer size =
@@ -332,7 +326,6 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                     child: LabeledCheckbox(
                       isEnabled: true,
                       label: "Čepované",
-                      padding: EdgeInsets.all(0),
                       value: isDraft,
                       onChanged: (bool value) {
                         setState(() {

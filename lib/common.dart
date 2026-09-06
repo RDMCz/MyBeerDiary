@@ -33,6 +33,12 @@ class CardCommon {
     horizontal: 8.0,
     vertical: 4.0,
   );
+
+  // Outline card serves as a "group box"
+  static const outlineCardPadding = EdgeInsets.symmetric(
+    horizontal: 11,
+    vertical: 13,
+  );
 }
 
 class CardListCommon {
