@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer.dart";
-import "package:my_beer_diary/model/beer_consumption.dart";
+import "package:my_beer_diary/model/global_stats.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/form/checkbox.dart";
@@ -9,8 +9,6 @@ import "package:my_beer_diary/widget/form/dropdown_menu_small.dart";
 import "package:my_beer_diary/widget/stat_list_tile.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
-
-enum GlobalStatsVariant { all, year, tag }
 
 class GlobalStatsScreen extends StatefulWidget {
   const GlobalStatsScreen({super.key});
@@ -25,6 +23,21 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
 
   bool isFilterTag = false;
   Tag selectedTag = Tag(name: "—", color: "");
+
+  GlobalStats? stats;
+
+  Future<void> refreshStats() async {
+    final stats = await globalStats();
+    setState(() {
+      this.stats = stats;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    refreshStats();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,46 +129,44 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
               ),
             ),
             SizedBox(height: 6.6),
-            StatListTile(
-              leading: SvgIcon(icon: SvgIcons.beer),
-              text: "Celkem vypito ? piv",
-            ),
-            Divider(height: 0),
-            StatListTile(
-              leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
-              text: "Celkem vypito ? litrů",
-            ),
-            Divider(height: 0),
-            StatListTile(
-              leading: SvgIcon(icon: SvgIcons.money),
-              text: "Celková útrata: ? Kč",
-            ),
-            Divider(height: 0),
-            SizedBox(height: 6.6),
-            Padding(
-              padding: CardListCommon.horizontalPaddingOnly,
-              child: BeerConsumptionCard(
-                beer: Beer.unknownBeer,
-                beerConsumption: BeerConsumption(
-                  timestamp: 0,
-                  beerId: 0,
-                  litres: 0,
-                  price: 0,
-                  isDraft: false,
-                ),
-                isStats: true,
+            if (stats == null)
+              Text("Žádná data", style: boldTextStyle)
+            else ...[
+              StatListTile(
+                leading: SvgIcon(icon: SvgIcons.beer),
+                text: "Celkem vypito ${stats!.totalBeers} piv",
               ),
-            ),
-            SizedBox(height: 6.6),
-            SizedBox(
-              height: 300,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  right: CardListCommon.listPaddingHorizontal + 4,
-                ),
-                child: Text("zde bude graf?"),
+              Divider(height: 0),
+              StatListTile(
+                leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
+                text: "Celkem vypito ${stats!.totalLitres} litrů",
               ),
-            ),
+              Divider(height: 0),
+              StatListTile(
+                leading: SvgIcon(icon: SvgIcons.money),
+                text: "Celková útrata: ${stats!.totalPrice} Kč",
+              ),
+              Divider(height: 0),
+              SizedBox(height: 6.6),
+              Padding(
+                padding: CardListCommon.horizontalPaddingOnly,
+                child: BeerConsumptionCard(
+                  beer: Beer.unknownBeer,
+                  beerConsumption: stats!.averageBeerConsumption,
+                  isStats: true,
+                ),
+              ),
+              SizedBox(height: 6.6),
+              SizedBox(
+                height: 300,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    right: CardListCommon.listPaddingHorizontal + 4,
+                  ),
+                  child: Text("zde bude graf?"),
+                ),
+              ),
+            ],
           ],
         ),
       ),
