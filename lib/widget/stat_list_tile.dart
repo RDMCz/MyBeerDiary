@@ -9,9 +9,14 @@ class StatListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: leading,
-      title: Text(text, style: boldTextStyle),
+    return Column(
+      children: [
+        ListTile(
+          leading: leading,
+          title: Text(text, style: boldTextStyle),
+        ),
+        Divider(height: 0),
+      ],
     );
   }
 }

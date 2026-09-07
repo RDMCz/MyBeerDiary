@@ -6,6 +6,7 @@
 * ;)
   * [x] 1 pivo, 2/3/4 piva, 5+ piv
   * [x] Stats: permille [graph](https://app.flchart.dev/#/line)
+    * [ ] How to they handle the x axis?
   * [ ] Global stats – everything, certain year, certain tag
     * [ ] Loading screen?
   * [ ] Date separators in card lists?

@@ -59,28 +59,24 @@ class EventStatsScreen extends StatelessWidget {
               leading: SvgIcon(icon: SvgIcons.permille),
               text: "Max promile: ${stats.maxPermille.toStringAsFixed(2)} ‰",
             ),
-            Divider(height: 0),
             // = Sober in =
             StatListTile(
               leading: SvgIcon(icon: SvgIcons.sober),
               text:
                   "Vystřízlivění v ${secondsToDateTimeString(stats.soberTimestamp)}",
             ),
-            Divider(height: 0),
             // = Total litres =
             StatListTile(
               leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
               text:
                   "Celkem vypito ${stats.totalLitres.toStringAsFixed(2)} litrů",
             ),
-            Divider(height: 0),
             // = Litres per hour =
             StatListTile(
               leading: Icon(Icons.speed),
               text:
                   "Průměrně vypito ${(stats.totalLitres / stats.durationHours).toStringAsFixed(2)} litrů za hodinu",
             ),
-            Divider(height: 0),
             SizedBox(height: 6.6),
             // = Average beer card =
             Padding(

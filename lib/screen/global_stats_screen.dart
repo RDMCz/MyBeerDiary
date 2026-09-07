@@ -1,9 +1,7 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
-import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/global_stats.dart";
 import "package:my_beer_diary/model/tag.dart";
-import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/form/checkbox.dart";
 import "package:my_beer_diary/widget/form/dropdown_menu_small.dart";
 import "package:my_beer_diary/widget/stat_list_tile.dart";
@@ -27,7 +25,12 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
   GlobalStats? stats;
 
   Future<void> refreshStats() async {
-    final stats = await globalStats();
+    final stats = await globalStats(
+      isFilterYear: isFilterYear,
+      selectedYear: selectedYear,
+      isFilterTag: isFilterTag,
+      selectedTag: selectedTag,
+    );
     setState(() {
       this.stats = stats;
     });
@@ -79,6 +82,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                                 setState(() {
                                   isFilterYear = value;
                                 });
+                                refreshStats();
                               },
                             ),
                           ),
@@ -90,6 +94,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                               setState(() {
                                 selectedYear = value;
                               });
+                              refreshStats();
                             },
                             width: dropdownMenuWidth,
                           ),
@@ -107,6 +112,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                                 setState(() {
                                   isFilterTag = value;
                                 });
+                                refreshStats();
                               },
                             ),
                           ),
@@ -118,6 +124,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                               setState(() {
                                 selectedTag = value;
                               });
+                              refreshStats();
                             },
                             width: dropdownMenuWidth,
                           ),
@@ -130,31 +137,21 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
             ),
             SizedBox(height: 6.6),
             if (stats == null)
-              Text("Žádná data", style: boldTextStyle)
+              Text("\nŽádná data", style: boldTextStyle)
             else ...[
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.beer),
-                text: "Celkem vypito ${stats!.totalBeers} piv",
+                text: "Vypito ${stats!.totalBeers} piv (z toho ${stats!.totalDraftBeers} čepovaných)",
               ),
-              Divider(height: 0),
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
-                text: "Celkem vypito ${stats!.totalLitres} litrů",
+                text:
+                    "Celkem ${stats!.totalLitres} litrů (průměr ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} l/pivo)",
               ),
-              Divider(height: 0),
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.money),
-                text: "Celková útrata: ${stats!.totalPrice} Kč",
-              ),
-              Divider(height: 0),
-              SizedBox(height: 6.6),
-              Padding(
-                padding: CardListCommon.horizontalPaddingOnly,
-                child: BeerConsumptionCard(
-                  beer: Beer.unknownBeer,
-                  beerConsumption: stats!.averageBeerConsumption,
-                  isStats: true,
-                ),
+                text:
+                    "Útrata ${stats!.totalPrice} Kč (průměr ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(2)} Kč/pivo)",
               ),
               SizedBox(height: 6.6),
               SizedBox(

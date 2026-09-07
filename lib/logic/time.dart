@@ -1,11 +1,15 @@
-/// Returns unix timestamp in seconds
-int secondsSinceEpoch() =>
-    DateTime.now().toUtc().millisecondsSinceEpoch ~/
-    Duration.millisecondsPerSecond;
+/// Returns unix timestamp in seconds for given datetime [dt]
+int dateTimeToSeconds(DateTime dt) =>
+    dt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond;
+
+/// Returns current unix timestamp in seconds
+int secondsSinceEpoch() => dateTimeToSeconds(DateTime.now().toUtc());
 
 /// Returns DateTime object for given unix timestamp in seconds
-DateTime secondsToDateTime(int s) =>
-    DateTime.fromMillisecondsSinceEpoch(s * Duration.millisecondsPerSecond);
+DateTime secondsToDateTime(int s) => DateTime.fromMillisecondsSinceEpoch(
+  s * Duration.millisecondsPerSecond,
+  isUtc: false,
+);
 
 /// Returns "DD. MM. YYYY" String for given unix timestamp in seconds
 String secondsToDateString(int s) {
