@@ -3,6 +3,7 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/global_stats.dart";
 import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/widget/chart/chart_container.dart";
 import "package:my_beer_diary/widget/form/checkbox.dart";
 import "package:my_beer_diary/widget/form/dropdown_menu_small.dart";
 import "package:my_beer_diary/widget/stat_leaderboard.dart";
@@ -144,34 +145,31 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
               Text("\nŽádná data", style: boldTextStyle)
             else ...[
               StatListTile(
-                leading: SvgIcon(icon: SvgIcons.beer),
-                text:
-                    "Vypito ${stats!.totalBeers} piv (${stats!.totalDraftBeers} čepovaných, ${stats!.distinctBeers} unikátních)",
-              ),
-              StatListTile(
-                leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
-                text:
-                    "Celkem ${stats!.totalLitres} litrů (průměr ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} l/pivo)",
-              ),
-              StatListTile(
-                leading: SvgIcon(icon: SvgIcons.money),
-                text:
-                    "Útrata ${stats!.totalPrice} Kč (průměr ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(2)} Kč/pivo)",
-              ),
-              StatListTile(
                 leading: SvgIcon(icon: SvgIcons.event),
                 text: "Zaznamenáno ${stats!.distinctEvents} událostí",
               ),
-              SizedBox(height: 6.6),
-              SizedBox(
-                height: 300,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    right: CardListCommon.listPaddingHorizontal + 4,
-                  ),
-                  child: Text("//TODO Grafy"),
-                ),
+              StatListTile(
+                leading: SvgIcon(icon: SvgIcons.beer),
+                text: "Vypito ${stats!.totalBeers} piv",
+                subtext:
+                    "${stats!.totalDraftBeers} čepovaných, ${stats!.distinctBeers} unikátních",
               ),
+              StatListTile(
+                leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
+                text: "Objem ${stats!.totalLitres} litrů",
+                subtext:
+                    "Průměr ${(stats!.totalLitres / stats!.distinctEvents).toStringAsFixed(2)} L/událost"
+                    " a ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} L/pivo",
+              ),
+              StatListTile(
+                leading: SvgIcon(icon: SvgIcons.money),
+                text: "Útrata ${stats!.totalPrice} Kč",
+                subtext:
+                    "Průměr ${(stats!.totalPrice / stats!.distinctEvents).toInt()} Kč/událost"
+                    " a ${(stats!.totalPrice / stats!.totalBeers).toInt()} Kč/pivo",
+              ),
+              SizedBox(height: 6.6),
+              ChartContainer(child: Text("//TODO Grafy")),
               SizedBox(height: 20),
               StatLeaderboard(
                 headerText: "TOP PIVA",
