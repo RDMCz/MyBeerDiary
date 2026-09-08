@@ -8,9 +8,9 @@ import "package:my_beer_diary/model/event_stats.dart";
 import "package:my_beer_diary/widget/alcohol_chart.dart";
 import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/card/event_card.dart";
+import "package:my_beer_diary/widget/stat_leaderboard.dart";
 import "package:my_beer_diary/widget/stat_list_tile.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
-import "package:my_beer_diary/widget/text_divider.dart";
 
 class EventStatsScreen extends StatelessWidget {
   final Event event;
@@ -103,48 +103,36 @@ class EventStatsScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             // = Top brewery names =
-            TextDivider(text: "TOP PIVOVARY"),
-            DefaultTextStyle.merge(
-              style: TextStyle(fontSize: 16.0),
-              child: Padding(
-                padding: CardListCommon.horizontalPaddingOnly,
-                child: Column(
-                  children: [
-                    for (final (index, breweryNamePair)
-                        in stats.topBreweryNames.take(5).indexed)
-                      Row(
-                        children: [
-                          Text("#${index + 1}  ${breweryNamePair.key}"),
-                          Spacer(),
-                          Text("${breweryNamePair.value} x"),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
+            StatLeaderboard(
+              headerText: "TOP PIVOVARY",
+              children: [
+                for (final (index, breweryNamePair)
+                    in stats.topBreweryNames.take(5).indexed)
+                  Row(
+                    children: [
+                      Text("#${index + 1}  ${breweryNamePair.key}"),
+                      Spacer(),
+                      Text("${breweryNamePair.value} x"),
+                    ],
+                  ),
+              ],
             ),
             // = Top beers =
-            TextDivider(text: "TOP PIVA"),
-            DefaultTextStyle.merge(
-              style: TextStyle(fontSize: 16.0),
-              child: Padding(
-                padding: CardListCommon.horizontalPaddingOnly,
-                child: Column(
-                  children: [
-                    for (final (index, beerPair)
-                        in stats.topBeerIds.take(5).indexed)
-                      Row(
-                        children: [
-                          Text(
-                            "#${index + 1}  ${(beers[beerPair.key] ?? Beer.unknownBeer).toDisplayString()}",
-                          ),
-                          Spacer(),
-                          Text("${beerPair.value} x"),
-                        ],
+            StatLeaderboard(
+              headerText: "TOP PIVA",
+              children: [
+                for (final (index, beerPair)
+                    in stats.topBeerIds.take(5).indexed)
+                  Row(
+                    children: [
+                      Text(
+                        "#${index + 1}  ${(beers[beerPair.key] ?? Beer.unknownBeer).toDisplayString()}",
                       ),
-                  ],
-                ),
-              ),
+                      Spacer(),
+                      Text("${beerPair.value} x"),
+                    ],
+                  ),
+              ],
             ),
             SizedBox(height: 10),
           ],

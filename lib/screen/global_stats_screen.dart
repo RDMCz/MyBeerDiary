@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/global_stats.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/form/checkbox.dart";
 import "package:my_beer_diary/widget/form/dropdown_menu_small.dart";
+import "package:my_beer_diary/widget/stat_leaderboard.dart";
 import "package:my_beer_diary/widget/stat_list_tile.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
@@ -58,6 +60,8 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
       for (final tag in tags.values)
         DropdownMenuEntry(value: tag, label: tag.name),
     ];
+
+    final beers = context.read<BeerNotifier>().itemMap;
 
     return Scaffold(
       appBar: AppBar(title: Text("Celková statistika")),
@@ -141,7 +145,8 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
             else ...[
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.beer),
-                text: "Vypito ${stats!.totalBeers} piv (z toho ${stats!.totalDraftBeers} čepovaných)",
+                text:
+                    "Vypito ${stats!.totalBeers} piv (${stats!.totalDraftBeers} čepovaných, ${stats!.distinctBeers} unikátních)",
               ),
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
@@ -153,6 +158,10 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                 text:
                     "Útrata ${stats!.totalPrice} Kč (průměr ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(2)} Kč/pivo)",
               ),
+              StatListTile(
+                leading: SvgIcon(icon: SvgIcons.event),
+                text: "Zaznamenáno ${stats!.distinctEvents} událostí",
+              ),
               SizedBox(height: 6.6),
               SizedBox(
                 height: 300,
@@ -160,9 +169,33 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                   padding: EdgeInsets.only(
                     right: CardListCommon.listPaddingHorizontal + 4,
                   ),
-                  child: Text("zde bude graf?"),
+                  child: Text("//TODO Grafy"),
                 ),
               ),
+              SizedBox(height: 20),
+              StatLeaderboard(
+                headerText: "TOP PIVA",
+                children: [
+                  for (final (index, item) in stats!.topBeers.indexed)
+                    if (item.$1 != null && item.$2 != null)
+                      Row(
+                        children: [
+                          Text(
+                            "#${index + 1}  ${(beers[item.$1] ?? Beer.unknownBeer).toDisplayString()}",
+                          ),
+                          Spacer(),
+                          Text("${item.$2} x"),
+                        ],
+                      ),
+                ],
+              ),
+              StatLeaderboard(
+                headerText: "TOP TAGY",
+                children: [Text("//TODO")],
+              ),
+              Text("//TODO oneoffs"),
+              // (Some empty space at the end so the last text isn't near the screen edge)
+              SizedBox(height: 10),
             ],
           ],
         ),

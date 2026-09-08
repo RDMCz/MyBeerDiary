@@ -10,12 +10,18 @@ class GlobalStats {
   final double totalLitres;
   final int totalPrice;
   final int totalDraftBeers;
+  final int distinctEvents;
+  final int distinctBeers;
+  final Iterable<(int?, int?)> topBeers;
 
   const GlobalStats({
     required this.totalBeers,
     required this.totalLitres,
     required this.totalPrice,
     required this.totalDraftBeers,
+    required this.distinctEvents,
+    required this.distinctBeers,
+    required this.topBeers,
   });
 }
 
@@ -29,6 +35,10 @@ Future<GlobalStats?> globalStats({
   const keyTotalPrice = "totalPrice";
   const keyTotalLitres = "totalLitres";
   const keyTotalDraftBeers = "totalDraftBeers";
+  const keyDistinctEvents = "distinctEvents";
+  const keyDistinctBeers = "distinctBeers";
+  const keyBeerId = "beerId";
+  const keyTimesConsumed = "timesConsumed";
 
   final db = await AppDatabase.instance.database;
 
@@ -47,26 +57,52 @@ Future<GlobalStats?> globalStats({
   }
   final where = whereParts.isEmpty ? "" : "WHERE ${whereParts.join(" AND ")}";
 
-  final result = await db.rawQuery("""
+  // First query to get SUMs
+  final result1 = await db.rawQuery("""
   SELECT 
     COUNT($beerConsumptionColId) as $keyTotalBeers
     , SUM($beerConsumptionColPrice) as $keyTotalPrice
     , SUM($beerConsumptionColLitres) as $keyTotalLitres
     , SUM($beerConsumptionColIsDraft) as $keyTotalDraftBeers
-  FROM $beerConsumptionTable $where
+    , COUNT(DISTINCT $beerConsumptionColEventId) as $keyDistinctEvents
+    , COUNT(DISTINCT $beerConsumptionColBeerId) as $keyDistinctBeers
+  FROM $beerConsumptionTable
+  $where
 """);
 
-  final row = result.first;
-  final totalBeers = (row[keyTotalBeers] as int?) ?? 0;
+  final row1 = result1.first;
+  final totalBeers = (row1[keyTotalBeers] as int?) ?? 0;
 
+  // There's no need to continue if the first query's result is empty
   if (totalBeers <= 0) {
     return null;
   }
 
+  // Second query to get top beers
+  final result2 = await db.rawQuery("""
+  SELECT
+    $beerConsumptionColBeerId as $keyBeerId
+    , COUNT(*) as $keyTimesConsumed
+  FROM $beerConsumptionTable
+  $where
+  GROUP BY $beerConsumptionColBeerId
+  ORDER BY $keyTimesConsumed DESC
+  LIMIT 9
+""");
+
+  final topBeers = result2.map((row) {
+    final beerId = row[keyBeerId] as int?;
+    final count = row[keyTimesConsumed] as int?;
+    return (beerId, count);
+  });
+
   return GlobalStats(
     totalBeers: totalBeers,
-    totalLitres: ((row[keyTotalLitres] as num?)?.toDouble()) ?? 0.0,
-    totalPrice: (row[keyTotalPrice] as int?) ?? 0,
-    totalDraftBeers: (row[keyTotalDraftBeers] as int?) ?? 0,
+    totalLitres: ((row1[keyTotalLitres] as num?)?.toDouble()) ?? 0.0,
+    totalPrice: (row1[keyTotalPrice] as int?) ?? 0,
+    totalDraftBeers: (row1[keyTotalDraftBeers] as int?) ?? 0,
+    distinctEvents: (row1[keyDistinctEvents] as int?) ?? 0,
+    distinctBeers: (row1[keyDistinctBeers] as int?) ?? 0,
+    topBeers: topBeers,
   );
 }
