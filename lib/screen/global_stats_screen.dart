@@ -165,8 +165,8 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                 leading: SvgIcon(icon: SvgIcons.money),
                 text: "Útrata ${stats!.totalPrice} Kč",
                 subtext:
-                    "Průměr ${(stats!.totalPrice / stats!.distinctEvents).toInt()} Kč/událost"
-                    " a ${(stats!.totalPrice / stats!.totalBeers).toInt()} Kč/pivo",
+                    "Průměr ${(stats!.totalPrice / stats!.distinctEvents).toStringAsFixed(0)} Kč/událost"
+                    " a ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo",
               ),
               SizedBox(height: 6.6),
               ChartContainer(child: Text("//TODO Grafy")),
@@ -175,23 +175,33 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                 headerText: "TOP PIVA",
                 children: [
                   for (final (index, item) in stats!.topBeers.indexed)
-                    if (item.$1 != null && item.$2 != null)
-                      Row(
-                        children: [
-                          Text(
-                            "#${index + 1}  ${(beers[item.$1] ?? Beer.unknownBeer).toDisplayString()}",
-                          ),
-                          Spacer(),
-                          Text("${item.$2} x"),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          "#${index + 1}  ${(beers[item.$1] ?? Beer.unknownBeer).toDisplayString()}",
+                        ),
+                        Spacer(),
+                        Text("${item.$2} x"),
+                      ],
+                    ),
                 ],
               ),
-              StatLeaderboard(
-                headerText: "TOP TAGY",
-                children: [Text("//TODO")],
-              ),
-              Text("//TODO oneoffs"),
+              if (!isFilterTag)
+                StatLeaderboard(
+                  headerText: "TOP TAGY",
+                  children: [
+                    for (final (index, item) in stats!.topTags.indexed)
+                      Row(
+                        children: [
+                          Text("#${index + 1} ${tags[item.$1]?.name}"),
+                          Spacer(),
+                          Text(
+                            "${item.$2} záznamů, ${item.$3} piv, ${item.$4} Kč",
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               // (Some empty space at the end so the last text isn't near the screen edge)
               SizedBox(height: 10),
             ],

@@ -12,7 +12,10 @@ class GlobalStats {
   final int totalDraftBeers;
   final int distinctEvents;
   final int distinctBeers;
-  final Iterable<(int?, int?)> topBeers;
+  final Iterable<(int, int)> topBeers;
+
+  /// Iterable<(Tag ID, number of occurrences, total beers, total price)>
+  final Iterable<(int, int, int, int)> topTags;
 
   const GlobalStats({
     required this.totalBeers,
@@ -22,6 +25,7 @@ class GlobalStats {
     required this.distinctEvents,
     required this.distinctBeers,
     required this.topBeers,
+    required this.topTags,
   });
 }
 
@@ -39,23 +43,37 @@ Future<GlobalStats?> globalStats({
   const keyDistinctBeers = "distinctBeers";
   const keyBeerId = "beerId";
   const keyTimesConsumed = "timesConsumed";
+  const keyTagId = "tagId";
+  const keyTagCount = "tagCount";
+  const keyTagTotalBeers = "tagTotalBeers";
+  const keyTagTotalPrice = "tagTotalPrice";
+
+  const nLeaderboardRows = 9;
 
   final db = await AppDatabase.instance.database;
 
-  final whereParts = <String>[];
+  final wherePartsBC = <String>[];
+  String whereEvent = "";
+
   if (isFilterYear) {
     final start = dateTimeToSeconds(DateTime(selectedYear, 1, 1));
     final end = dateTimeToSeconds(DateTime(selectedYear, 12, 31));
-    whereParts.add(
+    wherePartsBC.add(
       "$beerConsumptionColTimestamp >= $start AND $beerConsumptionColTimestamp <= $end",
     );
+    whereEvent =
+        "WHERE $eventColTimestamp >= $start AND $eventColTimestamp <= $end";
   }
+
   if (isFilterTag && selectedTag.id != null) {
-    whereParts.add(
+    wherePartsBC.add(
       "$beerConsumptionColEventId IN (SELECT $eventColId FROM $eventTable WHERE $eventColTagId = ${selectedTag.id})",
     );
   }
-  final where = whereParts.isEmpty ? "" : "WHERE ${whereParts.join(" AND ")}";
+
+  final whereBC = wherePartsBC.isEmpty
+      ? ""
+      : "WHERE ${wherePartsBC.join(" AND ")}";
 
   // First query to get SUMs
   final result1 = await db.rawQuery("""
@@ -67,7 +85,7 @@ Future<GlobalStats?> globalStats({
     , COUNT(DISTINCT $beerConsumptionColEventId) as $keyDistinctEvents
     , COUNT(DISTINCT $beerConsumptionColBeerId) as $keyDistinctBeers
   FROM $beerConsumptionTable
-  $where
+  $whereBC
 """);
 
   final row1 = result1.first;
@@ -84,17 +102,43 @@ Future<GlobalStats?> globalStats({
     $beerConsumptionColBeerId as $keyBeerId
     , COUNT(*) as $keyTimesConsumed
   FROM $beerConsumptionTable
-  $where
+  $whereBC
   GROUP BY $beerConsumptionColBeerId
   ORDER BY $keyTimesConsumed DESC
-  LIMIT 9
+  LIMIT $nLeaderboardRows
 """);
 
   final topBeers = result2.map((row) {
     final beerId = row[keyBeerId] as int?;
-    final count = row[keyTimesConsumed] as int?;
-    return (beerId, count);
-  });
+    if (beerId != null) {
+      final count = (row[keyTimesConsumed] as int?) ?? 0;
+      return (beerId, count);
+    }
+  }).whereType<(int, int)>();
+
+  // Third query to get top tags
+  final result3 = await db.rawQuery("""
+  SELECT
+    $eventColTagId as $keyTagId
+    , COUNT(*) as $keyTagCount
+    , SUM($eventColTotalBeers) as $keyTagTotalBeers
+    , SUM($eventColTotalCost) as $keyTagTotalPrice
+  FROM $eventTable
+  $whereEvent
+  GROUP BY $eventColTagId
+  ORDER BY $keyTagCount DESC
+  LIMIT $nLeaderboardRows
+""");
+
+  final topTags = result3.map((row) {
+    final tagId = row[keyTagId] as int?;
+    if (tagId != null) {
+      final count = (row[keyTagCount] as int?) ?? 0;
+      final totalBeers = (row[keyTagTotalBeers] as int?) ?? 0;
+      final totalPrice = (row[keyTagTotalPrice] as int?) ?? 0;
+      return (tagId, count, totalBeers, totalPrice);
+    }
+  }).whereType<(int, int, int, int)>();
 
   return GlobalStats(
     totalBeers: totalBeers,
@@ -104,5 +148,6 @@ Future<GlobalStats?> globalStats({
     distinctEvents: (row1[keyDistinctEvents] as int?) ?? 0,
     distinctBeers: (row1[keyDistinctBeers] as int?) ?? 0,
     topBeers: topBeers,
+    topTags: topTags,
   );
 }
