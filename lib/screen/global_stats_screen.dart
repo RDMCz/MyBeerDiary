@@ -23,7 +23,9 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
   int selectedYear = DateTime.now().year;
 
   bool isFilterTag = false;
-  Tag selectedTag = Tag(name: "—", color: "");
+  Tag selectedTag = Tag.unknownTag;
+
+  bool isFilterOneoffs = false;
 
   GlobalStats? stats;
 
@@ -33,6 +35,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
       selectedYear: selectedYear,
       isFilterTag: isFilterTag,
       selectedTag: selectedTag,
+      isFilterOneoffs: isFilterOneoffs,
     );
     setState(() {
       this.stats = stats;
@@ -110,7 +113,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                         children: [
                           Expanded(
                             child: LabeledCheckbox(
-                              isEnabled: true,
+                              isEnabled: !isFilterOneoffs,
                               label: "Filtrovat dle tagu",
                               value: isFilterTag,
                               onChanged: (bool value) {
@@ -135,6 +138,24 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 6),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: LabeledCheckbox(
+                              isEnabled: !isFilterTag,
+                              label: "Pouze jednorázová pití",
+                              value: isFilterOneoffs,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  isFilterOneoffs = value;
+                                });
+                                refreshStats();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -144,10 +165,11 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
             if (stats == null)
               Text("\nŽádná data", style: boldTextStyle)
             else ...[
-              StatListTile(
-                leading: SvgIcon(icon: SvgIcons.event),
-                text: "Zaznamenáno ${stats!.distinctEvents} událostí",
-              ),
+              if (!isFilterOneoffs)
+                StatListTile(
+                  leading: SvgIcon(icon: SvgIcons.event),
+                  text: "Zaznamenáno ${stats!.distinctEvents} událostí",
+                ),
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.beer),
                 text: "Vypito ${stats!.totalBeers} piv",
@@ -157,16 +179,18 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
                 text: "Objem ${stats!.totalLitres} litrů",
-                subtext:
-                    "Průměr ${(stats!.totalLitres / stats!.distinctEvents).toStringAsFixed(2)} L/událost"
-                    " a ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} L/pivo",
+                subtext: isFilterTag && selectedTag != Tag.unknownTag
+                    ? "Průměr ${(stats!.totalLitres / stats!.distinctEvents).toStringAsFixed(2)} L/událost"
+                          " a ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} L/pivo"
+                    : "Průměr ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} L/pivo",
               ),
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.money),
                 text: "Útrata ${stats!.totalPrice} Kč",
-                subtext:
-                    "Průměr ${(stats!.totalPrice / stats!.distinctEvents).toStringAsFixed(0)} Kč/událost"
-                    " a ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo",
+                subtext: isFilterTag && selectedTag != Tag.unknownTag
+                    ? "Průměr ${(stats!.totalPrice / stats!.distinctEvents).toStringAsFixed(0)} Kč/událost"
+                          " a ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo"
+                    : "Průměr ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo",
               ),
               SizedBox(height: 6.6),
               ChartContainer(child: Text("//TODO Grafy")),
@@ -186,7 +210,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                     ),
                 ],
               ),
-              if (!isFilterTag)
+              if (!isFilterTag && !isFilterOneoffs)
                 StatLeaderboard(
                   headerText: "TOP TAGY",
                   children: [

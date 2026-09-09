@@ -49,6 +49,8 @@ class Tag {
 
   @override
   String toString() => "id=$id, name=$name, color=$color";
+
+  static const Tag unknownTag = Tag(name: "—", color: "");
 }
 
 Future<int> tagAdd(Tag tag) async {

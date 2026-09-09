@@ -34,6 +34,7 @@ Future<GlobalStats?> globalStats({
   required int selectedYear,
   required bool isFilterTag,
   required Tag selectedTag,
+  required bool isFilterOneoffs,
 }) async {
   const keyTotalBeers = "totalBeers";
   const keyTotalPrice = "totalPrice";
@@ -49,6 +50,11 @@ Future<GlobalStats?> globalStats({
   const keyTagTotalPrice = "tagTotalPrice";
 
   const nLeaderboardRows = 9;
+
+  if (isFilterTag && isFilterOneoffs) {
+    // Oneoffs can't have tags assigned to them
+    return null;
+  }
 
   final db = await AppDatabase.instance.database;
 
@@ -69,6 +75,10 @@ Future<GlobalStats?> globalStats({
     wherePartsBC.add(
       "$beerConsumptionColEventId IN (SELECT $eventColId FROM $eventTable WHERE $eventColTagId = ${selectedTag.id})",
     );
+  }
+
+  if (isFilterOneoffs) {
+    wherePartsBC.add("$beerConsumptionColEventId IS NULL");
   }
 
   final whereBC = wherePartsBC.isEmpty
