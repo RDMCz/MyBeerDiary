@@ -69,21 +69,25 @@ class AlcoholChart extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               interval:
-                  ((durationHours / (MediaQuery.sizeOf(context).width / 80)) *
+                  ((durationHours / (MediaQuery.sizeOf(context).width / 80))
+                              .toInt() *
                           Duration.secondsPerHour)
                       .toDouble(),
-              reservedSize: 44,
+              reservedSize: 46,
               minIncluded: false,
               maxIncluded: false,
-              getTitlesWidget: (value, meta) {
-                final date = secondsToDateTime(value.round());
-                return SideTitleWidget(
-                  meta: meta,
-                  child: Text(
-                    "${date.hour}:${date.minute.toString().padLeft(2, "0")}\n${date.day}. ${date.month}.",
-                  ),
-                );
-              },
+              getTitlesWidget: (value, meta) => SideTitleWidget(
+                meta: meta,
+                child: Column(
+                  children: [
+                    Text(secondsToTimeString(value.round())),
+                    Text(
+                      secondsToDayMonthString(value.round()),
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -103,8 +107,12 @@ class AlcoholChart extends StatelessWidget {
                         TextStyle(color: Colors.white),
                         children: [
                           TextSpan(
+                            text: "${secondsToTimeString(spot.x.round())}\n",
+                          ),
+                          TextSpan(
                             text:
-                                "${secondsToDateTimeString(spot.x.toInt())}\n",
+                                "${secondsToDayMonthString(spot.x.round())}\n",
+                            style: TextStyle(fontSize: 12),
                           ),
                           TextSpan(
                             text: "${spot.y.toStringAsFixed(2)} ‰\n",
