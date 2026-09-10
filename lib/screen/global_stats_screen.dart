@@ -193,7 +193,16 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                     : "Průměr ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo",
               ),
               SizedBox(height: 6.6),
-              ChartContainer(child: Text("//TODO Grafy")),
+              //TODO Grafy
+              ChartContainer(
+                child: Column(
+                  children: [
+                    Text(stats!.monthCounter.toString()),
+                    SizedBox(height: 100),
+                    Text(stats!.weekdayCounter.toString()),
+                  ],
+                ),
+              ),
               SizedBox(height: 20),
               StatLeaderboard(
                 headerText: "TOP PIVA",

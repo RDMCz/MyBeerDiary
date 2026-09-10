@@ -16,6 +16,8 @@ class GlobalStats {
 
   /// Iterable<(Tag ID, number of occurrences, total beers, total price)>
   final Iterable<(int, int, int, int)> topTags;
+  final Map<int, int> monthCounter;
+  final Map<int, int> weekdayCounter;
 
   const GlobalStats({
     required this.totalBeers,
@@ -26,6 +28,8 @@ class GlobalStats {
     required this.distinctBeers,
     required this.topBeers,
     required this.topTags,
+    required this.monthCounter,
+    required this.weekdayCounter,
   });
 }
 
@@ -36,21 +40,6 @@ Future<GlobalStats?> globalStats({
   required Tag selectedTag,
   required bool isFilterOneoffs,
 }) async {
-  const keyTotalBeers = "totalBeers";
-  const keyTotalPrice = "totalPrice";
-  const keyTotalLitres = "totalLitres";
-  const keyTotalDraftBeers = "totalDraftBeers";
-  const keyDistinctEvents = "distinctEvents";
-  const keyDistinctBeers = "distinctBeers";
-  const keyBeerId = "beerId";
-  const keyTimesConsumed = "timesConsumed";
-  const keyTagId = "tagId";
-  const keyTagCount = "tagCount";
-  const keyTagTotalBeers = "tagTotalBeers";
-  const keyTagTotalPrice = "tagTotalPrice";
-
-  const nLeaderboardRows = 9;
-
   if (isFilterTag && isFilterOneoffs) {
     // Oneoffs can't have tags assigned to them
     return null;
@@ -86,6 +75,13 @@ Future<GlobalStats?> globalStats({
       : "WHERE ${wherePartsBC.join(" AND ")}";
 
   // First query to get SUMs
+  const keyTotalBeers = "totalBeers";
+  const keyTotalPrice = "totalPrice";
+  const keyTotalLitres = "totalLitres";
+  const keyTotalDraftBeers = "totalDraftBeers";
+  const keyDistinctEvents = "distinctEvents";
+  const keyDistinctBeers = "distinctBeers";
+
   final result1 = await db.rawQuery("""
   SELECT 
     COUNT($beerConsumptionColId) as $keyTotalBeers
@@ -107,6 +103,10 @@ Future<GlobalStats?> globalStats({
   }
 
   // Second query to get top beers
+  const nLeaderboardRows = 9;
+  const keyBeerId = "beerId";
+  const keyTimesConsumed = "timesConsumed";
+
   final result2 = await db.rawQuery("""
   SELECT
     $beerConsumptionColBeerId as $keyBeerId
@@ -127,6 +127,11 @@ Future<GlobalStats?> globalStats({
   }).whereType<(int, int)>();
 
   // Third query to get top tags
+  const keyTagId = "tagId";
+  const keyTagCount = "tagCount";
+  const keyTagTotalBeers = "tagTotalBeers";
+  const keyTagTotalPrice = "tagTotalPrice";
+
   final result3 = await db.rawQuery("""
   SELECT
     $eventColTagId as $keyTagId
@@ -150,6 +155,51 @@ Future<GlobalStats?> globalStats({
     }
   }).whereType<(int, int, int, int)>();
 
+  // Fourth & fifth query for months/days charts
+  const keyMonth = "month";
+  const keyMonthCount = "monthCount";
+
+  final result4 = await db.rawQuery("""
+  SELECT
+    COUNT(*) as $keyMonthCount
+    , CAST(strftime('%m', $beerConsumptionColTimestamp, 'unixepoch') as INTEGER) as $keyMonth
+  FROM $beerConsumptionTable
+  $whereBC
+  GROUP BY $keyMonth
+""");
+
+  final monthCounter = {for (int i = 1; i <= 12; i++) i: 0};
+
+  for (final row in result4) {
+    final month = row[keyMonth] as int?;
+    if (month != null) {
+      final count = (row[keyMonthCount] as int?) ?? 0;
+      monthCounter.update(month, (v) => v + count, ifAbsent: () => count);
+    }
+  }
+
+  const keyWeekday = "weekday";
+  const keyWeekdayCount = "weekdayCount";
+
+  final result5 = await db.rawQuery("""
+  SELECT
+    COUNT(*) as $keyWeekdayCount
+    , CAST(strftime('%u', $beerConsumptionColTimestamp, 'unixepoch') as INTEGER) as $keyWeekday
+  FROM $beerConsumptionTable
+  $whereBC
+  GROUP BY $keyWeekday
+""");
+
+  final weekdayCounter = {for (int i = 1; i <= 7; i++) i: 0};
+
+  for (final row in result5) {
+    final weekday = row[keyWeekday] as int?;
+    if (weekday != null) {
+      final count = (row[keyWeekdayCount] as int?) ?? 0;
+      weekdayCounter.update(weekday, (v) => v + count, ifAbsent: () => count);
+    }
+  }
+
   return GlobalStats(
     totalBeers: totalBeers,
     totalLitres: ((row1[keyTotalLitres] as num?)?.toDouble()) ?? 0.0,
@@ -159,5 +209,7 @@ Future<GlobalStats?> globalStats({
     distinctBeers: (row1[keyDistinctBeers] as int?) ?? 0,
     topBeers: topBeers,
     topTags: topTags,
+    monthCounter: monthCounter,
+    weekdayCounter: weekdayCounter,
   );
 }
