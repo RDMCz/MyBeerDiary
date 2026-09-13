@@ -5,7 +5,7 @@
 
 * ;)
   * [ ] Date separators in card lists?
-  * [ ] Filter events by tags
+  * [x] Filter events by tags
   * [ ] Help screen
   * [ ] About screen
 * \>\<

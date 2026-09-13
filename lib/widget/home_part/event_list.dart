@@ -5,12 +5,23 @@ import "package:my_beer_diary/widget/card/event_card.dart";
 import "package:provider/provider.dart";
 
 class EventList extends StatelessWidget {
-  const EventList({super.key});
+  final bool isEventFilterEnabled;
+  final int? filterTagId;
+
+  const EventList({
+    super.key,
+    required this.isEventFilterEnabled,
+    required this.filterTagId,
+  });
 
   @override
   Widget build(BuildContext context) {
     // Watch because this widget might change on Events change
-    final events = context.watch<EventNotifier>().itemList;
+    final allEvents = context.watch<EventNotifier>().itemList;
+
+    final events = isEventFilterEnabled && filterTagId != null
+        ? allEvents.where((item) => item.tagId == filterTagId).toList()
+        : allEvents;
 
     return ListView.builder(
       padding: CardListCommon.listOnHomeScreenPadding,

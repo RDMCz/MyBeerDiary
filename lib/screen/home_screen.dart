@@ -1,10 +1,12 @@
 import "package:flutter/material.dart";
+import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/dialog/beer_consumption_dialog.dart";
 import "package:my_beer_diary/dialog/event_dialog.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/widget/form/dropdown_menu_small.dart";
 import "package:my_beer_diary/widget/home_part/home_drawer.dart";
 import "package:my_beer_diary/widget/home_part/event_list.dart";
 import "package:my_beer_diary/widget/home_part/oneoff_list.dart";
@@ -19,27 +21,79 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // = BottomNavigationBar =
-  int _bottomBarIndex = 0;
+  int bottomBarIndex = 0;
 
   void _onBottomBarTap(int index) {
     setState(() {
-      _bottomBarIndex = index;
+      bottomBarIndex = index;
     });
   }
 
-  // = GUI =
+  bool isEventFilterEnabled = false;
+  Tag selectedFilterTag = Tag.unknownTag;
+
   @override
   Widget build(BuildContext context) {
     final bottomBarColorSelected = appColorPrimary;
     final bottomBarColorUnselected = appColorSecondary;
 
-    final isEventPageSelected = _bottomBarIndex == 0;
+    final isEventPageSelected = bottomBarIndex == 0;
+
+    final tags = context.watch<TagNotifier>().itemMap;
+    final tagSelectItems = [
+      for (final tag in tags.values)
+        DropdownMenuEntry(value: tag, label: tag.name),
+    ];
 
     return Scaffold(
-      appBar: AppBar(title: Text("Můj pivní deníček")),
+      appBar: AppBar(
+        title: Text("Můj pivní deníček"),
+        actions: [
+          if (isEventPageSelected)
+            IconButton.filledTonal(
+              onPressed: () {
+                setState(() {
+                  isEventFilterEnabled = !isEventFilterEnabled;
+                });
+              },
+              icon: Icon(
+                !isEventFilterEnabled ? Icons.filter_alt : Icons.filter_alt_off,
+              ),
+            ),
+        ],
+        bottom: !isEventFilterEnabled
+            ? null
+            : PreferredSize(
+                preferredSize: Size.fromHeight(40),
+                child: Padding(
+                  padding: CardListCommon.horizontalPaddingOnly,
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      DropdownMenuSmall<Tag>(
+                        enabled: true,
+                        dropdownMenuEntries: tagSelectItems,
+                        initialSelection: selectedFilterTag,
+                        onSelected: (Tag value) {
+                          setState(() {
+                            selectedFilterTag = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+      ),
       // = Body with selected page =
-      body: isEventPageSelected ? EventList() : OneoffList(),
+      body: isEventPageSelected
+          ? EventList(
+              isEventFilterEnabled: isEventFilterEnabled,
+              filterTagId: selectedFilterTag != Tag.unknownTag
+                  ? selectedFilterTag.id
+                  : null,
+            )
+          : OneoffList(),
       // = BottomNavigationBar =
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -62,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Jednorázové",
           ),
         ],
-        currentIndex: _bottomBarIndex,
+        currentIndex: bottomBarIndex,
         onTap: _onBottomBarTap,
       ),
       // = Hamburger menu =
