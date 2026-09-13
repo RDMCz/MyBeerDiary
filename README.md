@@ -4,11 +4,6 @@
 > Under construction
 
 * ;)
-  * [x] 1 pivo, 2/3/4 piva, 5+ piv
-  * [x] Stats: permille [graph](https://app.flchart.dev/#/line)
-    * [ ] How to they handle the x axis?
-  * [ ] Global stats – everything, certain year, certain tag
-    * [ ] Loading screen?
   * [ ] Date separators in card lists?
   * [ ] Filter events by tags
   * [ ] Help screen
@@ -17,6 +12,7 @@
   * [ ] Tag input nápověda – nezobrazuj prázdný seznam, když je nula výsledků
   * [ ] Use ListView.builder instead of ListView in BeerConsumptionAddDialog?
   * [ ] Show brewery names from database in BreweryInput?
+  * [ ] Does grouping by weekday work on older Android versions?
 
 ---
 

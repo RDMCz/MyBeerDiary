@@ -133,7 +133,8 @@ class EventStatsScreen extends StatelessWidget {
                   ),
               ],
             ),
-            SizedBox(height: 10),
+            // (Some empty space at the end so the last text isn't near the screen edge)
+            SizedBox(height: 70),
           ],
         ),
       ),

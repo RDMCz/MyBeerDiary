@@ -1,5 +1,6 @@
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
+import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/logic/cz.dart";
 
 class BeerHistogram extends StatelessWidget {
@@ -8,13 +9,13 @@ class BeerHistogram extends StatelessWidget {
   /// true if [data] is weekday histogram, false if [data] is month histogram
   final bool isWeekday;
 
-  final double barWidht;
+  final double barWidth;
 
   const BeerHistogram({
     super.key,
     required this.data,
     required this.isWeekday,
-    required this.barWidht,
+    required this.barWidth,
   });
 
   @override
@@ -37,7 +38,8 @@ class BeerHistogram extends StatelessWidget {
                   label: BarChartRodLabel(text: "${item.value}"),
                   // No rounded corners
                   borderRadius: BorderRadius.zero,
-                  width: barWidht,
+                  width: barWidth,
+                  color: beerColorAmber,
                 ),
               ],
             ),

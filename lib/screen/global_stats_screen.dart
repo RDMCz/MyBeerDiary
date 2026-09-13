@@ -195,25 +195,27 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
               ),
               SizedBox(height: 6.6),
               ChartContainer(
-                padding: EdgeInsets.zero,
-                height: 200,
+                padding: EdgeInsets.only(top: 30),
+                height: 180,
                 child: BeerHistogram(
                   data: stats!.monthCounter,
                   isWeekday: false,
-                  barWidht: 30,
+                  barWidth: 30,
                 ),
               ),
+              SizedBox(height: 6.6),
+              Divider(height: 0),
+              SizedBox(height: 6.6),
               ChartContainer(
-                padding: EdgeInsets.zero,
-                height: 200,
+                padding: EdgeInsets.only(top: 30),
+                height: 180,
                 child: BeerHistogram(
                   data: stats!.weekdayCounter,
                   isWeekday: true,
-                  barWidht: 30,
+                  barWidth: 30,
                 ),
               ),
-              Text(stats!.weekdayCounter.toString()),
-              SizedBox(height: 20),
+              SizedBox(height: 6.6),
               StatLeaderboard(
                 headerText: "TOP PIVA",
                 children: [
@@ -246,7 +248,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                   ],
                 ),
               // (Some empty space at the end so the last text isn't near the screen edge)
-              SizedBox(height: 10),
+              SizedBox(height: 70),
             ],
           ],
         ),
