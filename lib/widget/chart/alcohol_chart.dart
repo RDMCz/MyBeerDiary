@@ -22,6 +22,11 @@ class AlcoholChart extends StatelessWidget {
 
     final currentTimestamp = secondsSinceEpoch();
 
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
+    final xAxisLabelInterval =
+        (durationHours / (screenWidth / 80)).toInt() * Duration.secondsPerHour;
+
     return LineChart(
       LineChartData(
         lineBarsData: [
@@ -68,11 +73,9 @@ class AlcoholChart extends StatelessWidget {
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              interval:
-                  ((durationHours / (MediaQuery.sizeOf(context).width / 80))
-                              .toInt() *
-                          Duration.secondsPerHour)
-                      .toDouble(),
+              interval: xAxisLabelInterval > 0
+                  ? xAxisLabelInterval.toDouble()
+                  : null,
               reservedSize: 46,
               minIncluded: false,
               maxIncluded: false,
