@@ -1,21 +1,22 @@
 import "package:flutter/material.dart";
-import "package:my_beer_diary/common.dart";
 
 class ChartContainer extends StatelessWidget {
   final Widget child;
+  final EdgeInsetsGeometry padding;
+  final double height;
 
-  const ChartContainer({super.key, required this.child});
+  const ChartContainer({
+    super.key,
+    required this.child,
+    required this.padding,
+    required this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
-      child: Padding(
-        padding: EdgeInsets.only(
-          right: CardListCommon.listPaddingHorizontal + 4,
-        ),
-        child: child,
-      ),
+      height: height,
+      child: Padding(padding: padding, child: child),
     );
   }
 }

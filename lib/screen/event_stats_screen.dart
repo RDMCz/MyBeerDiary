@@ -91,6 +91,10 @@ class EventStatsScreen extends StatelessWidget {
             SizedBox(height: 20),
             // = Permille graph =
             ChartContainer(
+              padding: EdgeInsets.only(
+                right: CardListCommon.listPaddingHorizontal + 4,
+              ),
+              height: 300,
               child: AlcoholChart(
                 chartPoints: stats.chartPoints,
                 durationHours: stats.durationWithSoberingHours,

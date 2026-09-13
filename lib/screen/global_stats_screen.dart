@@ -3,6 +3,7 @@ import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/global_stats.dart";
 import "package:my_beer_diary/model/tag.dart";
+import "package:my_beer_diary/widget/chart/beer_histogram.dart";
 import "package:my_beer_diary/widget/chart/chart_container.dart";
 import "package:my_beer_diary/widget/form/checkbox.dart";
 import "package:my_beer_diary/widget/form/dropdown_menu_small.dart";
@@ -193,16 +194,25 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                     : "Průměr ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo",
               ),
               SizedBox(height: 6.6),
-              //TODO Grafy
               ChartContainer(
-                child: Column(
-                  children: [
-                    Text(stats!.monthCounter.toString()),
-                    SizedBox(height: 100),
-                    Text(stats!.weekdayCounter.toString()),
-                  ],
+                padding: EdgeInsets.zero,
+                height: 200,
+                child: BeerHistogram(
+                  data: stats!.monthCounter,
+                  isWeekday: false,
+                  barWidht: 30,
                 ),
               ),
+              ChartContainer(
+                padding: EdgeInsets.zero,
+                height: 200,
+                child: BeerHistogram(
+                  data: stats!.weekdayCounter,
+                  isWeekday: true,
+                  barWidht: 30,
+                ),
+              ),
+              Text(stats!.weekdayCounter.toString()),
               SizedBox(height: 20),
               StatLeaderboard(
                 headerText: "TOP PIVA",
