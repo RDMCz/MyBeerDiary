@@ -20,11 +20,12 @@ class AboutScreen extends StatelessWidget {
                 "\nMůj pivní deníček\n",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28.0),
               ),
+              Image.asset("asset/icon/appicon.png", height: 150),
               DefaultTextStyle.merge(
                 style: TextStyle(fontSize: 16.0),
                 child: Column(
                   children: [
-                    Text("verze 0.1.0\n"),
+                    Text("\nverze 0.1.0\n"),
                     InkWell(
                       onTap: () async => await launchUrl(githubURL),
                       child: Text(
@@ -32,7 +33,7 @@ class AboutScreen extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.blueAccent,
                           decoration: TextDecoration.underline,
-                          decorationColor: Colors.blueAccent
+                          decorationColor: Colors.blueAccent,
                         ),
                       ),
                     ),
