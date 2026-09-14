@@ -1,4 +1,4 @@
-package com.example.my_beer_diary
+package cz.radekmocek.my_beer_diary
 
 import io.flutter.embedding.android.FlutterActivity
 
