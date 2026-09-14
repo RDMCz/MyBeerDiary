@@ -184,7 +184,7 @@ Future<GlobalStats?> globalStats({
   final result5 = await db.rawQuery("""
   SELECT
     COUNT(*) as $keyWeekdayCount
-    , CAST(strftime('%u', $beerConsumptionColTimestamp, 'unixepoch') as INTEGER) as $keyWeekday
+    , CAST(strftime('%w', $beerConsumptionColTimestamp, 'unixepoch') as INTEGER) as $keyWeekday
   FROM $beerConsumptionTable
   $whereBC
   GROUP BY $keyWeekday
@@ -196,7 +196,15 @@ Future<GlobalStats?> globalStats({
     final weekday = row[keyWeekday] as int?;
     if (weekday != null) {
       final count = (row[keyWeekdayCount] as int?) ?? 0;
-      weekdayCounter.update(weekday, (v) => v + count, ifAbsent: () => count);
+
+      // Convert '%w' to '%u'
+      final correctWeekday = weekday == 0 ? 7 : weekday;
+
+      weekdayCounter.update(
+        correctWeekday,
+        (v) => v + count,
+        ifAbsent: () => count,
+      );
     }
   }
 

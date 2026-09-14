@@ -1,7 +1,5 @@
 # Můj pivní deníček
 
-[← Home](../..)
-
 ## 3rd party
 
 ### Dependencies
