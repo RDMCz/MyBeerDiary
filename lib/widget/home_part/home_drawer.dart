@@ -6,7 +6,6 @@ import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/screen/about_screen.dart";
 import "package:my_beer_diary/screen/beers_screen.dart";
 import "package:my_beer_diary/screen/global_stats_screen.dart";
-import "package:my_beer_diary/screen/help_screen.dart";
 import "package:my_beer_diary/screen/tags_screen.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
@@ -75,6 +74,7 @@ class HomeDrawer extends StatelessWidget {
           ),
           Divider(),
           // .::.
+          /*
           ListTile(
             leading: Icon(Icons.question_mark),
             title: Text("Nápověda"),
@@ -85,6 +85,7 @@ class HomeDrawer extends StatelessWidget {
               );
             },
           ),
+          */
           // .::.
           ListTile(
             leading: Icon(Icons.info_outline),

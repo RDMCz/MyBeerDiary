@@ -50,14 +50,21 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("Můj pivní deníček"),
         actions: [
           if (isEventPageSelected)
-            IconButton.filledTonal(
-              onPressed: () {
-                setState(() {
-                  isEventFilterEnabled = !isEventFilterEnabled;
-                });
-              },
-              icon: Icon(
-                !isEventFilterEnabled ? Icons.filter_alt : Icons.filter_alt_off,
+            Padding(
+              padding: EdgeInsets.only(
+                right: CardListCommon.listPaddingHorizontal,
+              ),
+              child: IconButton.filledTonal(
+                onPressed: () {
+                  setState(() {
+                    isEventFilterEnabled = !isEventFilterEnabled;
+                  });
+                },
+                icon: Icon(
+                  !isEventFilterEnabled
+                      ? Icons.filter_alt
+                      : Icons.filter_alt_off,
+                ),
               ),
             ),
         ],
