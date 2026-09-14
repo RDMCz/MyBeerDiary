@@ -1,6 +1,6 @@
 # Můj pivní deníček
 
-[← Home](../../README.md)
+[← Home](../..)
 
 ## 3rd party
 

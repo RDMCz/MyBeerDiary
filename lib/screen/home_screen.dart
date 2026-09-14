@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final bottomBarColorSelected = appColorPrimary;
-    final bottomBarColorUnselected = appColorSecondary;
+    final bottomBarColorUnselected = appColorDisabled;
 
     final isEventPageSelected = bottomBarIndex == 0;
 

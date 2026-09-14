@@ -53,7 +53,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
   Widget build(BuildContext context) {
     const dropdownMenuWidth = 130.0;
 
-    const firstYear = 2000;
+    const firstYear = 2026;
     final lastYear = DateTime.now().year;
     final yearSelectItems = [
       for (int year = firstYear; year <= lastYear; year++)
@@ -76,6 +76,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Card.outlined(
+                margin: EdgeInsets.zero,
                 child: Padding(
                   padding: CardCommon.outlineCardPadding,
                   child: Column(

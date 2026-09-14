@@ -168,7 +168,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
                   ),
                 ],
               ),
-              SizedBox(height: DialogCommon.headerMarginBottom),
+              SizedBox(height: 14.0),
 
               // = Brewery name input =
               BreweryInput(textEditController: breweryTEC),
@@ -224,6 +224,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
 
               // = Rest of the beer form =
               Card.outlined(
+                margin: EdgeInsets.zero,
                 child: Padding(
                   padding: CardCommon.outlineCardPadding,
                   child: BeerForm(

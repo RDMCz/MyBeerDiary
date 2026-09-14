@@ -1,6 +1,6 @@
 # Můj pivní deníček
 
-[← Home](../../README.md)
+[← Home](../..)
 
 ## Changelog
 
