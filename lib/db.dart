@@ -1,3 +1,6 @@
+import "dart:io";
+import "dart:typed_data";
+
 import "package:my_beer_diary/data.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
@@ -14,6 +17,9 @@ class AppDatabase {
   static final _databaseVersion = 6;
   static Database? _database;
 
+  Future<String> get _dbPath async =>
+      join(await getDatabasesPath(), _databaseName);
+
   Future<Database> get database async {
     if (_database != null) {
       return _database!;
@@ -23,10 +29,8 @@ class AppDatabase {
   }
 
   Future<Database> _initDatabase() async {
-    final defaultPath = await getDatabasesPath();
-    final dbPath = join(defaultPath, _databaseName);
     return await openDatabase(
-      dbPath,
+      await _dbPath,
       version: _databaseVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
@@ -52,5 +56,13 @@ class AppDatabase {
     await db.execute(beerConsumptionTableDrop);
 
     await _onCreate(db, newVersion);
+  }
+
+  // .: Database backup :.
+  // .:=================:.
+
+  Future<Uint8List> exportBytes() async {
+    await _database?.close();
+    return File(await _dbPath).readAsBytes();
   }
 }

@@ -7,6 +7,7 @@
 Package|Author|License
 ---|---|---
 [escape_parent_padding](https://pub.dev/packages/escape_parent_padding)|Mohamed Elsayed|[MIT](https://github.com/mosayyyed/escape_parent_padding/blob/main/LICENSE)
+[file_picker](https://pub.dev/packages/file_picker)|Miguel Ruivo|[MIT](https://github.com/vicajilau/flutter_file_picker/blob/main/packages/file_picker/LICENSE)
 [fl_chart](https://pub.dev/packages/fl_chart)|Flutter 4 Fun|[MIT](https://github.com/imaNNeo/fl_chart/blob/main/LICENSE)
 [flutter](https://github.com/flutter/flutter)|The Flutter Authors|[BSD-3-Clause](https://github.com/flutter/flutter/blob/master/LICENSE)
 [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons)|Mark O'Sullivan|[MIT](https://github.com/fluttercommunity/flutter_launcher_icons/blob/master/LICENSE)
