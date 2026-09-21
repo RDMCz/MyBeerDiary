@@ -147,7 +147,7 @@ class _EventDialogState extends State<EventDialog> {
                       }
 
                       final tagNameWithSpace = initialTagName.isNotEmpty
-                          ? "#$initialTagName "
+                          ? "$initialTagName "
                           : "";
 
                       final result = await showDialog(
