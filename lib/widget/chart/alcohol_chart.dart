@@ -1,3 +1,5 @@
+import "dart:math";
+
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
@@ -96,6 +98,7 @@ class AlcoholChart extends StatelessWidget {
         ),
         // Popup
         lineTouchData: LineTouchData(
+          touchSpotThreshold: 15,
           touchTooltipData: LineTouchTooltipData(
             fitInsideHorizontally: true,
             // Popup background
@@ -157,7 +160,7 @@ class AlcoholChart extends StatelessWidget {
       transformationConfig: FlTransformationConfig(
         scaleAxis: FlScaleAxis.horizontal,
         minScale: 1.0,
-        maxScale: (durationHours / 2).toDouble(),
+        maxScale: max((durationHours / 6).toDouble(), 1.0),
         panEnabled: true,
         scaleEnabled: true,
       ),

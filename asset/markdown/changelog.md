@@ -9,6 +9,7 @@
 * Obrazovka _Statistika události_:
   * Karta s průměrným pivem nyní neobsahuje název pivovaru a popis piva, protože se jednalo o statistiku, která nedávala příliš velký smysl
   * Jedná-li se o probíhající událost, pak je nyní zobrazena také informace o aktuálním promile
+  * Graf: snížena maximální úroveň přiblížení a mírně zvýšena citlivost pro zobrazení tooltipu
 
 ### verze 0.1.0 (14.09.2026 19:43)
 
