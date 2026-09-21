@@ -2,6 +2,7 @@
 
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/dialog/app_alert_dialog.dart";
 import "package:my_beer_diary/dialog/tag_dialog.dart";
 import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/widget/tag_chip.dart";
@@ -40,21 +41,14 @@ class TagCard extends StatelessWidget {
               onPressed: () async {
                 final result = await showDialog(
                   context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: Text("Smazat tag"),
-                    content: Text(
-                      "Opravdu si přejete smazat tag „${tag.name}“?\n\nUdálosti s tímto tagem budou zachovány.",
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: Text("Zrušit"),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: Text("Smazat"),
-                      ),
-                    ],
+                  builder: (BuildContext context) => AppAlertDialog(
+                    titleText: "Smazat tag",
+                    bodyText:
+                        "Opravdu si přejete smazat tag „${tag.name}“?\n\nUdálosti s tímto tagem budou zachovány.",
+
+                    yesText: "Smazat",
+                    noText: "Zrušit",
+                    doShowNo: true,
                   ),
                 );
 

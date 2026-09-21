@@ -2,6 +2,7 @@ import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
 import "package:my_beer_diary/db.dart";
+import "package:my_beer_diary/dialog/app_alert_dialog.dart";
 import "package:my_beer_diary/widget/text_divider.dart";
 import "package:url_launcher/url_launcher.dart" show launchUrl;
 
@@ -69,23 +70,14 @@ class AboutScreen extends StatelessWidget {
                         onPressed: () async {
                           final confirmationResult = await showDialog(
                             context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: Text("Obnovit databázi"),
-                              content: Text(
-                                "Opravdu si přejete obnovit databázi ze souboru?\n\nVšechna lokální data budou smazána!",
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(false),
-                                  child: Text("Zrušit"),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(true),
-                                  child: Text("Pokračovat"),
-                                ),
-                              ],
+                            builder: (BuildContext context) => AppAlertDialog(
+                              titleText: "Obnovit databázi",
+                              bodyText:
+                                  "Opravdu si přejete obnovit databázi ze souboru?\n\nVšechna lokální data budou smazána!",
+
+                              yesText: "Pokračovat",
+                              noText: "Zrušit",
+                              doShowNo: true,
                             ),
                           );
 
@@ -105,24 +97,16 @@ class AboutScreen extends StatelessWidget {
                                 await showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      AlertDialog(
-                                        title: Text(
-                                          result
-                                              ? "Obnova úspěšná"
-                                              : "Obnova neúspěšná",
-                                        ),
-                                        content: Text(
-                                          result
-                                              ? "Restartujte prosím aplikaci!"
-                                              : message,
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(true),
-                                            child: Text("OK"),
-                                          ),
-                                        ],
+                                      AppAlertDialog(
+                                        titleText: result
+                                            ? "Obnova úspěšná"
+                                            : "Obnova neúspěšná",
+                                        bodyText: result
+                                            ? "Restartujte prosím aplikaci!"
+                                            : message,
+                                        yesText: "OK",
+                                        noText: "",
+                                        doShowNo: false,
                                       ),
                                 );
                               }

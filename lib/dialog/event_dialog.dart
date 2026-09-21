@@ -2,6 +2,7 @@
 
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/dialog/app_alert_dialog.dart";
 import "package:my_beer_diary/logic/color.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/event.dart";
@@ -152,21 +153,14 @@ class _EventDialogState extends State<EventDialog> {
 
                       final result = await showDialog(
                         context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text("Smazat událost"),
-                          content: Text(
-                            "Opravdu si přejete smazat událost „$tagNameWithSpace${widget.event!.name}“?",
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: Text("Zrušit"),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(true),
-                              child: Text("Smazat"),
-                            ),
-                          ],
+                        builder: (BuildContext context) => AppAlertDialog(
+                          titleText: "Smazat událost",
+                          bodyText:
+                              "Opravdu si přejete smazat událost „$tagNameWithSpace${widget.event!.name}“?",
+
+                          yesText: "Smazat",
+                          noText: "Zrušit",
+                          doShowNo: true,
                         ),
                       );
 
