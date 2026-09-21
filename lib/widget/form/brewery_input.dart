@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/data.dart";
+import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
+import "package:provider/provider.dart";
 
 class BreweryInput extends StatefulWidget {
   final TextEditingController textEditController;
@@ -22,6 +24,9 @@ class _BreweryInputState extends State<BreweryInput> {
 
   @override
   Widget build(BuildContext context) {
+    final dbBreweryNames = context.read<BeerNotifier>().uniqueBreweryNames;
+    final allBreweryNames = dbBreweryNames.union(breweryNames);
+
     return Autocomplete(
       textEditingController: widget.textEditController,
       focusNode: focusNode,
@@ -31,7 +36,7 @@ class _BreweryInputState extends State<BreweryInput> {
           return Iterable<String>.empty();
         }
         // Return list of brewery names that contain input, case insensitive
-        return breweryNames.where((String option) {
+        return allBreweryNames.where((String option) {
           return option.toLowerCase().contains(value.text.toLowerCase());
         });
       },

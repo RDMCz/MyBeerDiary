@@ -13,4 +13,4 @@
 
 * Date separators in card lists – year on event/oneoffs list, day on bc list
 * Help screen
-* Show brewery names from database in BreweryInput
+* ~~Show brewery names from database in BreweryInput~~

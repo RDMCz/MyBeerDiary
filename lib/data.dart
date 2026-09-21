@@ -1,8 +1,7 @@
 import "dart:ui";
 import "package:my_beer_diary/model/beer.dart";
 
-const List<String> breweryNames = [
-  "Neznámý pivovar",
+const Set<String> breweryNames = {
   "Agent",
   "Albert Michler",
   "Albrecht",
@@ -36,6 +35,7 @@ const List<String> breweryNames = [
   "Dobřany",
   "Dráteník",
   "Duck and Dog",
+  "Dvě věže",
   "Elektrárna",
   "Excelent",
   "Falkenštejn",
@@ -150,6 +150,7 @@ const List<String> breweryNames = [
   "Řeporyje",
   "Samson",
   "Sibeeria",
+  "Sobotice",
   "SQBRU",
   "Starobrno",
   "Staropramen",
@@ -198,7 +199,7 @@ const List<String> breweryNames = [
   "Žatec",
   "Židovice",
   "Žlebské Chvalovice",
-];
+};
 
 const appColorSeed = Color(0xfff5ddb1);
 const appColorSurface = Color(0xfffffefa);

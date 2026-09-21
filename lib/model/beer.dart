@@ -148,12 +148,16 @@ class BeerNotifier extends ChangeNotifier {
   List<Beer> itemList = [];
   Map<int, Beer> itemMap = {};
 
+  Set<String> uniqueBreweryNames = {};
+
   Future<void> refresh() async {
     itemList = await beerList();
     itemMap = {
       for (final item in itemList)
         if (item.id != null) item.id!: item,
     };
+
+    uniqueBreweryNames = itemList.map((beer) => beer.breweryName).toSet();
 
     notifyListeners();
   }
