@@ -20,6 +20,12 @@ class AppDatabase {
   Future<String> get _dbPath async =>
       join(await getDatabasesPath(), _databaseName);
 
+  Future<void> close() async {
+    await _database?.close();
+    _database = null;
+    // Will lazily reopen
+  }
+
   Future<Database> get database async {
     if (_database != null) {
       return _database!;
@@ -62,7 +68,7 @@ class AppDatabase {
   // .:=================:.
 
   Future<Uint8List> exportBytes() async {
-    await _database?.close();
+    await close();
     return File(await _dbPath).readAsBytes();
   }
 }
