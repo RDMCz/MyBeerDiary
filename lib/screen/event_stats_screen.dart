@@ -1,14 +1,14 @@
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/logic/beer_size.dart";
 import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
-import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
 import "package:my_beer_diary/model/event_stats.dart";
 import "package:my_beer_diary/widget/chart/alcohol_chart.dart";
-import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
 import "package:my_beer_diary/widget/card/event_card.dart";
 import "package:my_beer_diary/widget/chart/chart_container.dart";
+import "package:my_beer_diary/widget/svg_icon_with_text.dart";
 import "package:my_beer_diary/widget/stat_leaderboard.dart";
 import "package:my_beer_diary/widget/stat_list_tile.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
@@ -27,22 +27,21 @@ class EventStatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final averageBeer = Beer(
-      id: -1,
-      breweryName: stats.topBreweryNames.first.key,
-      description: stats.topDescriptions.first.key,
-      epm: stats.averageEPM,
-      abv: stats.averageABV,
-      color: stats.topColors.first.key,
+    const eventStatTextStyle = TextStyle(fontSize: 16.0);
+
+    // Average beer stats
+    final averageBeerSize = doubleToBeerSize(
+      stats.totalLitres / event.totalBeers,
     );
 
-    final averageBeerConsumption = BeerConsumption(
-      timestamp: 0,
-      beerId: -1,
-      litres: stats.totalLitres / event.totalBeers,
-      price: event.totalCost ~/ event.totalBeers,
-      isDraft: stats.topIsDrafts.first.key,
-    );
+    final averageLitresStr = (stats.totalLitres / event.totalBeers)
+        .toStringAsFixed(2);
+
+    final averagePriceStr = (event.totalCost ~/ event.totalBeers).toString();
+    final averageEpmStr = stats.averageEPM.toStringAsFixed(2);
+    final averageAbvStr = stats.averageABV.toStringAsFixed(2);
+    final averageIsDraft = stats.topIsDrafts.first.key;
+    final averageColor = stats.topColors.first.key;
 
     return Scaffold(
       appBar: AppBar(title: Text("Statistika události")),
@@ -82,10 +81,56 @@ class EventStatsScreen extends StatelessWidget {
             // = Average beer card =
             Padding(
               padding: CardListCommon.horizontalPaddingOnly,
-              child: BeerConsumptionCard(
-                beer: averageBeer,
-                beerConsumption: averageBeerConsumption,
-                isStats: true,
+              child: Card(
+                child: Padding(
+                  padding: CardCommon.normalPadding,
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Průměrné pivo"),
+                          SizedBox(height: 6),
+                          SvgIconWithText(
+                            icon: beerSizeToIcon(averageBeerSize),
+                            text: "$averageLitresStr L",
+                            textStyle: eventStatTextStyle,
+                            iconSize: 20,
+                          ),
+                          SvgIconWithText(
+                            icon: SvgIcons.money,
+                            text: "$averagePriceStr Kč",
+                            textStyle: eventStatTextStyle,
+                            iconSize: 20,
+                          ),
+                          SvgIconWithText(
+                            icon: SvgIcons.epm,
+                            text: "$averageEpmStr°",
+                            textStyle: eventStatTextStyle,
+                            iconSize: 20,
+                          ),
+                          SvgIconWithText(
+                            icon: SvgIcons.abv,
+                            text: "$averageAbvStr %",
+                            textStyle: eventStatTextStyle,
+                            iconSize: 20,
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      SizedBox(
+                        height: 80,
+                        child: SvgCardIcon(
+                          icon: beerSizeToCardIcon(
+                            averageBeerSize,
+                            averageIsDraft,
+                          ),
+                          color: averageColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 20),

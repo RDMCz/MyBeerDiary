@@ -110,7 +110,6 @@ EventStats? eventStats({
 
   final Map<bool, int> isDraftCounter = {beerConsumptions[0].isDraft: 1};
   final Map<String, int> breweryNameCounter = {beer.breweryName: 1};
-  final Map<String, int> descriptionCounter = {beer.description: 1};
   final Map<String, int> colorCounter = {beer.color: 1};
   final Map<int?, int> beerIdCounter = {beer.id: 1};
 
@@ -129,11 +128,6 @@ EventStats? eventStats({
     isDraftCounter.update(bc.isDraft, (v) => v + 1, ifAbsent: () => 1);
     breweryNameCounter.update(
       beer.breweryName,
-      (v) => v + 1,
-      ifAbsent: () => 1,
-    );
-    descriptionCounter.update(
-      beer.description,
       (v) => v + 1,
       ifAbsent: () => 1,
     );
@@ -215,7 +209,6 @@ EventStats? eventStats({
     //
     topIsDrafts: sortedMapByValue(isDraftCounter),
     topBreweryNames: sortedMapByValue(breweryNameCounter),
-    topDescriptions: sortedMapByValue(descriptionCounter),
     topColors: sortedMapByValue(colorCounter),
     topBeerIds: sortedMapByValue(beerIdCounter),
     //

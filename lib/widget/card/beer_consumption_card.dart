@@ -8,6 +8,7 @@ import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event.dart";
+import "package:my_beer_diary/widget/svg_icon_with_text.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
@@ -15,15 +16,10 @@ class BeerConsumptionCard extends StatelessWidget {
   final Beer beer;
   final BeerConsumption beerConsumption;
 
-  /// Is the card used to show average beer on event stats screen?
-  /// If true, interactions will be disabled and timestamp will be replaced with "Average beer" header.
-  final bool isStats;
-
   const BeerConsumptionCard({
     super.key,
     required this.beer,
     required this.beerConsumption,
-    required this.isStats,
   });
 
   @override
@@ -36,25 +32,24 @@ class BeerConsumptionCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.hardEdge,
       child: InkWell(
-        onLongPress: isStats
-            ? null
-            : () async {
-                final result = await showDialog(
-                  context: context,
-                  builder: (_) => BeerConsumptionOptionsDialog(
-                    beer: beer,
-                    beerConsumption: beerConsumption,
-                  ),
-                );
-                if (result ?? false) {
-                  if (context.mounted) {
-                    await context.read<BeerConsumptionNotifier>().refresh();
-                  }
-                  if (context.mounted) {
-                    await context.read<EventNotifier>().refresh();
-                  }
-                }
-              },
+        // Show dialog with options on long press
+        onLongPress: () async {
+          final result = await showDialog(
+            context: context,
+            builder: (_) => BeerConsumptionOptionsDialog(
+              beer: beer,
+              beerConsumption: beerConsumption,
+            ),
+          );
+          if (result ?? false) {
+            if (context.mounted) {
+              await context.read<BeerConsumptionNotifier>().refresh();
+            }
+            if (context.mounted) {
+              await context.read<EventNotifier>().refresh();
+            }
+          }
+        },
         child: Padding(
           padding: CardCommon.normalPadding,
           child: Column(
@@ -62,15 +57,12 @@ class BeerConsumptionCard extends StatelessWidget {
               // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
               Row(
                 children: [
+                  // Date, brewery name, beer description
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isStats
-                            ? "Průměrné pivo"
-                            : secondsToDateTimeString(
-                                beerConsumption.timestamp,
-                              ),
+                        secondsToDateTimeString(beerConsumption.timestamp),
                         style: TextStyle(fontSize: 13),
                       ),
                       Text(
@@ -84,6 +76,7 @@ class BeerConsumptionCard extends StatelessWidget {
                     ],
                   ),
                   Spacer(),
+                  // Big beer icon
                   SizedBox(
                     height: 70,
                     child: SvgCardIcon(
@@ -98,14 +91,14 @@ class BeerConsumptionCard extends StatelessWidget {
               ),
               // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
               Divider(),
+              // Litres and EPM
               Row(
                 children: [
-                  SvgIcon(icon: beerSizeToIcon(beerSize), size: 20),
-                  Text(
-                    !isStats
-                        ? " $beerSizeStr"
-                        : " ${beerConsumption.litres.toStringAsFixed(2)} L",
-                    style: detailsTextStyle,
+                  SvgIconWithText(
+                    icon: beerSizeToIcon(beerSize),
+                    text: beerSizeStr,
+                    textStyle: detailsTextStyle,
+                    iconSize: 20,
                   ),
                   Spacer(),
                   Text(
@@ -114,10 +107,15 @@ class BeerConsumptionCard extends StatelessWidget {
                   ),
                 ],
               ),
+              // Price and ABV
               Row(
                 children: [
-                  SvgIcon(icon: SvgIcons.money, size: 20),
-                  Text(" ${beerConsumption.price} Kč", style: detailsTextStyle),
+                  SvgIconWithText(
+                    icon: SvgIcons.money,
+                    text: "${beerConsumption.price} Kč",
+                    textStyle: detailsTextStyle,
+                    iconSize: 20,
+                  ),
                   Spacer(),
                   Text(
                     "${beer.abv.toStringAsFixed(1)} %",

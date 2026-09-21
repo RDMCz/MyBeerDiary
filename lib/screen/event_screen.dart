@@ -11,7 +11,7 @@ import "package:my_beer_diary/model/tag.dart";
 import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/screen/event_stats_screen.dart";
 import "package:my_beer_diary/widget/card/beer_consumption_card.dart";
-import "package:my_beer_diary/widget/event_stat.dart";
+import "package:my_beer_diary/widget/svg_icon_with_text.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 import "package:provider/provider.dart";
 
@@ -23,6 +23,11 @@ class EventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const eventStatTextStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 18.0,
+    );
+
     // We have to do this for total price and total beers to update at the bottom of this screen
     final events = context.watch<EventNotifier>().itemMap;
     // (Fallback to maybe outdated event, shouldn't happen)
@@ -57,7 +62,6 @@ class EventScreen extends StatelessWidget {
             child: BeerConsumptionCard(
               beer: beers[beerConsumptions[idx].beerId] ?? Beer.unknownBeer,
               beerConsumption: beerConsumptions[idx],
-              isStats: false,
             ),
           );
         },
@@ -73,19 +77,22 @@ class EventScreen extends StatelessWidget {
               spacing: 4,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                EventStat(
+                SvgIconWithText(
                   icon: SvgIcons.beer,
                   text:
                       "${freshEvent.totalBeers} ${beerDeclension(freshEvent.totalBeers)}",
+                  textStyle: eventStatTextStyle,
                 ),
-                EventStat(
+                SvgIconWithText(
                   icon: SvgIcons.money,
                   text: "${freshEvent.totalCost} Kč",
+                  textStyle: eventStatTextStyle,
                 ),
-                EventStat(
+                SvgIconWithText(
                   icon: SvgIcons.permille,
                   text:
                       "${stats != null ? stats.maxPermille.toStringAsFixed(2) : 0} max. promile",
+                  textStyle: eventStatTextStyle,
                 ),
               ],
             ),

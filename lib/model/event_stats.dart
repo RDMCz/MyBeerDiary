@@ -10,7 +10,6 @@ class EventStats {
   //
   final List<MapEntry<bool, int>> topIsDrafts;
   final List<MapEntry<String, int>> topBreweryNames;
-  final List<MapEntry<String, int>> topDescriptions;
   final List<MapEntry<String, int>> topColors;
   final List<MapEntry<int?, int>> topBeerIds;
   //
@@ -36,7 +35,6 @@ class EventStats {
     //
     required this.topIsDrafts,
     required this.topBreweryNames,
-    required this.topDescriptions,
     required this.topColors,
     required this.topBeerIds,
     //

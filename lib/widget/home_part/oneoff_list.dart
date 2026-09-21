@@ -25,7 +25,6 @@ class OneoffList extends StatelessWidget {
           child: BeerConsumptionCard(
             beer: beers[oneoffs[idx].beerId] ?? Beer.unknownBeer,
             beerConsumption: oneoffs[idx],
-            isStats: false,
           ),
         );
       },
