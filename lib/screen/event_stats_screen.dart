@@ -43,6 +43,13 @@ class EventStatsScreen extends StatelessWidget {
     final averageIsDraft = stats.topIsDrafts.first.key;
     final averageColor = stats.topColors.first.key;
 
+    // Permille info row
+    final maxPermilleStr =
+        "Max promile: ${stats.maxPermille.toStringAsFixed(2)} ‰";
+    final permilleStr = stats.currentPermille > 0
+        ? "$maxPermilleStr, aktuálně: ${stats.currentPermille.toStringAsFixed(2)} ‰"
+        : maxPermilleStr;
+
     return Scaffold(
       appBar: AppBar(title: Text("Statistika události")),
       body: SingleChildScrollView(
@@ -57,7 +64,7 @@ class EventStatsScreen extends StatelessWidget {
             // = Max permille =
             StatListTile(
               leading: SvgIcon(icon: SvgIcons.permille),
-              text: "Max promile: ${stats.maxPermille.toStringAsFixed(2)} ‰",
+              text: permilleStr,
             ),
             // = Sober in =
             StatListTile(

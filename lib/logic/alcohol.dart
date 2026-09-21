@@ -6,6 +6,7 @@
 import "dart:math";
 
 import "package:my_beer_diary/logic/collection.dart";
+import "package:my_beer_diary/logic/time.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/model/beer_consumption.dart";
 import "package:my_beer_diary/model/event_stats.dart";
@@ -182,15 +183,22 @@ EventStats? eventStats({
   final int soberTimestamp =
       prevTimestamp + (soberInHours * Duration.secondsPerHour).round();
 
-  // Final charPoint when finish sobering the last beer
+  // Final charPoint when user finishes sobering the last beer
   chartPoints.add((soberTimestamp, 0.0, true, ""));
 
-  //
+  // Get current permille
+  final hoursSinceLastBeer =
+      (secondsSinceEpoch() - prevTimestamp) / Duration.secondsPerHour;
 
+  final currentPermille =
+      permille - (hoursSinceLastBeer * metabolismPermillePerHour);
+
+  // To calculate average beers drank per hour
   final durationHours =
       (beerConsumptions.last.timestamp - beerConsumptions.first.timestamp) /
       Duration.secondsPerHour;
 
+  // Used for the chart to determine interval on the x axis and max zoom level
   final durationWithSoberingHours =
       ((soberTimestamp - beerConsumptions.first.timestamp) /
               Duration.secondsPerHour)
@@ -199,6 +207,7 @@ EventStats? eventStats({
   final nBeers = beerConsumptions.length;
 
   return EventStats(
+    currentPermille: currentPermille,
     maxPermille: maxPermille,
     soberTimestamp: soberTimestamp,
     totalLitres: totalLitres,
