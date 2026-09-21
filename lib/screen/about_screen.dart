@@ -42,7 +42,7 @@ class AboutScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      SizedBox(height: 28),
                       if (!kIsWeb) ...[
                         TextDivider(text: "ZÁLOHA DATABÁZE"),
                         Text(
@@ -56,6 +56,7 @@ class AboutScreen extends StatelessWidget {
                           onPressed: () async {
                             final dbBytes = await AppDatabase.instance
                                 .exportBytes();
+
                             await FilePicker.saveFile(
                               dialogTitle: "Záloha databáze",
                               fileName: "MujPivniDenicek_Zaloha.db",
@@ -66,7 +67,70 @@ class AboutScreen extends StatelessWidget {
                           icon: Icon(Icons.backup_outlined),
                         ),
                         TextButton.icon(
-                          onPressed: null,
+                          onPressed: () async {
+                            final confirmationResult = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Text("Obnovit databázi"),
+                                content: Text(
+                                  "Opravdu si přejete obnovit databázi ze souboru?\n\nVšechna lokální data budou smazána!",
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                    child: Text("Zrušit"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                    child: Text("Pokračovat"),
+                                  ),
+                                ],
+                              ),
+                            );
+
+                            if (confirmationResult ?? false) {
+                              final fileResult = await FilePicker.pickFile(
+                                allowedExtensions: ["db"],
+                                dialogTitle: "Obnova databáze",
+                              );
+                              final path = fileResult?.path;
+
+                              if (path != null) {
+                                final (result, message) = await AppDatabase
+                                    .instance
+                                    .restore(path);
+
+                                if (context.mounted) {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: Text(
+                                            result
+                                                ? "Obnova úspěšná"
+                                                : "Obnova neúspěšná",
+                                          ),
+                                          content: Text(
+                                            result
+                                                ? "Restartujte prosím aplikaci!"
+                                                : message,
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.of(
+                                                context,
+                                              ).pop(true),
+                                              child: Text("OK"),
+                                            ),
+                                          ],
+                                        ),
+                                  );
+                                }
+                              }
+                            }
+                          },
                           label: Text("Obnovit databázi ze souboru"),
                           icon: Icon(Icons.restore),
                         ),
