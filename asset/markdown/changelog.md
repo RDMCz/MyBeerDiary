@@ -2,7 +2,7 @@
 
 ## Changelog
 
-### verze 0.2.0 (WIP)
+### verze 0.2.0 (21.09.2026 22:50)
 
 * Přidána možnost zálohy databáze do souboru a obnovení zálohy ze souboru, např. na novém zařízení
 * Našeptávač názvu pivovaru nyní nabízí kromě předpřipravených jmen i ta jména, která byla do databáze přidána uživatelem

@@ -30,7 +30,7 @@ class AboutScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16.0),
                   child: Column(
                     children: [
-                      Text("\nverze 0.1.0\n"),
+                      Text("\nverze 0.2.0\n"),
                       InkWell(
                         onTap: () async => await launchUrl(githubURL),
                         child: Text(
