@@ -11,18 +11,14 @@ import "package:my_beer_diary/model/user_settings.dart";
 import "package:my_beer_diary/screen/home_screen.dart";
 import "package:provider/provider.dart";
 import "package:sqflite_common_ffi/sqflite_ffi.dart";
-import "package:sqflite_common_ffi_web/sqflite_ffi_web.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final isWeb = kIsWeb;
   final isDesktop =
-      !isWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS);
+      !kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS);
 
-  if (isWeb) {
-    databaseFactory = databaseFactoryFfiWeb;
-  } else if (isDesktop) {
+  if (isDesktop) {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }

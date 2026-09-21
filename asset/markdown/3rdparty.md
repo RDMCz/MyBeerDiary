@@ -17,7 +17,6 @@ Package|Author|License
 [shared_preferences](https://pub.dev/packages/shared_preferences)|The Flutter Authors|[BSD-3-Clause](https://github.com/flutter/packages/blob/main/packages/shared_preferences/shared_preferences/LICENSE)
 [sqflite](https://pub.dev/packages/sqflite)|Alexandre Roux Tekartik|[BSD-2-Clause](https://github.com/tekartik/sqflite/blob/master/sqflite/LICENSE)
 [sqflite_common_ffi](https://pub.dev/packages/sqflite_common_ffi)|Alexandre Roux Tekartik|[BSD-2-Clause](https://github.com/tekartik/sqflite/blob/master/sqflite_common_ffi/LICENSE)
-[sqflite_common_ffi_web](https://pub.dev/packages/sqflite_common_ffi_web)|Alexandre Roux Tekartik|[BSD-2-Clause](https://github.com/tekartik/sqflite/blob/master/packages_web/sqflite_common_ffi_web/LICENSE)
 [url_launcher](https://pub.dev/packages/url_launcher)|The Flutter Authors|[BSD-3-Clause](https://github.com/flutter/packages/blob/main/packages/url_launcher/url_launcher/LICENSE)
 
 ### In-app icons

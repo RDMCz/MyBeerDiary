@@ -43,98 +43,96 @@ class AboutScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 28),
-                      if (!kIsWeb) ...[
-                        TextDivider(text: "ZÁLOHA DATABÁZE"),
-                        Text(
-                          "Přecházíte-li na nové zařízení, je možné do něj zkopírovat svá pivní data."
-                          "\n1. Na starém zařízení zálohujte databázi do souboru"
-                          "\n2. Soubor si pošlete do nového zařízení"
-                          "\n3. Na novém zařízení obnovte databázi z tohoto souboru",
-                        ),
-                        SizedBox(height: 16),
-                        TextButton.icon(
-                          onPressed: () async {
-                            final dbBytes = await AppDatabase.instance
-                                .exportBytes();
 
-                            await FilePicker.saveFile(
-                              dialogTitle: "Záloha databáze",
-                              fileName: "MujPivniDenicek_Zaloha.db",
-                              bytes: dbBytes,
-                            );
-                          },
-                          label: Text("Zálohovat databázi do souboru"),
-                          icon: Icon(Icons.backup_outlined),
-                        ),
-                        TextButton.icon(
-                          onPressed: () async {
-                            final confirmationResult = await showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: Text("Obnovit databázi"),
-                                content: Text(
-                                  "Opravdu si přejete obnovit databázi ze souboru?\n\nVšechna lokální data budou smazána!",
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(false),
-                                    child: Text("Zrušit"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(true),
-                                    child: Text("Pokračovat"),
-                                  ),
-                                ],
+                      TextDivider(text: "ZÁLOHA DATABÁZE"),
+                      Text(
+                        "Přecházíte-li na nové zařízení, je možné do něj zkopírovat svá pivní data."
+                        "\n1. Na starém zařízení zálohujte databázi do souboru"
+                        "\n2. Soubor si pošlete do nového zařízení"
+                        "\n3. Na novém zařízení obnovte databázi z tohoto souboru",
+                      ),
+                      SizedBox(height: 16),
+                      TextButton.icon(
+                        onPressed: () async {
+                          final dbBytes = await AppDatabase.instance
+                              .exportBytes();
+
+                          await FilePicker.saveFile(
+                            dialogTitle: "Záloha databáze",
+                            fileName: "MujPivniDenicek_Zaloha.db",
+                            bytes: dbBytes,
+                          );
+                        },
+                        label: Text("Zálohovat databázi do souboru"),
+                        icon: Icon(Icons.backup_outlined),
+                      ),
+                      TextButton.icon(
+                        onPressed: () async {
+                          final confirmationResult = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text("Obnovit databázi"),
+                              content: Text(
+                                "Opravdu si přejete obnovit databázi ze souboru?\n\nVšechna lokální data budou smazána!",
                               ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false),
+                                  child: Text("Zrušit"),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                  child: Text("Pokračovat"),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          if (confirmationResult ?? false) {
+                            final fileResult = await FilePicker.pickFile(
+                              allowedExtensions: ["db"],
+                              dialogTitle: "Obnova databáze",
                             );
+                            final path = fileResult?.path;
 
-                            if (confirmationResult ?? false) {
-                              final fileResult = await FilePicker.pickFile(
-                                allowedExtensions: ["db"],
-                                dialogTitle: "Obnova databáze",
-                              );
-                              final path = fileResult?.path;
+                            if (path != null) {
+                              final (result, message) = await AppDatabase
+                                  .instance
+                                  .restore(path);
 
-                              if (path != null) {
-                                final (result, message) = await AppDatabase
-                                    .instance
-                                    .restore(path);
-
-                                if (context.mounted) {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                          title: Text(
-                                            result
-                                                ? "Obnova úspěšná"
-                                                : "Obnova neúspěšná",
-                                          ),
-                                          content: Text(
-                                            result
-                                                ? "Restartujte prosím aplikaci!"
-                                                : message,
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () => Navigator.of(
-                                                context,
-                                              ).pop(true),
-                                              child: Text("OK"),
-                                            ),
-                                          ],
+                              if (context.mounted) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title: Text(
+                                          result
+                                              ? "Obnova úspěšná"
+                                              : "Obnova neúspěšná",
                                         ),
-                                  );
-                                }
+                                        content: Text(
+                                          result
+                                              ? "Restartujte prosím aplikaci!"
+                                              : message,
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(true),
+                                            child: Text("OK"),
+                                          ),
+                                        ],
+                                      ),
+                                );
                               }
                             }
-                          },
-                          label: Text("Obnovit databázi ze souboru"),
-                          icon: Icon(Icons.restore),
-                        ),
-                      ],
+                          }
+                        },
+                        label: Text("Obnovit databázi ze souboru"),
+                        icon: Icon(Icons.restore),
+                      ),
                     ],
                   ),
                 ),
