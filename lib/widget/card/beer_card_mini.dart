@@ -2,6 +2,7 @@
 
 import "package:flutter/material.dart";
 import "package:my_beer_diary/common.dart";
+import "package:my_beer_diary/logic/text.dart";
 import "package:my_beer_diary/model/beer.dart";
 import "package:my_beer_diary/widget/svg_icon.dart";
 
@@ -31,11 +32,14 @@ class BeerCardMini extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${beer.breweryName} ",
+                    truncate(beer.breweryName, 22),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
 
-                  Text(beer.description, style: TextStyle(fontSize: 17)),
+                  Text(
+                    truncate(beer.description, 27),
+                    style: TextStyle(fontSize: 17),
+                  ),
 
                   Text(
                     "${beer.epm}° @ ${beer.abv} %",

@@ -161,8 +161,12 @@ class EventStatsScreen extends StatelessWidget {
                     in stats.topBreweryNames.take(5).indexed)
                   Row(
                     children: [
-                      Text("#${index + 1}  ${breweryNamePair.key}"),
-                      Spacer(),
+                      Expanded(
+                        child: Text(
+                          "#${index + 1}  ${breweryNamePair.key}",
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                       Text("${breweryNamePair.value} x"),
                     ],
                   ),
@@ -176,10 +180,12 @@ class EventStatsScreen extends StatelessWidget {
                     in stats.topBeerIds.take(5).indexed)
                   Row(
                     children: [
-                      Text(
-                        "#${index + 1}  ${(beers[beerPair.key] ?? Beer.unknownBeer).toDisplayString()}",
+                      Expanded(
+                        child: Text(
+                          "#${index + 1}  ${(beers[beerPair.key] ?? Beer.unknownBeer).toDisplayString()}",
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      Spacer(),
                       Text("${beerPair.value} x"),
                     ],
                   ),

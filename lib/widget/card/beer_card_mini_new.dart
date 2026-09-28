@@ -28,7 +28,7 @@ class BeerCardMiniNew extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Nové pivo ",
+                    "Nové pivo",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),                  
                   Text("Přidat nové pivo od\nzadaného pivovaru"),

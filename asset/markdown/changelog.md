@@ -2,6 +2,12 @@
 
 ## Changelog
 
+### verze 0.2.1 (WIP)
+
+* Opravy:
+  * Dlouhé názvy pivovaru a popisy piva jsou nyní zkráceny nebo zalomeny na nový řádek, a nepřetečou tak mimo obrazovku
+  * _Celková statistika_: Celkový objem v litrech je zaokrouhlen
+
 ### verze 0.2.0 (21.09.2026 22:50)
 
 * Přidána možnost zálohy databáze do souboru a obnovení zálohy ze souboru, např. na novém zařízení

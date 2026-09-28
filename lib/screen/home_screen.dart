@@ -74,10 +74,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 preferredSize: Size.fromHeight(40),
                 child: Padding(
                   padding: CardListCommon.horizontalPaddingOnly,
-                  child: Row(
-                    children: [
-                      Spacer(),
-                      DropdownMenuSmall<Tag>(
+                  child: Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: DropdownMenuSmall<Tag>(
                         enabled: true,
                         dropdownMenuEntries: tagSelectItems,
                         initialSelection: selectedFilterTag,
@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
                         },
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),

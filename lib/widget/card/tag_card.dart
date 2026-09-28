@@ -21,8 +21,12 @@ class TagCard extends StatelessWidget {
         child: Row(
           children: [
             // = Tag name =
-            TagChip(tag: tag),
-            Spacer(),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: TagChip(tag: tag),
+              ),
+            ),
             // = Edit button =
             IconButton(
               onPressed: () async {

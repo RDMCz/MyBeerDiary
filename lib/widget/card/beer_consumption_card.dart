@@ -58,24 +58,28 @@ class BeerConsumptionCard extends StatelessWidget {
               Row(
                 children: [
                   // Date, brewery name, beer description
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        secondsToDateTimeString(beerConsumption.timestamp),
-                        style: TextStyle(fontSize: 13),
-                      ),
-                      Text(
-                        beer.breweryName,
-                        style: TextStyle(
-                          fontSize: 20.25,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          secondsToDateTimeString(beerConsumption.timestamp),
+                          style: TextStyle(fontSize: 13),
                         ),
-                      ),
-                      Text(beer.description, style: TextStyle(fontSize: 17.5)),
-                    ],
+                        Text(
+                          beer.breweryName,
+                          style: TextStyle(
+                            fontSize: 20.25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          beer.description,
+                          style: TextStyle(fontSize: 17.5),
+                        ),
+                      ],
+                    ),
                   ),
-                  Spacer(),
                   // Big beer icon
                   SizedBox(
                     height: 70,

@@ -180,7 +180,7 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
               ),
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
-                text: "Objem ${stats!.totalLitres} litrů",
+                text: "Objem ${stats!.totalLitres.toStringAsFixed(2)} litrů",
                 subtext: isFilterTag && selectedTag != Tag.unknownTag
                     ? "Průměr ${(stats!.totalLitres / stats!.distinctEvents).toStringAsFixed(2)} L/událost"
                           " a ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} L/pivo"
@@ -223,10 +223,12 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                   for (final (index, item) in stats!.topBeers.indexed)
                     Row(
                       children: [
-                        Text(
-                          "#${index + 1}  ${(beers[item.$1] ?? Beer.unknownBeer).toDisplayString()}",
+                        Expanded(
+                          child: Text(
+                            "#${index + 1}  ${(beers[item.$1] ?? Beer.unknownBeer).toDisplayString()}",
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        Spacer(),
                         Text("${item.$2} x"),
                       ],
                     ),
@@ -239,8 +241,12 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
                     for (final (index, item) in stats!.topTags.indexed)
                       Row(
                         children: [
-                          Text("#${index + 1} ${tags[item.$1]?.name}"),
-                          Spacer(),
+                          Expanded(
+                            child: Text(
+                              "#${index + 1} ${tags[item.$1]?.name}",
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           Text(
                             "${item.$2} záznamů, ${item.$3} piv, ${item.$4} Kč",
                           ),
