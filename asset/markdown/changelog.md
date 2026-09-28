@@ -2,7 +2,7 @@
 
 ## Changelog
 
-### verze 0.2.1 (WIP)
+### verze 0.2.1 (28.09.2026 20:55)
 
 * Pole pro odhad procent alkoholu ze stupňovistosti je nyní ve výchozím stavu zaškrtnuté
 * Opravy:

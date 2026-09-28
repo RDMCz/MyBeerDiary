@@ -74,20 +74,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 preferredSize: Size.fromHeight(40),
                 child: Padding(
                   padding: CardListCommon.horizontalPaddingOnly,
-                  child: Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: DropdownMenuSmall<Tag>(
-                        enabled: true,
-                        dropdownMenuEntries: tagSelectItems,
-                        initialSelection: selectedFilterTag,
-                        onSelected: (Tag value) {
-                          setState(() {
-                            selectedFilterTag = value;
-                          });
-                        },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: DropdownMenuSmall<Tag>(
+                            enabled: true,
+                            dropdownMenuEntries: tagSelectItems,
+                            initialSelection: selectedFilterTag,
+                            onSelected: (Tag value) {
+                              setState(() {
+                                selectedFilterTag = value;
+                              });
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
