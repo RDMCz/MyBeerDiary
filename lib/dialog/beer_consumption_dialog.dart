@@ -118,6 +118,8 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
         customBeerSizeValue = bc.litres;
         customBeerSizeName = doubleToBeerSizeStr(customBeerSizeValue);
       }
+
+      isAbvGuess = false;
     }
   }
 

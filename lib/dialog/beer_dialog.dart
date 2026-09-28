@@ -39,6 +39,8 @@ class _BeerDialogState extends State<BeerDialog> {
       epmTEC.text = doubleToTextField(widget.beer!.epm);
       abvTEC.text = doubleToTextField(widget.beer!.abv);
       beerColor = hexStringToColor(widget.beer!.color);
+
+      isAbvGuess = false;
     }
   }
 

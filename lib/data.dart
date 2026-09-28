@@ -95,6 +95,7 @@ const Set<String> breweryNames = {
   "Lípák",
   "Lobkowicz",
   "Lomnice",
+  "Louka",
   "Mad Cat",
   "Malešov",
   "Matuška",
