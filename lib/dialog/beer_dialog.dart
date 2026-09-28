@@ -24,7 +24,7 @@ class _BeerDialogState extends State<BeerDialog> {
   final epmTEC = TextEditingController();
   final abvTEC = TextEditingController();
   Color beerColor = beerColorGold;
-  bool isAbvGuess = false;
+  bool isAbvGuess = true;
 
   @override
   void initState() {

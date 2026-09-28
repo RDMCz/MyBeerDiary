@@ -16,7 +16,7 @@
 * Date separators in card lists – year on event/oneoffs list, day on bc list
 * Help screen
 * ~~Show brewery names from database in BreweryInput~~
-* __Odhad alkoholu defaultně zaškrtnut__
+* ~~Odhad alkoholu defaultně zaškrtnut~~
 
 ---
 

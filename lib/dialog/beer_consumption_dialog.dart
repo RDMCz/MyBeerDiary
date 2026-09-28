@@ -52,7 +52,7 @@ class _BeerConsumptionDialogState extends State<BeerConsumptionDialog> {
   final abvTEC = TextEditingController();
   final priceTEC = TextEditingController();
   Color beerColor = beerColorGold;
-  bool isAbvGuess = false;
+  bool isAbvGuess = true;
 
   static const _initialCustomBeerSizeValue = 0.4;
   BeerSize beerSizeSelected = BeerSize.large;

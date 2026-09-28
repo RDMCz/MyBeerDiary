@@ -4,6 +4,7 @@
 
 ### verze 0.2.1 (WIP)
 
+* Pole pro odhad procent alkoholu ze stupňovistosti je nyní ve výchozím stavu zaškrtnuté
 * Opravy:
   * Dlouhé názvy pivovaru a popisy piva jsou nyní zkráceny nebo zalomeny na nový řádek, a nepřetečou tak mimo obrazovku
   * _Celková statistika_: Celkový objem v litrech je zaokrouhlen
@@ -23,4 +24,6 @@
 
 ## Sestavení
 
-`flutter build apk`
+Příkazem `flutter build apk`
+
+Výstup se nachází v `MyBeerDiary\build\app\outputs\flutter-apk`
