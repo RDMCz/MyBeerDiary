@@ -98,6 +98,10 @@ class _BeerDialogState extends State<BeerDialog> {
               onIsAbvGuessChanged: (bool value) {
                 setState(() {
                   isAbvGuess = value;
+
+                  if (!value) {
+                    abvTEC.text = "";
+                  }
                 });
               },
             ),
