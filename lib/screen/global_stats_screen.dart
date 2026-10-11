@@ -218,6 +218,24 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
               ),
               SizedBox(height: 6.6),
               StatLeaderboard(
+                headerText: "TOP PIVOVARY",
+                children: [
+                  for (final (index, item) in stats!.topBreweryNames.indexed)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "#${index + 1}  ${item.$1}",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text("${item.$2} x"),
+                      ],
+                    ),
+                ],
+              ),
+              SizedBox(height: 6.6),
+              StatLeaderboard(
                 headerText: "TOP PIVA",
                 children: [
                   for (final (index, item) in stats!.topBeers.indexed)

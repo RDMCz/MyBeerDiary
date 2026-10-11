@@ -17,7 +17,7 @@
 * Help screen
 * ~~Show brewery names from database in BreweryInput~~
 * ~~Odhad alkoholu defaultně zaškrtnut, po odškrtnutí vymazat ABV input~~
-* Celková statistika: přidat sekci top pivovary
+* ~~Celková statistika: přidat sekci top pivovary~~
 * Celková statistika, sekce útrata: přidat info o průměrné ceně pouze pro placená piva
 * Statistika události: celkem vypito převedeno na velká piva
 
