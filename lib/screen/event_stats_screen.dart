@@ -76,13 +76,13 @@ class EventStatsScreen extends StatelessWidget {
             StatListTile(
               leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
               text:
-                  "Celkem vypito ${stats.totalLitres.toStringAsFixed(2)} litrů",
+                  "Celkem vypito ${stats.totalLitres.toStringAsFixed(1)} litrů (≈ ${(stats.totalLitres / 0.5).toStringAsFixed(0)} velkých piv)",
             ),
             // = Litres per hour =
             StatListTile(
               leading: Icon(Icons.speed),
               text:
-                  "Průměrně vypito ${(stats.totalLitres / stats.durationHours).toStringAsFixed(2)} litrů za hodinu",
+                  "Průměrně vypito ${(stats.totalLitres / stats.durationHours).toStringAsFixed(1)} litrů za hodinu",
             ),
             SizedBox(height: 6.6),
             // = Average beer card =
