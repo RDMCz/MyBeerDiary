@@ -8,6 +8,7 @@ import "package:my_beer_diary/model/tag.dart";
 /// To transfer all the data shown on the [GlobalStatsScreen]
 class GlobalStats {
   final int totalBeers;
+  final int totalPaidBeers;
   final double totalLitres;
   final int totalPrice;
   final int totalDraftBeers;
@@ -23,6 +24,7 @@ class GlobalStats {
 
   const GlobalStats({
     required this.totalBeers,
+    required this.totalPaidBeers,
     required this.totalLitres,
     required this.totalPrice,
     required this.totalDraftBeers,
@@ -88,7 +90,7 @@ Future<GlobalStats?> globalStats({
 
   final resultSums = await db.rawQuery("""
   SELECT 
-    COUNT($beerConsumptionColId) as $keyTotalBeers
+    COUNT(*) as $keyTotalBeers
     , SUM($beerConsumptionColPrice) as $keyTotalPrice
     , SUM($beerConsumptionColLitres) as $keyTotalLitres
     , SUM($beerConsumptionColIsDraft) as $keyTotalDraftBeers
@@ -105,6 +107,24 @@ Future<GlobalStats?> globalStats({
   if (totalBeers <= 0) {
     return null;
   }
+
+  // .: Get total paid beers (price > 0) for the average price stat :.
+  const keyTotalPaidBeers = "totalPaidBeers";
+
+  final wherePaidBeersPart = "$beerConsumptionColPrice <> 0";
+  final wherePaidBeers = whereBC.isEmpty
+      ? "WHERE $wherePaidBeersPart"
+      : "$whereBC AND $wherePaidBeersPart";
+
+  final resultPaidBeers = await db.rawQuery("""
+  SELECT
+    COUNT(*) as $keyTotalPaidBeers
+  FROM $beerConsumptionTable
+  $wherePaidBeers
+""");
+
+  final totalPaidBeers =
+      (resultPaidBeers.first[keyTotalPaidBeers] as int?) ?? 0;
 
   // .: Query to get top beers :.
   const nLeaderboardRows = 9;
@@ -132,23 +152,24 @@ Future<GlobalStats?> globalStats({
 
   // .: Query to get top brewery names :.
   const keyBreweryName = "breweryName";
+  const keyBreweryTimesConsumed = "breweryTimesConsumed";
 
   final resultTopBreweryNames = await db.rawQuery("""
   SELECT
     b.$beerColBreweryName as $keyBreweryName
-    , COUNT(*) as $keyTimesConsumed
+    , COUNT(*) as $keyBreweryTimesConsumed
   FROM $beerConsumptionTable bc
   JOIN $beerTable b ON b.$beerColId = bc.$beerConsumptionColBeerId
   $whereBC
   GROUP BY $keyBreweryName
-  ORDER BY $keyTimesConsumed DESC
+  ORDER BY $keyBreweryTimesConsumed DESC
   LIMIT $nLeaderboardRows
 """);
 
   final topBreweryNames = resultTopBreweryNames.map(
     (row) => (
       (row[keyBreweryName] as String?) ?? "",
-      (row[keyTimesConsumed] as int?) ?? 0,
+      (row[keyBreweryTimesConsumed] as int?) ?? 0,
     ),
   );
 
@@ -236,6 +257,7 @@ Future<GlobalStats?> globalStats({
 
   return GlobalStats(
     totalBeers: totalBeers,
+    totalPaidBeers: totalPaidBeers,
     totalLitres: ((rowSums[keyTotalLitres] as num?)?.toDouble()) ?? 0.0,
     totalPrice: (rowSums[keyTotalPrice] as int?) ?? 0,
     totalDraftBeers: (rowSums[keyTotalDraftBeers] as int?) ?? 0,

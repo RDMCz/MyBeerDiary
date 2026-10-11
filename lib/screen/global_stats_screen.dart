@@ -68,6 +68,37 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
 
     final beers = context.read<BeerNotifier>().itemMap;
 
+    // Build some text shown on screen here to make it simplier later
+    String averageLitres = "Průměr ";
+    String averagePrice = "Průměr ";
+
+    if (stats != null && stats!.totalBeers != 0) {
+      final doShowEventInfo =
+          stats!.distinctEvents != 0 &&
+          isFilterTag &&
+          selectedTag != Tag.unknownTag;
+
+      if (doShowEventInfo) {
+        averageLitres +=
+            "${(stats!.totalLitres / stats!.distinctEvents).toStringAsFixed(2)} L/událost a ";
+
+        averagePrice +=
+            "${(stats!.totalPrice / stats!.distinctEvents).toStringAsFixed(0)} Kč/událost a ";
+      }
+
+      averageLitres +=
+          "${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} L/pivo";
+
+      averagePrice +=
+          "${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo";
+
+      if (stats!.totalPaidBeers != 0 &&
+          stats!.totalBeers != stats!.totalPaidBeers) {
+        averagePrice +=
+            "\nPouze placené: ${(stats!.totalPrice / stats!.totalPaidBeers).toStringAsFixed(0)} Kč/pivo";
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text("Celková statistika")),
       body: SingleChildScrollView(
@@ -181,18 +212,12 @@ class _GlobalStatsScreenState extends State<GlobalStatsScreen> {
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.beerSizeCustom),
                 text: "Objem ${stats!.totalLitres.toStringAsFixed(2)} litrů",
-                subtext: isFilterTag && selectedTag != Tag.unknownTag
-                    ? "Průměr ${(stats!.totalLitres / stats!.distinctEvents).toStringAsFixed(2)} L/událost"
-                          " a ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} L/pivo"
-                    : "Průměr ${(stats!.totalLitres / stats!.totalBeers).toStringAsFixed(2)} L/pivo",
+                subtext: averageLitres,
               ),
               StatListTile(
                 leading: SvgIcon(icon: SvgIcons.money),
                 text: "Útrata ${stats!.totalPrice} Kč",
-                subtext: isFilterTag && selectedTag != Tag.unknownTag
-                    ? "Průměr ${(stats!.totalPrice / stats!.distinctEvents).toStringAsFixed(0)} Kč/událost"
-                          " a ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo"
-                    : "Průměr ${(stats!.totalPrice / stats!.totalBeers).toStringAsFixed(0)} Kč/pivo",
+                subtext: averagePrice,
               ),
               SizedBox(height: 6.6),
               ChartContainer(

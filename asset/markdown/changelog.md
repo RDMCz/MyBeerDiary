@@ -7,6 +7,7 @@
 * Po odškrtunutí odhadu ABV na základě EPM je pole pro ABV vyčištěno; vyplnit novou hodnotu je asi přívětivější než upravovat tu odhadnutou
 * Obrazovka _Celková statistika_:
   * Přidána sekce top pivovarů
+  * Přidána informace o průměrné ceně placeného piva, do které se nepočítají piva zdarma
 
 ### verze 0.2.1 (28.09.2026 20:55)
 
