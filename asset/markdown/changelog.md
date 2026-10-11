@@ -2,7 +2,7 @@
 
 ## Changelog
 
-### verze 0.2.2 (WIP)
+### verze 0.2.2 (11.10.2026 18:52)
 
 * Po odškrtunutí odhadu ABV na základě EPM je pole pro ABV vyčištěno; vyplnit novou hodnotu je asi přívětivější než upravovat tu odhadnutou
 * Obrazovka _Statistika události_: Přidána konverze celkového objemu vypitého piva na půllitry
